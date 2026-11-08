@@ -1,0 +1,19 @@
+<svg width="900" height="250" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Logo Icon -->
+  <g transform="translate(120,125) rotate(45)">
+    <rect x="-55" y="-55" width="110" height="110" rx="28" ry="28"
+          fill="none" stroke="#1f5eff" stroke-width="26"/>
+  </g>
+
+  <!-- Text -->
+  <text x="220" y="135"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="60"
+        font-weight="700"
+        fill="#1f5eff"
+        letter-spacing="2">
+        Sterlingcrest Limited
+  </text>
+
+</svg>
