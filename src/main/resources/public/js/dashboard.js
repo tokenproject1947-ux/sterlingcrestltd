@@ -1,5 +1,29 @@
 let userEmail = new URLSearchParams(window.location.search).get("email");
+
+/* Keep the brand home link session-aware (pages require ?email=). */
+document.querySelectorAll(".sc-nav-home").forEach(function (link) {
+  if (userEmail) {
+    link.href = "./dashboard.html?email=" + encodeURIComponent(userEmail);
+  }
+});
+
+/* Shared nav links: same destinations as every other app screen,
+   session-aware and deep-linked to the matching dashboard panel. */
+document.querySelectorAll("[data-sc-page]").forEach(function (link) {
+  if (userEmail) {
+    let query = link.getAttribute("data-sc-query");
+    link.href =
+      "./" +
+      link.getAttribute("data-sc-page") +
+      "?email=" +
+      encodeURIComponent(userEmail) +
+      (query ? "&" + query : "");
+  }
+});
 let hasStatus = new URLSearchParams(window.location.search).has("status");
+/* Panel requested via ?status= from the shared navigation; applied once the
+   user's details finish loading (setUserDetailsSetting shows a panel too). */
+let pendingSettingsPanel = null;
 let interestAccountCard = document.getElementById("card-1");
 let loanCard = document.getElementById("card-2");
 
@@ -72,8 +96,13 @@ getUserXhr.onreadystatechange = function () {
     } else {
       let firstName = response.fullName.split(" ", 1);
       document.getElementById("firstname").innerText = firstName;
-      document.getElementById("fullname").innerText = response.fullName;
-      document.getElementById("firstname-mobile").innerText = firstName;
+document.getElementById("fullname").innerText = response.fullName;
+  if (document.getElementById("dashboard-name")) {
+    document.getElementById("dashboard-name").innerText = firstName;
+  }
+      if (document.getElementById("firstname-mobile")) {
+        document.getElementById("firstname-mobile").innerText = firstName;
+      }
 
       let spinner = document.getElementById("dashboard-spinner");
       spinner.children[0].className = spinner.className.replace(
@@ -87,12 +116,14 @@ getUserXhr.onreadystatechange = function () {
 
       getUserAddress();
       getAccount();
-      getWithdrawal();
+      getTransactions();
     }
   }
 };
 
-paymentInfoSelection(document.getElementById("usd-info"));
+if (document.getElementById("usd-info")) {
+  paymentInfoSelection(document.getElementById("usd-info"));
+}
 
 document.body.addEventListener("input", function (e) {
   if (
@@ -178,7 +209,7 @@ document.body.addEventListener("click", function (e) {
   } else if (targetId == "close-refer-modal") {
     document.getElementById("refer-modal").style.display = "none";
   } else if (targetId == "contact-support-borrow") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (targetId == "firstname") {
     if (isAppSetingsOpened) {
       document.getElementById("app-settings").style.display = "none";
@@ -274,11 +305,11 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("select-crypto").textContent = "XPR Token (XPR)";
     paymentInfoSelection(document.getElementById("xpr-info"));
   } else if (e.target.id == "apply-for-loan") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (e.target.id == "loan-history") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (e.target.id == "learn-more") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (e.target.id == "bnb") {
     document.getElementById("fund-heading").textContent = "BNB Deposit";
     document.getElementById("crypto-deposit-option").style.display = "none";
@@ -296,20 +327,11 @@ document.body.addEventListener("click", function (e) {
     e.target.innerText = "COPIED";
     e.target.classList.add("w3-text-green");
   } else if (e.target.id == "contact-support-otp") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (e.target.id == "withdraw-btn") {
     if (canWithdraw) {
       withdraw();
     }
-  } else if (
-    e.target.id == "open-trade-room-modal" ||
-    e.target.id == "open-trade-room-modal-2" ||
-    e.target.id == "open-trade-room-modal-3"
-  ) {
-    //    document.getElementById("trade-room-modal").style.display = "block";
-    location.href = `./trading-room.html?email=${userEmail}`;
-  } else if (e.target.id == "close-trade-room-modal") {
-    document.getElementById("trade-room-modal").style.display = "none";
   } else if (
     e.target.id == "open-trade-history-modal" ||
     e.target.id == "open-trade-history-modal-2"
@@ -317,9 +339,15 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("trade-history-room-modal").style.display = "block";
   } else if (e.target.id == "close-trade-history-modal") {
     document.getElementById("trade-history-room-modal").style.display = "none";
-  } else if (e.target.classList.contains("invest-now")) {
-    document.getElementById("investment-plan-modal").style.display = "none";
-    document.getElementById("fund-modal").style.display = "block";
+  } else if (
+    e.target.classList.contains("invest-now") ||
+    e.target.id == "invest-now"
+  ) {
+    let investModal = document.getElementById("investment-amount");
+    if (investModal) investModal.style.display = "none";
+    location.href =
+      "deposit.html" +
+      (userEmail ? "?email=" + encodeURIComponent(userEmail) : "");
   } else if (e.target.id == "close-investment-plan-modal") {
     document.getElementById("investment-plan-modal").style.display = "none";
   } else if (e.target.id == "add-wallet") {
@@ -338,21 +366,92 @@ document.body.addEventListener("click", function (e) {
     console.log("Yeah");
     document.getElementById("investment-plan-modal").style.display = "block";
   } else if (e.target.id == "select-wire-payment") {
-    tidioChatApi.open();
+    /* live chat removed */
   } else if (e.target.id == "copy-referral") {
-    e.target.previousElementSibling.select();
-    e.target.previousElementSibling.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(
-      location.origin +
-        "/get-started.html?referral=" +
-        e.target.previousElementSibling.value,
-    );
-    e.target.classList.add("w3-text-green");
+    /* The field already holds the whole encoded link, so the button copies
+       verbatim -- what you see is what lands on the clipboard. */
+    let referralInput = document.getElementById("referral-id");
+    let referralLink = referralInput.value.trim();
+
+    referralInput.select();
+    referralInput.setSelectionRange(0, 99999);
+
+    /* Only report success once the link is really on the clipboard -- the
+       icon used to turn green before the write settled, so a rejected
+       promise both logged an unhandled error and lied to the member. */
+    let markCopied = function (ok) {
+      e.target.classList.toggle("w3-text-green", ok);
+      e.target.title = ok ? "Copied" : "Copy failed - select and press Ctrl+C";
+    };
+
+    if (!referralLink) {
+      markCopied(false);
+      return;
+    }
+
+    /* Clipboard API is unavailable on insecure origins and can be blocked
+       even on localhost; fall back to copying a hidden field instead of
+       failing silently. */
+    let legacyCopy = function () {
+      let holder = document.createElement("textarea");
+      holder.value = referralLink;
+      holder.setAttribute("readonly", "");
+      holder.style.position = "fixed";
+      holder.style.top = "-1000px";
+      holder.style.opacity = "0";
+      document.body.appendChild(holder);
+      holder.select();
+      let ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (error) {
+        ok = false;
+      }
+      document.body.removeChild(holder);
+      markCopied(ok);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(referralLink).then(
+        function () {
+          markCopied(true);
+        },
+        legacyCopy,
+      );
+    } else {
+      legacyCopy();
+    }
+  }
+});
+
+/* The copy control is a <span>, so mirror Enter/Space for keyboard users. */
+document.body.addEventListener("keydown", function (e) {
+  if (
+    e.target.id == "copy-referral" &&
+    (e.key == "Enter" || e.key == " " || e.key == "Spacebar")
+  ) {
+    e.preventDefault();
+    e.target.click();
   }
 });
 
 if (hasStatus) {
-  document.getElementById("fund-modal").style.display = "block";
+  /* Deep links from the shared navigation: land on the same panel the
+     matching dashboard nav item opens. */
+  let navStatus = new URLSearchParams(window.location.search).get("status");
+  if (navStatus == "history") {
+    pendingSettingsPanel = "withdrawal-options";
+  } else if (navStatus == "refer") {
+    document.getElementById("refer-modal").style.display = "block";
+  } else if (navStatus == "profile") {
+    pendingSettingsPanel = "profile-options";
+  } else if (navStatus == "fund") {
+    /* Legacy ?status=fund deep link: the deposit modal is now a page. */
+    location.replace(
+      "deposit.html" +
+        (userEmail ? "?email=" + encodeURIComponent(userEmail) : ""),
+    );
+  }
 }
 
 function saveWallet() {
@@ -428,6 +527,28 @@ function getCryptoUpdate() {
   };
 }
 
+function updateBitcoinEquivalent(amount, target) {
+  if (!target || !Number.isFinite(Number(amount))) return;
+  let priceXhr = new XMLHttpRequest();
+  priceXhr.open(
+    "GET",
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+    true
+  );
+  priceXhr.send();
+  priceXhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      try {
+        let response = JSON.parse(this.response);
+        let price = Number(response.bitcoin.usd);
+        if (price > 0) target.innerText = (Number(amount) / price).toFixed(8);
+      } catch (error) {
+        target.innerText = "0.00000000";
+      }
+    }
+  };
+}
+
 function bindCrypto(crypto) {
   return `<div class="w3-row" style="margin-top: 32px">
 								<div class="w3-col s1">
@@ -442,48 +563,6 @@ function arrangeInterest() {
   cryptos.forEach(function (crypto) {
     document.getElementById("crypto-root-2").innerHTML += bindCrypto(crypto);
   });
-}
-
-function getWithdrawal() {
-  let withdrawalXhr = new XMLHttpRequest();
-  withdrawalXhr.open("GET", `/user/${userEmail}/withdrawal/last`, true);
-  withdrawalXhr.send();
-
-  withdrawalXhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      if (this.response != "null") {
-        let response = JSON.parse(this.response);
-        console.log(response);
-        document.getElementById("withdrawal-container").style.display = "flex";
-        document.getElementById("withdrawal-status").innerText =
-          response.withdrawalStatus;
-        document.getElementById("withdrawal-amount").innerText =
-          `$${response.amount}.00`;
-
-        const iso = response.date;
-        const date = new Date(iso);
-
-        const datePart = date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-
-        const timePart = date
-          .toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .toLowerCase();
-
-        console.log(datePart);
-        console.log(timePart);
-        document.getElementById("withdrawal-date").innerText = datePart;
-        document.getElementById("withdrawal-time").innerText = timePart;
-      }
-    }
-  };
 }
 
 function getAccount() {
@@ -513,30 +592,11 @@ function getAccount() {
           numberWithCommas(response.investedAmount);
         document.getElementById("account-level").innerText =
           response.investmentPlan;
-        document.getElementById("deposit-history").style.display = "flex";
-        document.getElementById("deposit-amount").innerText =
-          `$${response.investedAmount}.00`;
-        const iso = response.startDate;
-        const date = new Date(iso);
 
-        const datePart = date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-
-        const timePart = date
-          .toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .toLowerCase();
-        document.getElementById("deposit-date").innerText = datePart;
-        document.getElementById("deposit-time").innerText = timePart;
-
-        document.getElementById("btc-price").innerText =
-          response.account.accountBalance / 34195;
+        updateBitcoinEquivalent(
+          response.account.accountBalance,
+          document.getElementById("btc-price")
+        );
       }
     }
   };
@@ -572,12 +632,6 @@ function getUserAddress() {
     if (this.readyState == 4 && this.status == 200) {
       let response = JSON.parse(this.response);
       addressDetails = response;
-      document.tidioIdentify = {
-        distinct_id: response.user.email, // Unique visitor ID in your system
-        email: response.user.email, // visitor email
-        name: response.user.fullName, // Visitor name
-        phone: response.mobileNumber, //Visitor phone
-      };
       let getAccountTypeXhr = new XMLHttpRequest();
       getAccountTypeXhr.open("GET", `/accounttype`, true);
       getAccountTypeXhr.send();
@@ -593,8 +647,30 @@ function getUserAddress() {
   };
 }
 
+/* Referral ids are built from the member's full name, so they always carry
+   a space ("Test Investor-AUXrX6"). The referral field therefore holds the
+   complete, encoded share link -- what a member copies is what they see. */
+function buildReferralLink(referralId) {
+  let code = (referralId || "").trim();
+  if (!code) {
+    return "";
+  }
+  /* The field is re-read when the copy button is pressed, so a value that
+     is already a link must not be encoded a second time. */
+  if (/^https?:\/\//i.test(code)) {
+    return code;
+  }
+  return (
+    location.origin + "/get-started.html?referral=" + encodeURIComponent(code)
+  );
+}
+
 function setUserDetailsSetting(userDetails) {
-  document.getElementById("referral-id").value = userDetails.user.referralId;
+  let referralInput = document.getElementById("referral-id");
+  /* Show the whole shareable link rather than the bare code, so a manual
+     Ctrl+C still produces something that opens the sign-up page. */
+  referralInput.value = buildReferralLink(userDetails.user.referralId);
+  referralInput.title = referralInput.value;
   settingsSpinner.style.display = "none";
   document.getElementById("profile-options").style.display = "block";
   fullNameEtx.value = userDetails.user.fullName;
@@ -613,6 +689,30 @@ function setUserDetailsSetting(userDetails) {
       selected,
     );
   });
+
+  /* Apply the panel requested via ?status= (deep links from the shared
+     navigation) once the settings screen is populated. */
+  if (pendingSettingsPanel) {
+    let pendingPanel = pendingSettingsPanel;
+    pendingSettingsPanel = null;
+    document.getElementById("app-settings").style.display = "block";
+    isAppSetingsOpened = true;
+    settingDetailSelector(pendingPanel);
+    let optionId =
+      pendingPanel == "withdrawal-options"
+        ? "withdrawals"
+        : pendingPanel == "profile-options"
+          ? "profile"
+          : null;
+    if (optionId) {
+      /* The settings screen no longer has a left menu to light up, so the
+         highlight is skipped when its element is not in the document. */
+      let option = document.getElementById(optionId);
+      if (option) {
+        settingSelector(option);
+      }
+    }
+  }
 }
 
 function settingSelector(currentSetting) {
@@ -775,26 +875,173 @@ function displayCryptoUpdate(crypto, color, plus, direction) {
 						</div>`;
 }
 
-function bindWithdrawal(withdrawal, index) {
+function scEscape(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function scStatusBadgeClass(status) {
+  const value = String(status || "").toLowerCase();
+  if (
+    value === "successful" ||
+    value === "completed" ||
+    value === "active" ||
+    value === "approved"
+  ) {
+    return "sc-badge-ok";
+  }
+  if (
+    value === "declined" ||
+    value === "failed" ||
+    value === "cancelled" ||
+    value === "rejected"
+  ) {
+    return "sc-badge-no";
+  }
+  return "sc-badge-pending";
+}
+
+function scFormatDate(iso) {
+  if (iso == null || iso === "") return "-";
+  const raw = String(iso);
+  /* A bare YYYY-MM-DD is parsed as UTC midnight, which rolls back a day in
+     western time zones. Anchor it to local midnight instead. */
+  const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw + "T00:00:00" : raw);
+  if (isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function scAmount(amount) {
+  const value = Number(amount);
+  if (!isFinite(value)) return "$0.00";
+  return (
+    "$" +
+    value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  );
+}
+
+/* The two lines a ledger row carries: the movement itself (Deposit or
+   Withdrawal) and what it was booked against -- the plan for a deposit, the
+   payout rail for a withdrawal. Anything that is not a deposit is rendered
+   as a withdrawal, so an unexpected type still shows up honestly. */
+function scTransactionKind(transaction) {
+  return String(transaction.type || "").toLowerCase() === "deposit"
+    ? "deposit"
+    : "withdrawal";
+}
+
+function bindTransaction(transaction, index) {
+  const kind = scTransactionKind(transaction);
+  const title = kind === "deposit" ? "Deposit" : "Withdrawal";
+  const status = transaction.status || "-";
+  const label = transaction.label || "";
+  /* The payout destination the member typed on the withdraw page. A long
+     bank string is truncated by .sc-hist-tx-sub rather than widening the row. */
+  const destination = transaction.walletAddress || "";
+
+  const labelHtml = label
+    ? `<span class="sc-hist-tx-sub">${scEscape(label)}</span>`
+    : "";
+
+  const destinationHtml = destination
+    ? `<span class="sc-hist-tx-sub" title="${scEscape(destination)}">${scEscape(
+        destination,
+      )}</span>`
+    : "";
+
   return `
-    <div class="w3-row w3-padding-large w3-round" style="margin-top: 24px; background-color: rgb(248, 248, 248);">
-                  <div class="w3-col s1">
-                    ${index}.
-                  </div>
-                  <div class="w3-col s2">
-                    <p class="no-margin">BITCOIN</p>
-                  </div>
-                  <div class="w3-col s6">
-                    bc1qn8j4sj0zr0m8jg3ccc6ufw8as7hmfysfcncmx2
-                  </div>
-                  <div class="w3-col s1">
-                    $500
-                  </div>
-                  <div class="w3-col s2">
-                    20th March 2022
-                  </div>
-                </div>
-    `;
+    <div class="sc-hist-row">
+      <div class="sc-hist-index">${index}</div>
+      <div class="sc-hist-asset">
+        <span class="sc-tx-chip sc-tx-chip-${kind}">${title}</span>
+        ${labelHtml}
+        ${destinationHtml}
+      </div>
+      <div class="sc-hist-amount">${scAmount(transaction.amount)}</div>
+      <div class="sc-hist-status">
+        <span class="sc-badge ${scStatusBadgeClass(status)}">${scEscape(status)}</span>
+      </div>
+      <div class="sc-hist-date">${scEscape(scFormatDate(transaction.date))}</div>
+    </div>
+  `;
+}
+
+/* The same row laid out for the dashboard's Transaction History card:
+   icon and title, amount, then date and time. */
+function bindTransactionCard(transaction) {
+  const isDeposit = scTransactionKind(transaction) === "deposit";
+  const status = transaction.status || "-";
+  const label = transaction.label || "";
+
+  const date = new Date(transaction.date);
+  const hasDate = !isNaN(date.getTime());
+  const datePart = hasDate
+    ? date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "-";
+  const timePart = hasDate
+    ? date
+        .toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })
+        .toLowerCase()
+    : "";
+
+  const statusLine = [label, status]
+    .filter(Boolean)
+    .map(scEscape)
+    .join(" &middot; ");
+
+  /* Payout destination the member typed on the withdraw page; the row is
+     single-line and ellipsised so a long bank string cannot break the card. */
+  const destination = transaction.walletAddress
+    ? `<div class="tx-status" title="${scEscape(
+        transaction.walletAddress,
+      )}">${scEscape(transaction.walletAddress)}</div>`
+    : "";
+
+  return `
+    <div class="tx-history-container">
+      <div style="display: flex; align-items: center; min-width: 0;">
+        <div class="tx-icon-container" style="background-color: ${
+          isDeposit ? "#d8f3dc" : "#ffe8d6"
+        };">
+          <span class="fa ${
+            isDeposit ? "fa-money" : "fa-credit-card"
+          }" style="color: ${isDeposit ? "#40916c" : "#c97a3c"}; font-size: 20px;"></span>
+        </div>
+        <div style="min-width: 0;">
+          <div class="tx-title">${isDeposit ? "Deposit" : "Withdrawal"}</div>
+          <div class="tx-status">${statusLine}</div>
+          ${destination}
+        </div>
+      </div>
+      <div class="tx-amount">${scAmount(transaction.amount)}</div>
+      <div class="tx-date-container">
+        <div class="tx-date">${scEscape(datePart)}</div>
+        ${
+          timePart
+            ? `<div class="tx-date">${scEscape(timePart)}</div>`
+            : ""
+        }
+      </div>
+    </div>
+  `;
 }
 
 function bindWallet(wallet, index) {
@@ -819,31 +1066,74 @@ function bindWallet(wallet, index) {
     `;
 }
 
-function bindWithdrawalHeaderRoot() {
+function bindTransactionHeaderRoot() {
+  /* Cells carry the same column classes as the body rows so the narrow
+     layout (see the container query in dashboard-light.css) can restack
+     header and rows identically. */
   return `
-	<div class="w3-row w3-padding-large"
-								style="margin-top: 24px;">
-								<div class="w3-col s1">
-									<p class="x-big no-margin blue-text-dash">No</p>
+    <div class="sc-hist-row sc-hist-head">
+      <div class="sc-hist-index">No</div>
+      <div class="sc-hist-asset">Transaction</div>
+      <div class="sc-hist-amount">Amount</div>
+      <div class="sc-hist-status">Status</div>
+      <div class="sc-hist-date">Date</div>
+    </div>
+  `;
+}
 
-								</div>
-								<div class="w3-col s2">
-									<p class="no-margin blue-text-dash x-big" style="font-weight: 500;">Wallet Name</p>
-								</div>
-								<div class="w3-col s6">
-									<p class="no-margin blue-text-dash x-big" style="font-weight: 500;">Wallet Address</p>
+/**
+ * Loads the signed-in member's full ledger -- deposits merged with
+ * withdrawals, newest first -- into both places that show it: the
+ * Transaction History panel in settings and the Transaction History card on
+ * the dashboard. One fetch for both so the two can never disagree.
+ *
+ * When there are no rows (or the endpoint is not deployed) each keeps its
+ * static empty state: dashboard-light.css hides those as soon as the
+ * matching root is populated.
+ */
+function getTransactions() {
+  if (!userEmail) return;
 
-								</div>
-								<div class="w3-col s1">
-									<p class="no-margin blue-text-dash x-big" style="font-weight: 500;">USD</p>
+  const historyRoot = document.getElementById("withdrawal-history-root");
+  const cardRoot = document.getElementById("tx-card-root");
 
-								</div>
-								<div class="w3-col s2">
-									<p class="no-margin blue-text-dash x-big" style="font-weight: 500;">Date</p>
+  const transactionsXhr = new XMLHttpRequest();
+  /* Handler attached before send(): a reply can only arrive on a later
+     event-loop turn, but wiring it first is the correct order and keeps the
+     non-200 path (endpoint not deployed, session dropped) falling through to
+     the static empty states instead of rendering a broken table. */
+  transactionsXhr.onreadystatechange = function () {
+    if (this.readyState !== 4 || this.status !== 200) return;
 
-								</div>
-							</div>
-	`;
+    let rows;
+    try {
+      rows = JSON.parse(this.response);
+    } catch (error) {
+      return;
+    }
+    if (!Array.isArray(rows) || rows.length === 0) return;
+
+    /* The endpoint sorts newest first; rows are heterogeneous (a deposit has
+       no withdrawalId), so there is nothing meaningful to re-sort here. */
+    if (historyRoot) {
+      let html = `<div class="sc-hist"><div class="sc-hist-scroll"><div class="sc-hist-inner">${bindTransactionHeaderRoot()}`;
+      rows.forEach((row, index) => {
+        html += bindTransaction(row, index + 1);
+      });
+      html += `</div></div></div>`;
+      historyRoot.innerHTML = html;
+    }
+
+    if (cardRoot) {
+      let cardHtml = "";
+      rows.forEach((row) => {
+        cardHtml += bindTransactionCard(row);
+      });
+      cardRoot.innerHTML = cardHtml;
+    }
+  };
+  transactionsXhr.open("GET", `/user/${userEmail}/transactions`, true);
+  transactionsXhr.send();
 }
 
 function bindWalletHeaderRoot() {
@@ -871,3 +1161,46 @@ function bindChooseCrypto(crypto) {
 	<option value="${crypto.cryptoId}">${crypto.crypto}</option>
 	`;
 }
+
+/* The settings screen is a fixed full-screen overlay (see
+   dashboard-light.css), so the document behind it must not scroll. The
+   class is driven by a style observer rather than by each toggle site so
+   navBar.js stays in sync without duplicating the bookkeeping. It also
+   wires the screen's own close control and Escape: the account chip that
+   used to dismiss it lives in the desktop sidebar, which is hidden on
+   smaller viewports. */
+(function () {
+  var settingsScreen = document.getElementById("app-settings");
+  if (!settingsScreen) return;
+
+  var syncLock = function () {
+    document.documentElement.classList.toggle(
+      "sc-settings-open",
+      settingsScreen.style.display === "block",
+    );
+  };
+
+  if (window.MutationObserver) {
+    new MutationObserver(syncLock).observe(settingsScreen, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+    syncLock();
+  }
+
+  var closeSettings = function () {
+    settingsScreen.style.display = "none";
+    isAppSetingsOpened = false;
+    syncLock();
+  };
+
+  var closeButton = document.getElementById("close-app-settings");
+  if (closeButton) {
+    closeButton.addEventListener("click", closeSettings);
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || settingsScreen.style.display !== "block") return;
+    closeSettings();
+  });
+})();

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.soft6creators.futurespace.app.account.Account;
 import com.soft6creators.futurespace.app.account.AccountRepository;
-import com.soft6creators.futurespace.app.crypto.Crypto;
-import com.soft6creators.futurespace.app.crypto.CryptoRepository;
 import com.soft6creators.futurespace.app.mailsender.MailSenderService;
 
 @Service
@@ -24,19 +22,15 @@ public class WithdrawalService {
 	@Autowired
 	private MailSenderService mailSenderService;
 
-	@Autowired
-	private CryptoRepository cryptoRepository;
-
 	private String email = "jd3818373@gmail.com";
 
 	public Withdrawal addWithdrawal(Withdrawal withdrawal) {
 		if (withdrawal.getWithdrawalStatus().contentEquals("Pending")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
-			Optional<Crypto> crypto = cryptoRepository.findById(withdrawal.getCrypto().getCryptoId());
 			account.get().setAccountBalance(account.get().getAccountBalance() - withdrawal.getAmount());
 			accountRepository.save(account.get());
 			try {
-				sendWithdrawalRequest(withdrawal, crypto.get());
+				sendWithdrawalRequest(withdrawal);
 			} catch (UnsupportedEncodingException | MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,6 +67,10 @@ public class WithdrawalService {
 		return withdrawalRepository.findByUserEmail(userEmail);
 	}
 
+	public List<Withdrawal> getWithdrawalsByUser(String userEmail) {
+		return withdrawalRepository.findAllByUserEmail(userEmail);
+	}
+
 	public List<Withdrawal> getWithdrawalsByWithdrawalStatus(String withdrawalStatus) {
 		return (List<Withdrawal>) withdrawalRepository.findAllByWithdrawalStatus(withdrawalStatus);
 	}
@@ -89,7 +87,7 @@ public class WithdrawalService {
 		return withdrawalRepository.findTopByUserEmailOrderByWithdrawalIdDesc(userEmail);
 	}
 
-	private void sendWithdrawalRequest(Withdrawal withdrawal, Crypto crypto)
+	private void sendWithdrawalRequest(Withdrawal withdrawal)
 			throws UnsupportedEncodingException, MessagingException {
 		String toAddress = withdrawal.getUser().getEmail();
 		String subject = "Sterling Crest Ltd (Withdrawal Request)";

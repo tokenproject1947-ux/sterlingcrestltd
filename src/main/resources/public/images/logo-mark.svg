@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="Sterling Crest Ltd">
+  <!-- Brand tile: Sterling Crest green, rgb(77, 169, 44) -->
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="#4DA92C"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" stroke="#ffffff" stroke-opacity=".18"/>
+
+  <!-- Crest: diamond outline (the established identity) with a solid core -->
+  <g transform="rotate(45 32 32)">
+    <rect x="17.5" y="17.5" width="29" height="29" rx="9" stroke="#ffffff" stroke-width="5"/>
+    <rect x="26.5" y="26.5" width="11" height="11" rx="3.5" fill="#ffffff"/>
+  </g>
+</svg>

@@ -1,232 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel | Sterling Crest Ltd</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="./css/w3.css" />
-    <link rel="stylesheet" href="./css/colors.css" />
-    <link rel="stylesheet" href="./css/dashboard.css" />
-    <link rel="stylesheet" href="./css/fonts.css" />
 
-    <script src="./js/moment.js"></script>
-    <div class="gtranslate_wrapper"></div>
-    <script>
-      window.gtranslateSettings = {
-        default_language: "en",
-        native_language_names: true,
-        detect_browser_language: true,
-        wrapper_selector: ".gtranslate_wrapper",
-      };
-    </script>
-    <script
-      src="https://cdn.gtranslate.net/widgets/latest/float.js"
-      defer
-    ></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Console | Sterling Crest Ltd</title>
+  <meta name="description"
+    content="Sterling Crest Ltd administration console: review members, book investments and settle withdrawals." />
+  <meta name="theme-color" content="#4DA92C" />
+  <link rel="shortcut icon" href="/asset/images/favicon_1627498316.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./css/w3.css?v=2" />
+  <link rel="stylesheet" href="./css/colors.css" />
+  <link rel="stylesheet" href="./css/dashboard.css?v=9" />
+  <link rel="stylesheet" href="./css/fonts.css?v=2" />
+  <link rel="stylesheet" href="./css/dashboard-polish.css?v=3" />
+  <link rel="stylesheet" href="./css/admin-light.css?v=5" />
+</head>
 
-  <body class="grey-background-2">
-    <section>
-      <div>
-        <div class="w3-black w3-padding-small">
-          <p class="no-margin">Sterling Crest Ltd Administrative panel</p>
-        </div>
-        <div class="w3-row" style="margin-top: 0%; margin-right: 0%">
-          <div class="w3-col l12">
-            <div class="w3-row w3-padding grey-background">
-              <div class="w3-col s4">
-                <div class="pointer" style="padding-left: 12px">
-                  <img
-                    src="./images/paulius.png"
-                    alt=""
-                    style="
-                      width: 40px;
-                      border-radius: 40px;
-                      margin-top: 0px;
-                      height: 40px;
-                    "
-                  />
-                </div>
-              </div>
-              <div class="w3-col s2">
-                <div class="pointer w3-center" style="margin-top: 8px">
-                  <span
-                    id="fund-account"
-                    class="fa fa-user blue-text option"
-                    style="font-size: 20px"
-                  >
-                  </span>
-                  <p class="no-margin x-small">Fund</p>
-                </div>
-              </div>
+<body>
+  <!-- Top bar ------------------------------------------------------------ -->
+  <header class="sc-admin-topbar">
+    <a class="sc-admin-brand" href="./dashboard.html">
+      <img src="./images/logo-mark.svg" alt="" width="34" height="34" />
+      <span class="sc-admin-brand-text">
+        <strong>Sterling Crest Ltd</strong>
+        <span>Admin Console</span>
+      </span>
+    </a>
+    <div class="sc-admin-user">
+      <span class="sc-admin-user-label">Administrator</span>
+      <img src="./images/paulius.png" alt="" class="sc-admin-avatar" />
+    </div>
+  </header>
 
-              <div class="w3-col s2">
-                <div class="w3-center pointer" style="margin-top: 8px">
-                  <span
-                    id="pending"
-                    class="fa fa-user-plus grey-text-2 option"
-                    style="font-size: 20px"
-                  >
-                  </span>
-                  <p class="no-margin x-small">Pending</p>
-                </div>
-              </div>
-              <div class="w3-col s2">
-                <div class="pointer w3-center" style="margin-top: 8px">
-                  <span
-                    id="successful"
-                    class="fa fa-users grey-text-2 option"
-                    style="font-size: 20px"
-                  >
-                  </span>
-                  <p class="no-margin x-small">Completed</p>
-                </div>
-              </div>
-              <div class="w3-col s2">
-                <div class="pointer w3-center" style="margin-top: 8px">
-                  <span
-                    id="declined"
-                    class="fa fa-users grey-text-2 option"
-                    style="font-size: 20px"
-                  >
-                  </span>
-                  <p class="no-margin x-small">Declined</p>
-                </div>
-              </div>
-            </div>
-            <div
-              id="distinct-message-root"
-              class="grey-background"
-              style="
-                overflow-y: auto;
-                height: 100vh;
-                scrollbar-width: thin;
-                position: relative;
-              "
-            ></div>
-          </div>
-        </div>
+  <main class="sc-admin-main">
+    <div class="sc-admin-head">
+      <h1 class="sc-admin-title">Operations</h1>
+      <p class="sc-admin-sub">Review members, book investments and settle withdrawals.</p>
+    </div>
+
+    <!-- Filters ---------------------------------------------------------- -->
+    <div class="sc-stats" role="tablist" aria-label="Record type">
+      <button type="button" class="sc-stat is-active" data-tool role="tab" aria-selected="true">
+        <span id="fund-account" class="fa fa-users option blue-text sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label blue-text">Members</span>
+        <span class="sc-stat-value" data-count="members">&mdash;</span>
+      </button>
+
+      <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
+        <span id="pending" class="fa fa-inbox option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label grey-text">Pending</span>
+        <span class="sc-stat-value" data-count="pending">&mdash;</span>
+      </button>
+
+      <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
+        <span id="successful" class="fa fa-check-circle option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label grey-text">Completed</span>
+        <span class="sc-stat-value" data-count="completed">&mdash;</span>
+      </button>
+
+      <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
+        <span id="declined" class="fa fa-times-circle option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label grey-text">Declined</span>
+        <span class="sc-stat-value" data-count="declined">&mdash;</span>
+      </button>
+    </div>
+
+    <!-- Records ---------------------------------------------------------- -->
+    <section class="sc-panel" aria-label="Records">
+      <div class="sc-panel-head">
+        <h2 class="sc-panel-title" id="sc-panel-title">Members</h2>
+        <span class="sc-panel-hint">Select a row to open the record</span>
       </div>
+      <div id="distinct-message-root" class="sc-list"></div>
     </section>
-    <section>
-      <div id="info-modal" class="w3-modal" style="display: none">
-        <div
-          class="w3-modal-content w3-round w3-animate-opacity"
-          style="margin-bottom: 32px"
-        >
-          <div class="w3-padding w3-padding-16">
-            <span
-              id="close-modal"
-              class="fa fa-times w3-right w3-text-red pointer"
-            ></span>
-          </div>
-          <div id="user-info-root">
-            <div class="w3-padding w3-center">
-              <span class="fa fa-spinner fa-spin x-large"></span>
-            </div>
-          </div>
-        </div>
-      </div>
+  </main>
 
-      <div id="fund-modal" class="w3-modal" style="display: none">
-        <div
-          class="w3-modal-content w3-round w3-animate-opacity"
-          style="width: 25%; margin-top: 5%"
-        >
-          <div class="w3-padding w3-padding-16">
-            <span
-              id="close-fund-modal"
-              class="fa fa-times w3-right w3-text-red pointer"
-            ></span>
-          </div>
-          <div class="w3-padding">
-            <p class="large blue-text-dash" style="font-size: 600">
-              Investment Plan
-            </p>
-            <div class="w3-margin">
-              <p class="small no-margin">Amount to Invest</p>
-              <input id="investedAmountEtx" class="w3-input" type="number" />
-            </div>
-            <div class="w3-margin">
-              <p class="small no-margin">Return of Investment Percent</p>
-              <input id="percentEtx" class="w3-input" type="number" />
-            </div>
-            <div class="w3-margin">
-              <p class="small no-margin">Investment Plan</p>
-              <input id="account-level" class="w3-input" type="text" />
-            </div>
-            <div class="w3-margin">
-              <p class="small no-margin">Number of days</p>
-              <input id="daysEtx" class="w3-input" type="number" />
-            </div>
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                margin: 32px 0px 32px;
-              "
-            >
-              <div
-                id="invest"
-                class="w3-button w3-border w3-round w3-hover-none"
-              >
-                Invest
-              </div>
-            </div>
-          </div>
+  <!-- Member / withdrawal detail ---------------------------------------- -->
+  <div id="info-modal" class="w3-modal" style="display: none" role="dialog" aria-modal="true" aria-label="Record detail">
+    <div class="w3-modal-content w3-round w3-animate-opacity sc-admin-modal">
+      <div class="w3-padding w3-padding-16 sc-admin-modal-bar">
+        <span id="close-modal" class="fa fa-times w3-right w3-text-red pointer" role="button" tabindex="0"
+          aria-label="Close"></span>
+      </div>
+      <div id="user-info-root">
+        <div class="w3-padding w3-center">
+          <span class="fa fa-spinner fa-spin x-large"></span>
         </div>
       </div>
-      <div id="trade-modal" class="w3-modal" style="display: none">
-        <div
-          class="w3-modal-content w3-round w3-animate-opacity"
-          style="width: 25%; margin-top: 5%"
-        >
-          <div class="w3-padding w3-padding-16">
-            <span
-              id="close-trade-modal"
-              class="fa fa-times w3-right w3-text-red pointer"
-            ></span>
-          </div>
-          <div class="w3-padding">
-            <p class="large blue-text-dash" style="font-size: 600">
-              Trade Status
-            </p>
-            <div class="w3-margin">
-              <p class="small no-margin">Deposit</p>
-              <input id="trade-deposit-etx" class="w3-input" type="number" />
-            </div>
-            <div class="w3-margin">
-              <p class="small no-margin">Balance</p>
-              <input id="trade-balance-etx" class="w3-input" type="number" />
-            </div>
-            <div class="w3-margin">
-              <p class="small no-margin">Profit</p>
-              <input id="trade-profit-etx" class="w3-input" type="number" />
-            </div>
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                margin: 32px 0px 32px;
-              "
-            >
-              <div
-                id="update-trade"
-                class="w3-button w3-border w3-round w3-hover-none"
-              >
-                Update Trade
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </body>
+    </div>
+  </div>
 
-  <script src="./js/admin.js"></script>
+  <!-- Book an investment ------------------------------------------------- -->
+  <div id="fund-modal" class="w3-modal" style="display: none" role="dialog" aria-modal="true" aria-label="Investment plan">
+    <div class="w3-modal-content w3-round w3-animate-opacity sc-admin-modal sc-admin-modal-narrow">
+      <div class="w3-padding w3-padding-16 sc-admin-modal-bar">
+        <span id="close-fund-modal" class="fa fa-times w3-right w3-text-red pointer" role="button" tabindex="0"
+          aria-label="Close"></span>
+      </div>
+      <form class="w3-padding sc-admin-form" novalidate>
+        <h2 class="sc-admin-modal-title">Investment Plan</h2>
+
+        <div class="w3-margin sc-admin-field">
+          <label for="investedAmountEtx">Amount to Invest</label>
+          <input id="investedAmountEtx" class="w3-input" type="number" min="0" step="1" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="percentEtx">Return of Investment Percent</label>
+          <input id="percentEtx" class="w3-input" type="number" min="0" step="0.01" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="account-level">Investment Plan</label>
+          <input id="account-level" class="w3-input" type="text" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="daysEtx">Number of days</label>
+          <input id="daysEtx" class="w3-input" type="number" min="1" step="1" />
+        </div>
+
+        <div class="sc-admin-actions">
+          <div id="invest" class="sc-btn sc-btn-primary" role="button" tabindex="0">Invest</div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Trading account ---------------------------------------------------- -->
+  <div id="trade-modal" class="w3-modal" style="display: none" role="dialog" aria-modal="true" aria-label="Trade status">
+    <div class="w3-modal-content w3-round w3-animate-opacity sc-admin-modal sc-admin-modal-narrow">
+      <div class="w3-padding w3-padding-16 sc-admin-modal-bar">
+        <span id="close-trade-modal" class="fa fa-times w3-right w3-text-red pointer" role="button" tabindex="0"
+          aria-label="Close"></span>
+      </div>
+      <form class="w3-padding sc-admin-form" novalidate>
+        <h2 class="sc-admin-modal-title">Trade Status</h2>
+
+        <div class="w3-margin sc-admin-field">
+          <label for="trade-deposit-etx">Deposit</label>
+          <input id="trade-deposit-etx" class="w3-input" type="number" min="0" step="1" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="trade-balance-etx">Balance</label>
+          <input id="trade-balance-etx" class="w3-input" type="number" min="0" step="1" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="trade-profit-etx">Profit</label>
+          <input id="trade-profit-etx" class="w3-input" type="number" min="0" step="1" />
+        </div>
+
+        <div class="sc-admin-actions">
+          <div id="update-trade" class="sc-btn sc-btn-primary" role="button" tabindex="0">Update Trade</div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./js/moment.js"></script>
+  <script src="./js/admin.js?v=7"></script>
+</body>
+
 </html>

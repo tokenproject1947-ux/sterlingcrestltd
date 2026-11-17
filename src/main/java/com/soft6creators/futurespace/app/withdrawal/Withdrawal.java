@@ -1,5 +1,6 @@
 package com.soft6creators.futurespace.app.withdrawal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,22 @@ public class Withdrawal {
 	private String withdrawalStatus;
 	@OneToOne
 	private Crypto crypto;
+	/**
+	 * Payout rail chosen by the member: "Bitcoin", "PayPal" or "Bank". Separate
+	 * from crypto so a fiat payout is not stamped with an asset it never
+	 * touched. Null on rows written before this column existed.
+	 */
+	private String method;
+	/**
+	 * Where the payout is actually sent: a BTC address, a PayPal number, or the
+	 * bank name / account name / account number / SWIFT joined with " / " for a
+	 * wire. Named walletAddress because that is the key the withdraw page posts
+	 * and the admin console echoes back on approve/decline -- without this
+	 * column Jackson silently dropped the member's payout details on the floor.
+	 * Null on rows written before this column existed.
+	 */
+	@Column(length = 512)
+	private String walletAddress;
 	private String date;
 	public int getWithdrawalId() {
 		return withdrawalId;
@@ -51,6 +68,18 @@ public class Withdrawal {
 	}
 	public void setCrypto(Crypto crypto) {
 		this.crypto = crypto;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	public String getWalletAddress() {
+		return walletAddress;
+	}
+	public void setWalletAddress(String walletAddress) {
+		this.walletAddress = walletAddress;
 	}
 	
 	public String getDate() {

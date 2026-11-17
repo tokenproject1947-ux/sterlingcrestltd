@@ -20,6 +20,16 @@ let sourceValidated;
 let addressSpinner = document.getElementById("address-spinner");
 let addressDesc = document.getElementById("address-desc");
 
+/* Sign-up already collected the mobile number. Carry it across so this step is
+   a confirmation rather than a second round of typing. */
+try {
+	let signupMobile = sessionStorage.getItem("sc-signup-mobile");
+	if (signupMobile && mobileNumber.value == "") {
+		mobileNumber.value = signupMobile;
+		validate2(document.getElementById("proceed-mobile-number"));
+	}
+} catch (error) {}
+
 let source = [];
 
 let countryXhr = new XMLHttpRequest();
@@ -27,8 +37,16 @@ countryXhr.open("GET", `/country`, true);
 countryXhr.send();
 
 countryXhr.onreadystatechange = function() {
-	if (this.status == 200 && this.readyState == 4) {
-		let response = JSON.parse(this.response);
+	if (this.readyState == 4 && this.status == 200) {
+		let response;
+		try {
+			response = JSON.parse(this.response);
+		} catch (error) {
+			return;
+		}
+		if (!Array.isArray(response) || response.length === 0) {
+			return;
+		}
 
 		response.forEach(function(country) {
 			document.getElementById("country").innerHTML += bindCountries(country);

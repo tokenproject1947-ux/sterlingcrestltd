@@ -5,222 +5,216 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sterling Crest Ltd - Get Started</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <meta name="theme-color" content="#002E9D" />
-  <meta name="msapplication-navbutton-color" content="#002E9D" />
+  <title>Get Started | Sterling Crest Ltd</title>
+  <meta name="description"
+    content="Create a Sterling Crest Ltd account to grow a professionally managed Bitcoin and digital asset portfolio, or sign in to your existing account." />
+  <meta name="theme-color" content="#4DA92C" />
+  <meta name="msapplication-navbutton-color" content="#4DA92C" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="stylesheet" href="./css/w3.css" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="shortcut icon" href="/asset/images/favicon_1627498316.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./css/w3.css?v=2" />
   <link rel="stylesheet" href="./css/colors.css" />
   <link rel="stylesheet" href="./css/index.css" />
-  <link rel="stylesheet" href="./css/fonts.css" />
+  <link rel="stylesheet" href="./css/fonts.css?v=2" />
   <link rel="stylesheet" href="./css/get-started.css" />
-  <style>
-    #sign-up-card {
-      background-color: rgb(30, 30, 30) !important;
-      color: white !important;
-    }
-
-    .input-container {
-      background-color: rgb(37, 37, 37) !important;
-      color: white !important;
-    }
-
-    .fa {
-      color: rgba(255, 255, 255, 0.552) !important;
-    }
-
-    ::placeholder {
-      color: rgba(255, 255, 255, 0.562) !important;
-      opacity: 1 !important;
-    }
-
-    .input {
-      color: white !important;
-    }
-
-    .w3-white {
-      background-color: rgb(16, 16, 16) !important;
-      color: white !important;
-    }
-  </style>
-  <div class="gtranslate_wrapper"></div>
-  <script>window.gtranslateSettings = { "default_language": "en", "native_language_names": true, "detect_browser_language": true, "wrapper_selector": ".gtranslate_wrapper" }</script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <link rel="stylesheet" href="./css/auth-polish.css?v=3" />
+  <link rel="stylesheet" href="./css/auth-light.css?v=9" />
 </head>
 
-<body style="background-color: black;">
-  <script src="./js/moment.js"></script>
-  <section>
-    <div id="first" style="display: block">
+<body class="sc-auth">
+  <main>
+    <h1 class="sc-sr-only">Get started with Sterling Crest Ltd</h1>
+
+    <!-- 1. Authentication: create an account, or sign in to one ------------- -->
+    <section id="first" aria-label="Account access">
       <div id="sign-up-card" class="w3-center w3-padding w3-padding-48 w3-white card-form">
-        <div id="sign-up-form-desc" class="sign-up-form-desc">
-          <p class="large" style="line-height: 35px;">
-            Get Started with <span class="">Sterling Crest Ltd</span>
-          </p>
-          <p class="big">Create Account</p>
-          <p class="w3-hide-large" style="margin: -12px 0px 0px">or</p>
-          <p class="w3-hide-large no-margin big  pointer" id="sign-in-prompt-mobile">
-            Sign in
-          </p>
-          <!-- <span
-              class="fab fa-facebook-f w3-padding-small circle pointer"
-            ></span>
-            <span class="fab fa-google w3-padding-small circle pointer"></span>
-            <span class="fab fa-twitter w3-padding-small circle pointer"></span>
-            <p>or use your email for registration</p> -->
 
-          <input type="text" name="fakeuser" style="display:none">
-          <input type="password" name="fakepass" style="display:none">
+        <!-- Create account -->
+        <form id="sign-up-form-desc" class="sign-up-form-desc" novalidate>
+          <p class="large sc-auth-lead">
+            Get Started with <span>Sterling Crest Ltd</span>
+          </p>
+          <h2 class="big">Create Account</h2>
+
+          <p class="w3-hide-large sc-auth-switch">or</p>
+          <p class="w3-hide-large no-margin big pointer" id="sign-in-prompt-mobile" role="button" tabindex="0">Sign in
+          </p>
+
+          <!-- Honeypot: hidden from people, catches naive bots. -->
+          <input type="text" name="fakeuser" hidden tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input type="password" name="fakepass" hidden tabindex="-1" autocomplete="off" aria-hidden="true" />
+
           <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-user grey-text"></span>
-            <input class="input" type="text" name="" id="full-name" placeholder="Full name" />
-          </div>
-          <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-envelope grey-text"></span>
-            <input class="input" type="email" name="" id="email" placeholder="Email" />
-          </div>
-          <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-lock grey-text"></span>
-            <input class="input" type="password" name="" id="password" placeholder="Password" autocomplete="new-password" />
-          </div>
-          <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-lock grey-text"></span>
-            <input class="input" type="password" name="" id="confirm-password" placeholder="Confirm Password" />
-          </div>
-          <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-user grey-text"></span>
-            <input class="input" type="text" name="" id="referral" placeholder="Referral Id (Optional)" />
+            <span class="fa fa-user grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="full-name">Full name</label>
+            <input class="input" type="text" id="full-name" name="name" placeholder="Full name" autocomplete="name"
+              required />
           </div>
 
-          <p id="already-registered" class="w3-text-red w3-center small w3-padding"
-            style="font-weight: bold; display: none">
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-envelope grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="email">Email</label>
+            <input class="input" type="email" id="email" name="email" placeholder="Email" autocomplete="email"
+              spellcheck="false" required />
+          </div>
+
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-phone grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="mobile-number">Mobile number</label>
+            <input class="input" type="tel" id="mobile-number" name="mobile-number" placeholder="Mobile number"
+              autocomplete="tel" inputmode="tel" spellcheck="false" required />
+          </div>
+
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-lock grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="password">Password</label>
+            <input class="input" type="password" id="password" name="new-password" placeholder="Password"
+              autocomplete="new-password" required />
+          </div>
+
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-lock grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="confirm-password">Confirm password</label>
+            <input class="input" type="password" id="confirm-password" name="confirm-password"
+              placeholder="Confirm Password" autocomplete="new-password" required />
+          </div>
+
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-user grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="referral">Referral Id (optional)</label>
+            <input class="input" type="text" id="referral" name="referral" placeholder="Referral Id (Optional)"
+              autocomplete="off" />
+          </div>
+
+          <p id="already-registered" class="w3-text-red w3-center small w3-padding sc-form-error" role="alert">
             This Email is already registered on Sterling Crest Ltd. Please sign in
             to continue.
           </p>
 
-          <p id="wrong-referral" class="w3-text-red w3-center small w3-padding"
-            style="font-weight: bold; display: none">
+          <p id="wrong-referral" class="w3-text-red w3-center small w3-padding sc-form-error" role="alert">
             The Referral ID does not belong to a User on Sterling Crest Ltd. Please
             check the ID and try again
           </p>
 
           <div class="button-padding">
-            <div id="sign-up" class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer">
-              SIGN UP
-            </div>
+            <button type="button" id="sign-up"
+              class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer">SIGN UP</button>
           </div>
-        </div>
-        <div id="sign-in-form-desc" class="sign-in-form-desc w3-padding-48">
-          <p class="large" style="line-height: 35px;">
-            Continue with <span class="">Sterling Crest Ltd</span>
+        </form>
+
+        <!-- Sign in -->
+        <form id="sign-in-form-desc" class="sign-in-form-desc w3-padding-48" novalidate>
+          <p class="large sc-auth-lead">
+            Continue with <span>Sterling Crest Ltd</span>
           </p>
-          <p class="big">Sign in to Sterling Crest Ltd</p>
-          <!-- <span
-                class="fab fa-facebook-f w3-padding-small circle pointer"
-              ></span>
-              <span
-                class="fab fa-google w3-padding-small circle pointer"
-              ></span>
-              <span
-                class="fab fa-twitter w3-padding-small circle pointer"
-              ></span> -->
-          <p class="w3-hide-large" style="margin: -12px 0px 0px">or</p>
-          <p class="w3-hide-large no-margin big  pointer" id="sign-up-prompt-mobile">
-            Create Account
-          </p>
+          <h2 class="big">Sign in to Sterling Crest Ltd</h2>
+
+          <p class="w3-hide-large sc-auth-switch">or</p>
+          <p class="w3-hide-large no-margin big pointer" id="sign-up-prompt-mobile" role="button" tabindex="0">Create
+            Account</p>
+
           <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-envelope grey-text"></span>
-            <input class="input" type="email" name="username" id="email-2" placeholder="Email" />
+            <span class="fa fa-envelope grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="email-2">Email</label>
+            <input class="input" type="email" id="email-2" name="username" placeholder="Email" autocomplete="username"
+              spellcheck="false" required />
           </div>
+
           <div class="input-container grey-background w3-round w3-margin">
-            <span class="fa fa-lock grey-text"></span>
-            <input class="input" type="password" name="password" id="password-2" placeholder="Password" autocomplete="new-password" />
+            <span class="fa fa-lock grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="password-2">Password</label>
+            <input class="input" type="password" id="password-2" name="password" placeholder="Password"
+              autocomplete="current-password" required />
           </div>
-          <p id="incorrect-password" class="w3-text-red w3-center small" style="font-weight: bold; display: none">
+
+          <p id="incorrect-password" class="w3-text-red w3-center small sc-form-error" role="alert">
             Your password is incorrect
           </p>
+
           <div>
             <a href="./forgot-password.html">Forgot your password?</a>
           </div>
+
           <div class="button-padding-2">
-            <div id="sign-in" class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer"
-              style="width: 90%; border: none">
-              Sign In
-            </div>
+            <button type="button" id="sign-in"
+              class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer">Sign In</button>
           </div>
-        </div>
+        </form>
       </div>
+
+      <!-- Side panel: the prompt that swaps between the two states -->
       <div id="sign-in-prompt-card" class="w3-center blue-background-light card-prompt w3-hide-small">
-        <div id="sign-in-desc" class="sign-in-desc" style="padding: 200px 50px">
-          <p class="large">Welcome Back</p>
+        <div id="sign-in-desc" class="sign-in-desc">
+          <h2 class="large">Welcome Back</h2>
           <p>
             To keep connected with us, Please Sign in with your personal
             detail
           </p>
-          <div id="sign-in-prompt" class="w3-margin white-border w3-center w3-round w3-padding pointer">
+          <div id="sign-in-prompt" class="w3-margin white-border w3-center w3-round w3-padding pointer" role="button"
+            tabindex="0">
             SIGN IN
           </div>
         </div>
-        <div id="sign-up-desc" class="sign-up-desc w3-hide-small" style="padding: 200px 50px">
-          <p class="large">Welcome</p>
+        <div id="sign-up-desc" class="sign-up-desc w3-hide-small">
+          <h2 class="large">Welcome</h2>
           <p>Enter your details and create an account with Sterling Crest Ltd</p>
-          <div id="sign-up-prompt" class="w3-margin white-border w3-center w3-round w3-padding pointer">
+          <div id="sign-up-prompt" class="w3-margin white-border w3-center w3-round w3-padding pointer" role="button"
+            tabindex="0">
             SIGN UP
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <div id="second" class="padding-form-2" style="display: none">
+    <!-- 2. Email verification --------------------------------------------- -->
+    <section id="second" class="padding-form-2" style="display: none" aria-label="Verify your email">
       <div class="w3-white w3-padding w3-center w3-padding-32">
-        <p class="large ">Sterling Crest Ltd</p>
-        <p class="big">Please verify your Email</p>
+        <p class="large">Sterling Crest Ltd</p>
+        <h2 class="big">Please verify your Email</h2>
 
-        <div class="input-container grey-background w3-round w3-margin">
-          <span class="fa fa-lock grey-text"></span>
-          <input class="input" type="text" name="" id="verification-code" placeholder="Verification code" />
-        </div>
-        <p id="wrong-verification" class="w3-text-red w3-center small w3-padding"
-          style="font-weight: bold; display: none">
-          The Verification code is incorrect. Check your mailbox for your
-          Sterling Crest Ltd verification code
-        </p>
-        <div id="verify" class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer">
-          Verify
-        </div>
-        <div id="resend-container" class="w3-row grey-background w3-padding w3-round pointer"
-          style="width: 30%; margin-left: 67%">
+        <form novalidate>
+          <div class="input-container grey-background w3-round w3-margin">
+            <span class="fa fa-lock grey-text" aria-hidden="true"></span>
+            <label class="sc-sr-only" for="verification-code">Verification code</label>
+            <input class="input" type="text" id="verification-code" name="one-time-code" placeholder="Verification code"
+              autocomplete="one-time-code" inputmode="numeric" required />
+          </div>
+
+          <p id="wrong-verification" class="w3-text-red w3-center small w3-padding sc-form-error" role="alert">
+            The Verification code is incorrect. Check your mailbox for your
+            Sterling Crest Ltd verification code
+          </p>
+
+          <button type="button" id="verify"
+            class="w3-margin blue-background-inactive w3-padding-large w3-center w3-round pointer">Verify</button>
+        </form>
+
+        <div id="resend-container" class="w3-row grey-background w3-padding w3-round pointer sc-resend">
           <div class="w3-col s9">
-            <div id="resend" class="small w3-left" style="line-height: 16px">Resend Code</div>
+            <div id="resend" class="small w3-left" role="button" tabindex="0">Resend Code</div>
           </div>
           <div class="w3-col s3">
-            <p id="timer-container" class="no-margin small" style="font-weight: 600; margin-top: -1px"><span
-                id="timer">60</span>s</p>
+            <p id="timer-container" class="no-margin small sc-resend-timer"><span id="timer">60</span>s</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <section>
-    <div id="third" class="padding-form-2" style="display: none">
+    </section>
+
+    <!-- 3. Verified ------------------------------------------------------- -->
+    <section id="third" class="padding-form-2" style="display: none" aria-label="Email verified">
       <div class="w3-white w3-padding w3-center w3-padding-32">
-        <p class="large ">Sterling Crest Ltd</p>
-        <p class="big">Your Email has been verified</p>
-        <div id="back-to-sign-in" class="w3-margin blue-background-light w3-padding-large w3-center w3-round pointer">
-          Continue
-        </div>
+        <p class="large">Sterling Crest Ltd</p>
+        <h2 class="big">Your Email has been verified</h2>
+        <button type="button" id="back-to-sign-in"
+          class="w3-margin blue-background-light w3-padding-large w3-center w3-round pointer">Continue</button>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <script src="./js/getStarted.js"></script>
-  <script src="//code.jivosite.com/widget/ODHOmOnfmA" async></script>
-
-
+  <script src="./js/moment.js"></script>
+  <script src="./js/getStarted.js?v=4"></script>
 </body>
 
 </html>

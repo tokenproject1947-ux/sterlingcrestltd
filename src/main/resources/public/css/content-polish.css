@@ -1,0 +1,115 @@
+/* Content pages: blog categories and articles.
+   Same Sterling Crest light system as the marketing, sign-in and app screens
+   -- light ground, white card, ink type, brand green for actions. */
+
+/* Poppins, the brand face. Declared here so these pages stay self-contained
+   (they deliberately do not load fonts.css, whose base type scale would
+   shrink their paragraphs). */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-SemiBold.woff2") format("woff2");
+}
+
+:root {
+  --ct-bg: #f5f7fa;
+  --ct-surface: #ffffff;
+  --ct-border: #e5e9ef;
+  --ct-ink: #17202e;
+  --ct-muted: #626e85;
+  --ct-brand: #4da92c;
+  --ct-brand-dark: #39801f;
+  --ct-shadow: 0 8px 24px rgba(20, 33, 54, .06);
+}
+
+body.sc-content {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--ct-bg) !important;
+  color: var(--ct-ink) !important;
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.sc-content .sc-content-shell {
+  max-width: 860px !important;
+  padding: 42px 24px 64px !important;
+}
+
+/* The shell reads as a card, matching the sign-in and app surfaces. */
+body.sc-content .sc-content-shell > img {
+  display: block;
+}
+
+body.sc-content h1 {
+  max-width: 760px;
+  color: var(--ct-ink);
+  font-size: clamp(2rem, 5vw, 3.4rem) !important;
+  letter-spacing: -.035em;
+  line-height: 1.18;
+}
+
+body.sc-content h2 {
+  color: var(--ct-ink);
+  letter-spacing: -.02em;
+}
+
+body.sc-content p {
+  color: var(--ct-ink);
+}
+
+body.sc-content a {
+  color: var(--ct-brand-dark);
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+body.sc-content a:hover,
+body.sc-content a:focus {
+  color: var(--ct-ink);
+  text-decoration: underline;
+}
+
+body.sc-content ul {
+  margin-bottom: 0;
+  padding: 20px 28px;
+  border: 1px solid var(--ct-border);
+  border-radius: 14px;
+  background: var(--ct-surface);
+  box-shadow: var(--ct-shadow);
+}
+
+body.sc-content li {
+  color: var(--ct-ink);
+}
+
+body.sc-content img {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  body.sc-content .sc-content-shell {
+    padding: 28px 16px 48px !important;
+  }
+
+  body.sc-content ul {
+    padding: 16px 20px;
+    border-radius: 14px;
+  }
+}

@@ -1,0 +1,577 @@
+/* Sterling Crest Ltd - light design system for the public site.
+   Mirrors the dashboard's palette (see dashboard-light.css) so the marketing
+   pages, the sign-in flow and the app read as one product:
+     bg #f5f7fa / surface #fff / border #e5e9ef / ink #17202e / muted #626e85
+   Brand green is rgb(77, 169, 44) = #4DA92C (the logo tile colour).
+   Only the hero and the footer keep a deep accent band; everything between
+   them is light. */
+
+:root {
+  --sc-bg: #f5f7fa;
+  --sc-surface: #ffffff;
+  --sc-border: #e5e9ef;
+  --sc-ink: #17202e;
+  --sc-muted: #626e85;
+  --sc-brand: #4da92c;
+  /* Text/link green: #4DA92C is the brand fill and is only 2.79:1 on white, so
+     type uses this deeper shade of the same hue (104deg). #39801f measures
+     4.90:1 on white and 4.57:1 on --sc-bg, clearing AA for 14px text. */
+  --sc-brand-dark: #39801f;
+  --sc-brand-lift: #56b932;
+  --sc-brand-soft: #eef9e8;
+  --sc-shadow: 0 8px 24px rgba(20, 33, 54, .06);
+  --sc-shadow-lg: 0 18px 50px rgba(20, 33, 54, .1);
+  --sc-band: #14261b;
+}
+
+html,
+body,
+body.bg-light,
+body.nk-body,
+.nk-wrap {
+  background: var(--sc-bg) !important;
+  background-color: var(--sc-bg) !important;
+  background-image: none !important;
+  color: var(--sc-ink) !important;
+}
+
+body.nk-body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Section surfaces ------------------------------------------------- */
+
+.section.bg-light,
+.section.bg-white,
+.section.bg-transparent,
+.header-banner.bg-light-alt {
+  background: var(--sc-bg) !important;
+  background-image: none !important;
+}
+
+.section.bg-white {
+  background: var(--sc-surface) !important;
+}
+
+.header-banner.bg-light-alt {
+  background: var(--sc-surface) !important;
+  border-top: 1px solid var(--sc-border);
+  border-bottom: 1px solid var(--sc-border);
+}
+
+/* Bands that were flat black become light too -- only the hero and the
+   footer keep a deep band (scoped below). Matched on the class alone so
+   nested holders like .token-info.bg-theme are covered as well. */
+.bg-theme,
+.bg-black,
+.section-tokensale,
+.token-info {
+  background: var(--sc-bg) !important;
+  background-color: var(--sc-bg) !important;
+  background-image: none !important;
+}
+
+/* background-color is declared alongside the gradients so the band is opaque
+   on its own -- a bare `background:` shorthand would reset it to transparent. */
+.header-banner.bg-theme-grad {
+  background-color: var(--sc-band) !important;
+  background-image:
+    radial-gradient(1100px 520px at 82% 8%, rgba(77, 169, 44, .18), transparent 62%),
+    radial-gradient(900px 520px at 8% 92%, rgba(77, 169, 44, .1), transparent 58%),
+    linear-gradient(140deg, var(--sc-band) 0%, #1d3524 52%, var(--sc-band) 100%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+footer.nk-footer.bg-theme-grad {
+  background-color: var(--sc-band) !important;
+  background-image: linear-gradient(180deg, var(--sc-band) 0%, #0f1c15 100%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+/* ---- Typography ------------------------------------------------------- */
+
+/* The base theme paints every paragraph white (style-lobelia.css:86), vendor
+   bundle forces .text-white white with !important, and a few headings carry an
+   inline color:#fff. All three outrank a plain rule, so the ink pass is
+   !important too. Bare span/strong/b are deliberately omitted: they inherit,
+   and listing them would turn the labels inside the green buttons dark. */
+.nk-pages h1, .nk-pages h2, .nk-pages h3, .nk-pages h4, .nk-pages h5, .nk-pages h6,
+.nk-pages .title, .nk-pages .h1, .nk-pages .h2, .nk-pages .h3, .nk-pages .h4, .nk-pages .h5, .nk-pages .h6,
+.nk-pages p, .nk-pages .lead, .nk-pages .list, .nk-pages li,
+.nk-pages .text-white, .nk-pages .tc-light,
+.nk-pages [style*="color: #fff"], .nk-pages [style*="color:#fff"] {
+  color: var(--sc-ink) !important;
+}
+
+/* ...then restore white only on the two intentional dark bands: the hero and
+   the footer. Everything between them reads as ink on light. */
+.header-banner.bg-theme-grad h1,
+.header-banner.bg-theme-grad h2,
+.header-banner.bg-theme-grad h3,
+.header-banner.bg-theme-grad h4,
+.header-banner.bg-theme-grad h5,
+.header-banner.bg-theme-grad h6,
+.header-banner.bg-theme-grad .title,
+.header-banner.bg-theme-grad .lead,
+.header-banner.bg-theme-grad p,
+.header-banner.bg-theme-grad span,
+.header-banner.bg-theme-grad li,
+.header-banner.bg-theme-grad strong,
+.header-banner.bg-theme-grad .tc-light {
+  color: #fff !important;
+}
+
+.nk-footer h1, .nk-footer h2, .nk-footer h3, .nk-footer h4, .nk-footer h5, .nk-footer h6,
+.nk-footer .title {
+  color: #fff !important;
+}
+
+.header-banner.bg-theme-grad .lead,
+.header-banner.bg-theme-grad .cpn-text-light .lead,
+.nk-footer p, .nk-footer .list, .nk-footer li, .nk-footer span {
+  color: rgba(255, 255, 255, .82) !important;
+}
+
+.header-banner.bg-theme-grad a:not(.btn),
+.nk-footer a {
+  color: rgba(255, 255, 255, .78);
+  transition: color .2s ease;
+}
+
+.header-banner.bg-theme-grad a:not(.btn):hover,
+.nk-footer a:hover {
+  color: var(--sc-brand);
+}
+
+/* Links on light bands use the brand accent. Hover keeps the colour and adds an
+   underline rather than shifting lighter -- the theme's generic a:hover is a
+   gold that reads at ~1.6:1 on these light surfaces. */
+.nk-pages a:not(.btn):not([class*="link-"]):not(.menu-link) {
+  color: var(--sc-brand-dark);
+}
+
+.nk-pages a:not(.btn):not([class*="link-"]):not(.menu-link):hover,
+.nk-pages a:not(.btn):not([class*="link-"]):not(.menu-link):focus {
+  color: var(--sc-ink) !important;
+  text-decoration: underline;
+}
+
+.title-dark {
+  color: var(--sc-ink);
+}
+
+.nk-pages .section-head .title {
+  letter-spacing: -.025em;
+  font-weight: 600;
+}
+
+/* The yellow section eyebrow becomes the brand accent. These must outrank the
+   blanket ink rule above, hence the .nk-pages prefix and !important. */
+.nk-pages .section-head p,
+.nk-pages .text-gold,
+.nk-pages h6.text-gold,
+.nk-pages p.text-gold,
+.nk-pages .title.text-gold {
+  color: var(--sc-brand-dark) !important;
+}
+
+.nk-pages .lead {
+  color: var(--sc-muted) !important;
+}
+
+.nk-pages .section-head .title + p {
+  color: var(--sc-muted) !important;
+}
+
+/* ---- Cards ------------------------------------------------------------ */
+
+.card,
+.feature.card,
+.feature-s3.card,
+.feature-s8.card,
+.pricing-card,
+.testimonial.card {
+  background: var(--sc-surface) !important;
+  border: 1px solid var(--sc-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--sc-shadow) !important;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.feature.card:hover,
+.pricing-card:hover,
+.testimonial.card:hover {
+  transform: translateY(-4px);
+  border-color: #d5efc8 !important;
+  box-shadow: var(--sc-shadow-lg) !important;
+}
+
+/* ---- Buttons ---------------------------------------------------------- */
+
+.btn-green,
+.btn-primary,
+.btn-grad,
+.blue-background-light,
+.blue-background {
+  background: var(--sc-brand) !important;
+  background-image: none !important;
+  border-color: var(--sc-brand) !important;
+  /* White on the brand green, per the design direction. Worth keeping in mind:
+     white reads at 2.99:1 on #4da92c, so the hover below deepens to
+     --sc-brand-dark where white reaches 4.90:1. */
+  color: #fff !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(77, 169, 44, .26);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.btn-green:hover,
+.btn-primary:hover,
+.btn-grad:hover,
+.blue-background-light:hover,
+.blue-background:hover {
+  /* Deepen rather than lift now that the label is white: the contrast climbs
+     from 2.99:1 to 4.90:1 as the green darkens. */
+  background: var(--sc-brand-dark) !important;
+  background-image: none !important;
+  border-color: var(--sc-brand-dark) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(77, 169, 44, .32);
+}
+
+/* Ghost buttons on the dark bands keep an outline that reads against green. */
+.header-banner .btn-outline,
+.header-banner .white-border,
+.nk-footer .btn-outline {
+  border: 1px solid rgba(255, 255, 255, .7) !important;
+  color: #fff !important;
+  background: transparent !important;
+}
+
+/* ---- Header ----------------------------------------------------------- */
+
+body.nk-body .header-main {
+  background: rgba(255, 255, 255, .94) !important;
+  border-bottom: 1px solid var(--sc-border);
+  box-shadow: 0 4px 18px rgba(20, 33, 54, .06);
+  /* No backdrop-filter here: it makes this element a containing block for
+     position:fixed descendants, which traps the off-canvas .header-navbar
+     drawer and makes it slide in at the header's offset instead of the
+     viewport's. The bar is 94% opaque, so the blur bought nothing. */
+}
+
+body.nk-body .header-menu .menu-link {
+  color: var(--sc-ink) !important;
+  font-weight: 500;
+  letter-spacing: .01em;
+  transition: color .2s ease;
+}
+
+body.nk-body .header-menu .menu-link:hover,
+body.nk-body .header-menu .menu-link:focus {
+  color: var(--sc-brand-dark) !important;
+}
+
+/* The theme marks the current page but never styled it, so the active item
+   was indistinguishable from the rest. Give it the brand colour and a marker. */
+body.nk-body .header-menu .menu > .menu-item.active > .menu-link,
+body.nk-body .header-menu .menu-link.active,
+body.nk-body .header-menu .menu-link[aria-current] {
+  color: var(--sc-brand-dark) !important;
+  font-weight: 600;
+  position: relative;
+}
+
+body.nk-body .header-menu .menu > .menu-item.active > .menu-link::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--sc-brand);
+}
+
+body.nk-body .header-menu .menu-sub {
+  background: var(--sc-surface) !important;
+  border: 1px solid var(--sc-border);
+  border-radius: 14px;
+  box-shadow: var(--sc-shadow-lg);
+}
+
+body.nk-body .header-menu .menu-sub .menu-link {
+  color: var(--sc-ink) !important;
+}
+
+body.nk-body .header-menu .menu-sub .menu-link:hover {
+  color: var(--sc-brand-dark) !important;
+}
+
+/* The submenu's own item rules set a light-blue divider from the old theme. */
+body.nk-body .header-menu .menu-sub .menu-item {
+  border-bottom: 1px solid var(--sc-border);
+}
+
+body.nk-body .header-menu .menu-sub .menu-item:last-child {
+  border-bottom: 0;
+}
+
+.header-logo img {
+  max-height: 46px;
+}
+
+/* The hamburger bars are drawn with background: currentColor, and the theme
+   forces that to white while the header is transparent -- invisible on our
+   white bar. Set the colour itself, not the border. */
+body.nk-body .header-nav-toggle .toggle-line,
+body.nk-body .header-nav-toggle .toggle-line:hover {
+  color: var(--sc-ink) !important;
+}
+
+body.nk-body .navbar-toggle:hover,
+body.nk-body .navbar-toggle.navbar-active {
+  background: rgba(20, 33, 54, .06) !important;
+}
+
+body.nk-body .navbar-active .toggle-line {
+  color: var(--sc-brand-dark) !important;
+}
+
+/* The off-canvas mobile panel inherits the dark theme's fill. */
+body.nk-body .header-navbar {
+  background: var(--sc-surface) !important;
+  box-shadow: 0 0 40px rgba(20, 33, 54, .16);
+}
+
+/* The theme paints a full-size black sheet over the drawer with
+   .header-navbar::before (style-lobelia.css). As an absolutely positioned
+   pseudo-element it renders ABOVE the in-flow menu text, so the panel opened
+   as a black box with its items hidden underneath. The panel carries its own
+   white background now, so the sheet is vestigial -- exactly what the theme
+   itself discards at >=992px. */
+body.nk-body .header-navbar::before {
+  display: none !important;
+}
+
+/* Backdrop behind the drawer: soft ink instead of the theme's navy. */
+body.nk-body .header-navbar-overlay {
+  background: rgba(20, 33, 54, .45) !important;
+}
+
+body.nk-body .header-navbar .menu-item {
+  border-bottom: 1px solid var(--sc-border) !important;
+}
+
+body.nk-body .header-navbar .navbar-toggle {
+  color: var(--sc-ink) !important;
+}
+
+/* ---- Hero ------------------------------------------------------------- */
+
+.header-banner.bg-theme-grad .banner-caption .title {
+  color: #fff !important;
+  letter-spacing: -.03em;
+  line-height: 1.14;
+}
+
+.header-banner.bg-theme-grad .cpn-text-light .lead,
+.header-banner.bg-theme-grad .banner-caption .lead {
+  color: rgba(255, 255, 255, .84) !important;
+}
+
+.header-banner.bg-theme-grad .tc-light a:not(.btn) {
+  color: #fff !important;
+}
+
+.header-banner.bg-theme-grad .btn-green {
+  padding: 13px 32px;
+  font-size: 15px;
+}
+
+/* The mid-page banner sits on a light surface, so its copy is ink. */
+.header-banner.bg-light-alt .banner-caption .title {
+  color: var(--sc-ink) !important;
+  letter-spacing: -.03em;
+  line-height: 1.14;
+}
+
+.header-banner.bg-light-alt .banner-caption .lead,
+.header-banner.bg-light-alt .cpn-text-s1 .lead {
+  color: var(--sc-muted) !important;
+}
+
+/* ---- Forms ------------------------------------------------------------ */
+
+.field-item input,
+.field-item textarea,
+.input-solid {
+  background: var(--sc-surface) !important;
+  border: 1px solid var(--sc-border) !important;
+  border-radius: 10px !important;
+  color: var(--sc-ink) !important;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.field-item input::placeholder,
+.field-item textarea::placeholder {
+  color: var(--sc-muted) !important;
+}
+
+.field-item input:focus,
+.field-item textarea:focus,
+.input-solid:focus {
+  border-color: var(--sc-brand) !important;
+  box-shadow: 0 0 0 4px #eef9e8 !important;
+  outline: 0;
+}
+
+/* ---- Accordion / FAQ -------------------------------------------------- */
+
+.accordion-title {
+  color: var(--sc-ink) !important;
+  border-bottom: 1px solid var(--sc-border) !important;
+}
+
+.accordion-body,
+.accordion-body p {
+  color: var(--sc-muted) !important;
+}
+
+.tab-nav a,
+.tab-nav a.active {
+  color: var(--sc-ink) !important;
+}
+
+.tab-nav a.active {
+  color: var(--sc-brand-dark) !important;
+  border-color: var(--sc-brand) !important;
+}
+
+/* ---- Footer ----------------------------------------------------------- */
+
+footer.nk-footer {
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+footer.nk-footer a:hover,
+body.nk-body .footer-links a:hover {
+  color: var(--sc-brand) !important;
+}
+
+/* ---- Preloader -------------------------------------------------------- */
+
+/* The theme's preloader was a black full-page overlay with a white ring and a
+   white 1px arc (style-lobelia.css .preloader-alt / .spinner-alt) -- invisible
+   or jarring now the site is light. Match the page so the reveal is seamless,
+   and spin a brand-green arc over a soft track. */
+.preloader.preloader-alt:before,
+.preloader.preloader-alt:after {
+  background: var(--sc-bg) !important;
+  background-image: none !important;
+}
+
+.preloader.preloader-alt {
+  background: var(--sc-bg);
+}
+
+.spinner-alt:before {
+  border: 2px solid rgba(20, 33, 54, .1) !important;
+}
+
+.spinner-alt:after {
+  border-width: 3px !important;
+  border-style: solid !important;
+  /* The darker brand green clears 3:1 against the light overlay (the lighter
+     #4DA92C measures 2.78:1), and it is already the family's hover colour. */
+  border-color: var(--sc-brand-dark) transparent transparent transparent !important;
+  animation: sc-spin .9s linear infinite !important;
+}
+
+.spinner-alt.load-done {
+  transform: scale(1.6) !important;
+  opacity: 0 !important;
+}
+
+/* The logo lockup is 1100x300, so at the old 80% width its wordmark rendered
+   around 9px tall. The square crest mark is the established compact identity
+   (the dashboard, deposit and withdrawal screens all use it) and stays crisp
+   at spinner size. */
+.spinner-brand {
+  width: 56px !important;
+  height: 56px !important;
+  max-width: none !important;
+  filter: drop-shadow(0 4px 12px rgba(20, 33, 54, .12));
+}
+
+@keyframes sc-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-alt:after {
+    animation: none !important;
+  }
+}
+
+/* ---- Pagination ------------------------------------------------------- */
+
+/* Blog listings fall back to Bootstrap's blue defaults, which clash with the
+   brand. The active cell is a green control, so its label is white like every
+   other green button -- and it deepens on hover, where white reads best. */
+body.nk-body .page-link {
+  color: var(--sc-brand-dark);
+  background: var(--sc-surface);
+  border-color: var(--sc-border);
+  transition: color .18s ease, background .18s ease, border-color .18s ease;
+}
+
+body.nk-body .page-link:hover,
+body.nk-body .page-link:focus {
+  color: var(--sc-ink);
+  background: var(--sc-bg);
+  border-color: var(--sc-border);
+  text-decoration: none;
+}
+
+body.nk-body .page-item.active .page-link {
+  background: var(--sc-brand);
+  border-color: var(--sc-brand);
+  color: #fff;
+}
+
+body.nk-body .page-item.active .page-link:hover,
+body.nk-body .page-item.active .page-link:focus {
+  background: var(--sc-brand-dark);
+  border-color: var(--sc-brand-dark);
+  color: #fff;
+  text-decoration: none;
+}
+
+body.nk-body .page-item.disabled .page-link {
+  color: var(--sc-muted);
+  background: var(--sc-surface);
+  border-color: var(--sc-border);
+}
+
+/* ---- Motion ----------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  body.nk-body *,
+  body.nk-body *::before,
+  body.nk-body *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

@@ -1,0 +1,1061 @@
+/* Light portfolio workspace for dashboard.html. */
+:root {
+  --light-bg: #f5f7fa;
+  --light-surface: #ffffff;
+  --light-border: #e5e9ef;
+  --light-ink: #17202e;
+  --light-muted: #626e85;
+  --light-green: #4da92c;
+  --light-green-soft: #eef9e8;
+  --light-shadow: 0 8px 24px rgba(20, 33, 54, .06);
+}
+
+body.sc-dashboard {
+  min-height: 100vh;
+  background: var(--light-bg) !important;
+  color: var(--light-ink) !important;
+  /* Poppins, the brand face (fonts.css declares it). Inter was listed here
+     but never loaded, so the app silently fell back to a system font. */
+  font-family: "Poppins", sans-serif !important;
+}
+
+body.sc-dashboard::before { display: none; }
+
+#dashboard-container {
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 30px 48px 282px;
+}
+
+#dashboard-container #nav {
+  position: fixed;
+  top: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 50;
+  display: flex;
+  width: 238px;
+  min-height: 0;
+  margin: 0 !important;
+  padding: 26px 14px !important;
+  flex-direction: column;
+  align-items: stretch;
+  border: 1px solid var(--light-border);
+  border-radius: 14px;
+  background: var(--light-surface) !important;
+  box-shadow: var(--light-shadow);
+  color: var(--light-ink) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+#dashboard-container #nav > .w3-bar-item:first-child {
+  display: flex;
+  width: auto !important;
+  height: 56px;
+  margin: 0 8px 30px !important;
+  padding: 0 !important;
+  align-items: center;
+  border-bottom: 1px solid var(--light-border);
+}
+
+#dashboard-container #nav > .w3-bar-item:first-child img { width: 32px !important; }
+
+#dashboard-container #nav > .w3-bar-item:first-child .sc-brand-name {
+  color: #263142;
+}
+
+#dashboard-container #nav > .w3-bar-item:first-child .sc-brand-suffix {
+  color: #626e85;
+  opacity: 1;
+}
+
+#dashboard-container #nav > div:nth-child(2) {
+  display: flex;
+  padding: 0 !important;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#dashboard-container #nav > div:nth-child(2)::before {
+  margin: 0 13px 8px;
+  color: #a2acba;
+  content: "Workspace";
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+/* Sidebar navigation: the same nav items used on the withdrawal and
+   deposit screens (.sc-nav-item, shared in dashboard.css). */
+#dashboard-container #nav .sc-side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#dashboard-container #nav .sc-nav-item {
+  display: flex;
+  min-height: 44px;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  color: #697587;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .18s ease, color .18s ease;
+}
+
+#dashboard-container #nav .sc-nav-item:hover {
+  background: var(--light-green-soft);
+  color: #39801f;
+}
+
+#dashboard-container #nav .sc-nav-item .fa {
+  width: 18px;
+  margin: 0;
+  background: transparent !important;
+  color: currentColor !important;
+  font-size: 13px;
+  opacity: .75;
+}
+
+#dashboard-container #nav .sc-nav-item[aria-current="page"] {
+  background: #eff9e9;
+  color: #39801f;
+}
+#dashboard-container #nav > .w3-bar-item.w3-right {
+  width: auto !important;
+  margin: auto 8px 0 !important;
+  padding: 12px 0 0 !important;
+  border-top: 1px solid var(--light-border);
+  color: var(--light-ink) !important;
+}
+
+#dashboard-container .sc-dashboard-workspace { padding-top: 28px; }
+
+.sc-overview-heading { margin: 0 0 24px; align-items: center; }
+.sc-eyebrow { color: #39801f; font-size: 11px; letter-spacing: .12em; }
+.sc-overview-heading h1 { color: #1b2534; font-size: 28px; letter-spacing: -.045em; }
+.sc-overview-heading p { color: var(--light-muted); }
+.sc-account-status { border-color: #d5efc8; background: var(--light-green-soft); color: #39801f; }
+.sc-status-dot { background: var(--light-green); box-shadow: 0 0 10px rgba(98, 200, 53, .45); }
+
+.sc-account-overview { margin: 0 0 18px; }
+.sc-portfolio-value,
+.sc-account-stat {
+  border: 1px solid var(--light-border);
+  border-radius: 14px;
+  background: var(--light-surface);
+  box-shadow: var(--light-shadow);
+}
+
+.sc-portfolio-value {
+  background: linear-gradient(145deg, #ffffff 0%, #f6fbf3 100%);
+  border-left: 4px solid var(--light-green);
+}
+
+.sc-portfolio-value::before,
+.sc-portfolio-value::after { border-color: rgba(98, 200, 53, .12); }
+.sc-card-label { color: #626e85; letter-spacing: .08em; }
+.sc-portfolio-number { color: #182130; }
+.sc-portfolio-caption { color: #7c8796; }
+.sc-portfolio-caption .fa { color: #39801f; }
+.sc-portfolio-lines span { background: #8edb6e; }
+.sc-portfolio-lines span:nth-child(6) { background: #54bd2e; }
+
+.sc-account-stat { background: #fff; }
+.sc-account-stat:nth-child(2), .sc-account-stat:nth-child(3) { border-color: var(--light-border); }
+.sc-account-stat strong { color: #182130; }
+.sc-account-stat small { color: #626e85; }
+.sc-account-stat .sc-unit { color: #626e85; }
+
+#dashboard-container .sc-metrics-grid { display: block; }
+#dashboard-container .w3-col.l12 > div[style*="background-color"],
+#dashboard-container .card,
+#dashboard-container .tradingview-widget-container,
+#dashboard-container .tx-history-container,
+#dashboard-container .setting-option-detail {
+  border: 1px solid var(--light-border);
+  /* !important to win over the inline border-radius these panels carry. */
+  border-radius: 14px !important;
+  background: var(--light-surface) !important;
+  box-shadow: var(--light-shadow) !important;
+}
+
+#dashboard-container .w3-col.l12 > div[style*="background-color"]::after { display: none; }
+#dashboard-container .tx-title { color: #202b3a; }
+#dashboard-container .tx-date { color: #626e85; }
+/* "label · status" under the title; a long rail name truncates instead of
+   pushing the amount column off the card. */
+#dashboard-container .tx-status {
+  color: #626e85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#dashboard-container .tradingview-widget-container { overflow: hidden; border-radius: 14px; }
+#dashboard-container .tradingview-widget-container iframe { border-radius: 14px; }
+
+#dashboard-container #nav-items {
+  border: 1px solid var(--light-border);
+  background: #fff !important;
+  color: var(--light-ink);
+  box-shadow: 0 12px 30px rgba(20, 33, 54, .12);
+}
+
+/* The legacy mobile header carries an inline black background; explicitly
+   override it so the light workspace stays visually consistent. */
+#dashboard-container .w3-hide-large,
+#dashboard-container .w3-hide-large.w3-row {
+  background-color: #ffffff !important;
+  color: #1b2534 !important;
+}
+
+#dashboard-container .w3-hide-large .large,
+#dashboard-container .w3-hide-large .big,
+#dashboard-container .w3-hide-large .pointer,
+#dashboard-container .w3-hide-large .fa-bars,
+#dashboard-container .w3-hide-large .fa-times {
+  color: #1b2534 !important;
+}
+
+#dashboard-container .w3-hide-large #toggle-nav { color: #1b2534 !important; }
+#dashboard-container .w3-hide-large * { color: #1b2534 !important; }
+
+#dashboard-container .w3-hide-large .sc-brand-suffix {
+  color: #626e85 !important;
+  opacity: 1;
+}
+
+#dashboard-container #nav-items,
+#dashboard-container #nav-items.w3-bar-block {
+  background-color: #ffffff !important;
+  color: #1b2534 !important;
+}
+
+#dashboard-container #nav-items .w3-bar-item { padding: 2px 10px !important; }
+
+/* Same nav items as the withdrawal and deposit screens. The legacy header
+   rule below forces every descendant to ink, so these carry !important. */
+#dashboard-container #nav-items .sc-nav-item {
+  display: flex;
+  min-height: 46px;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  color: #687486 !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#dashboard-container #nav-items .sc-nav-item .fa {
+  width: 22px;
+  margin: 0;
+  color: inherit !important;
+  text-align: center;
+}
+
+#dashboard-container #nav-items .sc-nav-item:hover,
+#dashboard-container #nav-items .sc-nav-item[aria-current="page"] {
+  background: #eff9e9 !important;
+  color: #39801f !important;
+}
+
+#dashboard-container #settings {
+  border: 1px solid var(--light-border);
+  background: #fff !important;
+  color: var(--light-ink);
+  box-shadow: 0 12px 30px rgba(20, 33, 54, .12);
+}
+
+#dashboard-container .w3-modal { background: rgba(20, 33, 54, .28) !important; }
+#dashboard-container .w3-modal-content { border: 1px solid var(--light-border); background: #fff !important; box-shadow: 0 22px 60px rgba(20, 33, 54, .18); }
+#dashboard-container input, #dashboard-container select, #dashboard-container textarea { border: 1px solid #dfe4eb; background: #fff; color: #1b2534; }
+#dashboard-container input:focus, #dashboard-container select:focus, #dashboard-container textarea:focus { border-color: #4da92c; box-shadow: 0 0 0 4px rgba(98, 200, 53, .12); }
+
+/* ------------------------------------------------------------------ *
+ * v=6 — Body-level light treatment.
+ * The modals, #app-settings and the settings panels are direct children
+ * of <body>, so every rule below is intentionally NOT scoped inside
+ * #dashboard-container (the earlier container-scoped rules never matched
+ * them). Inline dark styles lose against these author !important rules.
+ * ------------------------------------------------------------------ */
+
+/* Loading screen: polish.css paints it dark; keep the light identity. */
+#dashboard-spinner {
+  background: var(--light-bg) !important;
+}
+
+/* Neutralize the legacy dark nth-child gradients from dashboard-polish.css.
+   Same specificity as the polish rules (1,4,1); later cascade + !important
+   wins, so the metric/transaction panels stay white instead of purple. */
+#dashboard-container .w3-col.l12:nth-child(1) > div[style*="background-color"],
+#dashboard-container .w3-col.l12:nth-child(2) > div[style*="background-color"],
+#dashboard-container .w3-col.l12:nth-child(3) > div[style*="background-color"],
+#dashboard-container .w3-col.l12:nth-child(4) > div[style*="background-color"] {
+  background: var(--light-surface) !important;
+  border-color: var(--light-border) !important;
+  box-shadow: var(--light-shadow) !important;
+}
+
+/* ---- Modals (body children) ---------------------------------------- */
+
+body.sc-dashboard .w3-modal {
+  background: rgba(20, 33, 54, .45) !important;
+  z-index: 60;
+}
+
+body.sc-dashboard .w3-modal .w3-modal-content {
+  z-index: 61;
+}
+
+body.sc-dashboard .w3-modal-content {
+  border: 1px solid var(--light-border);
+  border-radius: 18px;
+  background: var(--light-surface) !important;
+  color: var(--light-ink) !important;
+  box-shadow: 0 24px 60px rgba(20, 33, 54, .18);
+  overflow: hidden;
+}
+
+/* Inner modal wrappers carry inline rgb(27,27,27) backgrounds and white text. */
+body.sc-dashboard .w3-modal-content > div {
+  background: var(--light-surface) !important;
+  color: var(--light-ink) !important;
+}
+
+/* Every remaining inline dark fill inside a modal (plan cards, deposit
+   panels, dropdowns, address rows) becomes a light surface. */
+body.sc-dashboard .w3-modal [style*="background-color: black"],
+body.sc-dashboard .w3-modal [style*="background: black"],
+body.sc-dashboard .w3-modal [style*="background-color: rgb(27, 27, 27)"],
+body.sc-dashboard .w3-modal [style*="background-color: rgb(17, 17, 17)"] {
+  background: var(--light-surface) !important;
+  color: var(--light-ink) !important;
+}
+
+/* Inline light-grey helper text (was rgb(218,218,218) on black). */
+body.sc-dashboard .w3-modal [style*="color: rgb(218, 218, 218)"] {
+  color: var(--light-muted) !important;
+}
+
+/* Investment plan cards get a soft tint + border instead of flat black. */
+body.sc-dashboard #investment-package [style*="background-color: black"] {
+  background: #f7f9fc !important;
+  border: 1px solid var(--light-border);
+  border-radius: 10px;
+}
+
+/* Crypto picker dropdown inside the fund modal. */
+body.sc-dashboard #crypto-deposit-option {
+  border: 1px solid var(--light-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(20, 33, 54, .12);
+  z-index: 5;
+}
+
+/* Form controls in modals and the app settings screen. */
+body.sc-dashboard .w3-modal input,
+body.sc-dashboard .w3-modal select,
+body.sc-dashboard .w3-modal textarea,
+body.sc-dashboard #app-settings input,
+body.sc-dashboard #app-settings select,
+body.sc-dashboard #app-settings textarea {
+  border: 1px solid #dfe4eb;
+  border-radius: 8px;
+  background: var(--light-surface) !important;
+  color: var(--light-ink) !important;
+}
+
+body.sc-dashboard .w3-modal input:focus,
+body.sc-dashboard .w3-modal select:focus,
+body.sc-dashboard #app-settings input:focus,
+body.sc-dashboard #app-settings select:focus {
+  border-color: #4da92c;
+  box-shadow: 0 0 0 4px rgba(98, 200, 53, .12);
+  outline: 0;
+}
+
+/* Gold inline accents are unreadable on white — darken them. The gold
+   CTA button keeps its gold background (it carries color: black). */
+body.sc-dashboard [style*="color: gold"]:not([style*="background-color: gold"]) {
+  color: #8a6d00 !important;
+}
+
+/* colors.css defines .green-text as gold and .green-border as gold;
+   on light surfaces these read as the brand green instead. */
+body.sc-dashboard .green-text { color: #39801f !important; }
+body.sc-dashboard .green-border { border-color: var(--light-green) !important; }
+
+/* ---- App settings screen (body child) ------------------------------ */
+
+/* The settings screen is a fixed full-screen overlay: it scrolls inside
+   the viewport, so no dashboard content can ever leak in below it. The
+   left gutter keeps clear of the fixed sidebar (16 + 238 + 28 = 282). */
+body.sc-dashboard #app-settings {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto !important;
+  z-index: 45;
+  padding: 28px 30px 56px 282px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--light-bg);
+  color: var(--light-ink);
+  box-sizing: border-box;
+}
+
+/* Lock the document behind the overlay while it is open (dashboard.js
+   keeps this class in sync with #app-settings' inline display). */
+html.sc-settings-open {
+  overflow: hidden;
+}
+
+body.sc-dashboard #app-settings > div {
+  border: 1px solid var(--light-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--light-shadow);
+}
+
+/* Banner: a brand icon plus a left-aligned sentence instead of a lone
+   centred line. Copy is untouched. */
+body.sc-dashboard #app-settings .sc-settings-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #dcecd4;
+}
+
+body.sc-dashboard #app-settings .sc-settings-banner .fa {
+  font-size: 20px;
+  color: #39801f;
+}
+
+body.sc-dashboard #app-settings .sc-settings-banner-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* The account chip that dismisses the screen lives in the desktop
+   sidebar, which is hidden below 993px — so the banner carries its own
+   close control. */
+body.sc-dashboard #app-settings .sc-settings-close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid #cfe8c4;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #39801f;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+
+body.sc-dashboard #app-settings .sc-settings-close:hover {
+  /* Deepen and go white: contrast climbs from 2.99:1 to 4.90:1 on #39801f. */
+  border-color: #39801f;
+  background: #39801f;
+  color: #fff;
+}
+
+body.sc-dashboard #app-settings .sc-settings-close:focus-visible {
+  outline: 2px solid #4da92c;
+  outline-offset: 2px;
+}
+
+/* Section list (left column). The <hr> separators stay in the DOM —
+   dashboard.js rewrites their class on every tab change — but the pills
+   carry the active state, so the rules are only shown as separators. */
+body.sc-dashboard #app-settings .setting-padding-1 {
+  padding: 16px 0 8px;
+}
+
+body.sc-dashboard #app-settings .setting-padding-1 .w3-row-padding {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.sc-dashboard #app-settings .setting-padding-1 .w3-col {
+  float: none;
+  width: 100%;
+}
+
+body.sc-dashboard #app-settings .setting-padding-1 .w3-row-padding > .w3-col {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.sc-dashboard #app-settings .setting-padding-1 .w3-padding-16 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+body.sc-dashboard #app-settings .setting-padding-1 hr {
+  display: none;
+}
+
+body.sc-dashboard #app-settings .setting-option {
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #5b6779;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+body.sc-dashboard #app-settings .setting-option:hover {
+  background: #f3f7f2;
+  border-color: #e2ecdf;
+  color: #39801f;
+}
+
+body.sc-dashboard #app-settings .setting-option.green-text {
+  background: var(--light-green-soft);
+  border-color: #cfe8c4;
+  box-shadow: inset 3px 0 0 #4da92c;
+  color: #39801f !important;
+}
+
+body.sc-dashboard #app-settings .setting-padding-2 {
+  padding: 16px 0 32px;
+}
+
+/* Panel heading sits on its own rule above the form. */
+body.sc-dashboard #app-settings .setting-option-detail {
+  border: 1px solid var(--light-border);
+  border-radius: 14px;
+  background: var(--light-surface);
+  box-shadow: var(--light-shadow);
+  color: var(--light-ink);
+  padding: 26px;
+}
+
+body.sc-dashboard #app-settings .setting-option-detail > p.huge {
+  margin: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eef1f5;
+  color: #1b2534;
+  font-size: 21px;
+  font-weight: 700 !important;
+}
+
+/* Field labels: small caps so they read as labels, not body copy. The
+   "Change" link keeps its own look (it is a control, not a label). */
+body.sc-dashboard #app-settings .setting-option-detail p.small:not(.change) {
+  display: block;
+  margin: 0 0 7px;
+  color: #6b7688;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+body.sc-dashboard #app-settings .setting-option-detail input,
+body.sc-dashboard #app-settings .setting-option-detail select {
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+body.sc-dashboard #app-settings .setting-option-detail input[readonly] {
+  background: #f7f9fb !important;
+  color: #46536a !important;
+}
+
+/* Gold section labels inside the panels read as sub-headings. */
+body.sc-dashboard #app-settings .setting-option-detail
+  [style*="color: gold"] {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+/* Profile form: two columns when there is room for them, one below. */
+body.sc-dashboard #profile-options .sc-field-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 22px;
+}
+
+/* "Change" gets a fixed track beside the input instead of the w3 s1
+   slice, which clipped it on narrow screens. */
+body.sc-dashboard #profile-options .w3-col.s11 {
+  width: calc(100% - 80px);
+}
+
+body.sc-dashboard #profile-options .w3-col.s1 {
+  width: 76px;
+  padding-top: 0 !important;
+  text-align: right;
+}
+
+body.sc-dashboard #profile-options .change {
+  margin: 0;
+  padding-top: 0;
+  color: #39801f !important;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 42px;
+}
+
+body.sc-dashboard #profile-options .change:hover {
+  text-decoration: underline;
+}
+
+/* Save / cancel become real buttons (ids stay put for dashboard.js). */
+body.sc-dashboard #app-settings .sc-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px !important;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions::before,
+body.sc-dashboard #app-settings .sc-form-actions::after {
+  display: none;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions > div {
+  flex: 0 0 auto;
+  width: auto !important;
+  border-left: 0 !important;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions p {
+  margin: 0;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-align: center;
+  transition: background .18s ease, border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions p[id^="save-"] {
+  background: #4da92c;
+  box-shadow: 0 6px 16px rgba(77, 169, 44, .26);
+  /* White on the brand green reads at 2.99:1; the hover below deepens to
+     #39801f where white reaches 4.90:1. */
+  color: #fff !important;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions p[id^="save-"]:hover {
+  /* Deepen rather than lift now that the label is white. */
+  background: #39801f;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions p[id^="cancel-"] {
+  background: #ffffff;
+  border-color: #dfe4eb;
+  color: #5b6779 !important;
+}
+
+body.sc-dashboard #app-settings .sc-form-actions p[id^="cancel-"]:hover {
+  background: #f4f6f9;
+  border-color: #cbd3de;
+}
+
+/* Saving spinner centred over the panel instead of a hard-coded offset. */
+body.sc-dashboard #settings-spinner {
+  top: 50% !important;
+  left: 50% !important;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+body.sc-dashboard #settings-spinner .fa {
+  color: #39801f !important;
+}
+
+/* Placeholder boxes: the withdrawal one shipped solid black on a white
+   panel. Dashed empty-state instead, and hide them once rows exist. */
+body.sc-dashboard #withdrawal-header-root > div > p.w3-center,
+body.sc-dashboard #wallet-header-root > div > p.w3-center {
+  background: #f7f9fb !important;
+  border: 1px dashed #d7dee8;
+  border-radius: 10px;
+  color: #6b7688 !important;
+  font-size: 14px;
+}
+
+body.sc-dashboard #withdrawal-options:has(#withdrawal-history-root:not(:empty))
+  #withdrawal-header-root,
+body.sc-dashboard #wallet-options:has(#wallet-root:not(:empty))
+  #wallet-header-root {
+  display: none;
+}
+
+/* ---- Withdrawal history table -------------------------------------- */
+
+/* Rows sit in a fixed-width grid inside an overflow-x wrapper so the table
+   stays readable on narrow screens instead of collapsing the columns.
+   .sc-hist is a size container so the table can restack itself against the
+   *panel* width, not the viewport: the settings content column is only about
+   two thirds of the window on desktop, and far less on a phone. Container
+   queries ship in the same Chrome release as the :has() rule used below. */
+.sc-hist {
+  margin-top: 4px;
+  container-type: inline-size;
+  container-name: sc-hist;
+}
+
+.sc-hist-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+
+.sc-hist-inner {
+  min-width: 570px;
+}
+
+.sc-hist-row {
+  display: grid;
+  grid-template-columns: 40px minmax(120px, 1fr) 104px 120px 132px;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--light-border);
+  font-size: 14px;
+  color: var(--light-ink);
+}
+
+.sc-hist-row:last-child {
+  border-bottom: 0;
+}
+
+.sc-hist-head {
+  padding-top: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--light-border);
+  color: var(--light-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.sc-hist-index {
+  color: var(--light-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-hist-asset {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Type chip: the movement itself (Deposit / Withdrawal), with the plan or
+   the payout rail beneath it. The colours echo the icons on the dashboard's
+   Transaction History card so both views read as one ledger. */
+.sc-tx-chip {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.sc-tx-chip::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.sc-tx-chip-deposit {
+  background: #d8f3dc;
+  color: #39801f;
+}
+
+.sc-tx-chip-withdrawal {
+  background: #ffe8d6;
+  color: #a85f24;
+}
+
+.sc-hist-tx-sub {
+  color: var(--light-muted);
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sc-hist-amount,
+.sc-hist-date {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-hist-head .sc-hist-amount,
+.sc-hist-head .sc-hist-date {
+  text-align: right;
+}
+
+.sc-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sc-badge-ok {
+  background: #e7f6e4;
+  color: #39801f;
+}
+
+.sc-badge-pending {
+  background: #fdf3d8;
+  color: #8a6d12;
+}
+
+.sc-badge-no {
+  background: #fdeaea;
+  color: #b3261e;
+}
+
+/* Too narrow for five columns: two lines per row instead of a sideways
+   scroll. Header cells carry the same column classes as the body rows, so
+   both restack against the same template. */
+@container sc-hist (max-width: 580px) {
+  .sc-hist-inner {
+    min-width: 0;
+  }
+
+  .sc-hist-row {
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "idx asset amount"
+      "idx status date";
+    row-gap: 8px;
+    column-gap: 10px;
+  }
+
+  .sc-hist-index {
+    grid-area: idx;
+  }
+
+  .sc-hist-asset {
+    grid-area: asset;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .sc-hist-asset-name {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sc-hist-asset-symbol {
+    flex: none;
+  }
+
+  .sc-hist-amount {
+    grid-area: amount;
+  }
+
+  .sc-hist-status {
+    grid-area: status;
+  }
+
+  .sc-hist-date {
+    grid-area: date;
+  }
+
+  .sc-hist-head {
+    row-gap: 4px;
+    align-items: start;
+  }
+}
+
+/* ---- Transaction table --------------------------------------------- */
+
+.sc-tx-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px 14px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--light-border);
+  color: var(--light-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.sc-tx-header > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sc-tx-header > div:nth-child(2) {
+  flex: 0 0 110px;
+  text-align: right;
+}
+
+.sc-tx-header > div:nth-child(3) {
+  flex: 0 0 120px;
+  text-align: right;
+}
+
+/* Row columns share the header's fixed widths so the table lines up. */
+#dashboard-container .tx-history-container > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#dashboard-container .tx-amount {
+  flex: 0 0 110px;
+  margin: 0;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--light-ink);
+}
+
+#dashboard-container .tx-date-container {
+  flex: 0 0 120px;
+  white-space: nowrap;
+}
+
+.sc-tx-empty {
+  display: flex;
+  padding: 36px 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 1px dashed var(--light-border);
+  border-radius: 14px;
+  background: #fafbfc;
+  color: var(--light-muted);
+  text-align: center;
+}
+
+.sc-tx-empty .fa {
+  color: #b9c2cf;
+  font-size: 26px;
+}
+
+.sc-tx-empty p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* The rows are rendered into #tx-card-root by dashboard.js -- hide the empty
+   state as soon as it holds anything. */
+#tx-card-root:not(:empty) ~ .sc-tx-empty {
+  display: none;
+}
+
+/* The list ends flush with the card's padding. */
+#tx-card-root .tx-history-container:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 992px) {
+  #dashboard-container { padding: 0 10px 32px; }
+  #dashboard-container #nav { position: relative; inset: auto; display: none; }
+  body.sc-dashboard #app-settings {
+    padding: 72px 12px 40px;
+  }
+  body.sc-dashboard .w3-modal-content {
+    width: 92% !important;
+    max-width: none;
+  }
+  #dashboard-container > .sc-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin: 0 -10px;
+    background: #fff !important;
+    color: #1b2534 !important;
+    border-bottom: 1px solid var(--light-border);
+    box-shadow: 0 4px 14px rgba(20, 33, 54, .06);
+  }
+  /* The slide-out menu opens directly below the fixed app bar and has to
+     sit above the fixed settings overlay (z-index 45). */
+  #dashboard-container #nav-items {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    margin: 0 !important;
+    z-index: 56 !important;
+  }
+  .sc-dashboard-workspace { padding-top: 24px !important; }
+  .sc-overview-heading { margin: 0 8px 20px; }
+  .sc-account-overview { margin: 0 8px 16px; }
+
+  .sc-tx-header { padding: 0 8px 12px; font-size: 10px; }
+  .sc-tx-header > div:nth-child(2) { flex: 0 0 84px; }
+  .sc-tx-header > div:nth-child(3) { flex: 0 0 92px; }
+  #dashboard-container .tx-amount { flex: 0 0 84px; }
+  #dashboard-container .tx-date-container { flex: 0 0 92px; }
+}
+
+/* Desktop: the section list becomes a narrow left rail and the panel
+   takes the remaining width (the legacy 128px/356px paddings squeezed
+   the form to ~225px). */
+@media (min-width: 993px) {
+  body.sc-dashboard #app-settings .setting-padding-1 {
+    padding: 22px 28px 8px 0;
+  }
+  body.sc-dashboard #app-settings .setting-padding-1 .w3-row-padding {
+    max-width: 260px;
+  }
+  body.sc-dashboard #app-settings .setting-padding-2 {
+    padding: 22px 0 32px 28px;
+  }
+}
+
+@media (min-width: 1200px) {
+  body.sc-dashboard #profile-options .sc-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 28px;
+  }
+}

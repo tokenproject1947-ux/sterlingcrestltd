@@ -12,6 +12,7 @@ let signUpFormDesc = document.getElementById("sign-up-form-desc");
 
 let fullName = document.getElementById("full-name");
 let email = document.getElementById("email");
+let mobileNumber = document.getElementById("mobile-number");
 let password = document.getElementById("password");
 let confirmPassword = document.getElementById("confirm-password");
 let referral = document.getElementById("referral");
@@ -75,6 +76,7 @@ document.body.addEventListener("input", function(e) {
 	if (
 		fullName.value != "" &&
 		email.value != "" &&
+		mobileNumber.value.trim() != "" &&
 		password.value != "" &&
 		password.value == confirmPassword.value
 	) {
@@ -179,6 +181,41 @@ document.body.addEventListener("click", function(e) {
 	}
 });
 
+/* Keyboard activation.
+   - A control that only pretends to be a button (role="button" on a div)
+     activates on Enter/Space, the way a real button does.
+   - Otherwise Enter inside a form runs that form's action button. The
+     buttons are type="button" so their click handler stays the single code
+     path -- this just supplies the shortcut a submit button would give.
+   These are one listener on purpose: with two, an Enter on a role="button"
+   inside a form fired BOTH and double-ran the action (it once submitted a
+   stray sign-up). Real buttons are skipped -- the browser already activates
+   them. */
+document.body.addEventListener("keydown", function (e) {
+	if (e.key !== "Enter" && e.key !== " ") return;
+	if (e.target.tagName == "BUTTON") return;
+
+	let asButton = e.target.closest ? e.target.closest('[role="button"]') : null;
+	if (asButton) {
+		e.preventDefault();
+		asButton.click();
+		return;
+	}
+
+	if (e.key != "Enter") return;
+	let form = e.target.closest ? e.target.closest("form") : null;
+	let button = form ? form.querySelector("button[id]") : null;
+	if (button) {
+		e.preventDefault();
+		button.click();
+	}
+});
+
+/* Nothing here is a real form post; make sure nothing reloads the page. */
+document.body.addEventListener("submit", function (e) {
+	e.preventDefault();
+});
+
 function verify() {
 	let verificationCode = document.getElementById("verification-code").value;
 	let verificationXhr = new XMLHttpRequest();
@@ -235,6 +272,12 @@ function startTimer() {
 }
 
 function signUp() {
+	/* The address wizard asks for this again one step later -- hand it over so
+	   the member confirms it rather than typing the same number twice. */
+	try {
+		sessionStorage.setItem("sc-signup-mobile", mobileNumber.value.trim());
+	} catch (error) {}
+
 	let referralValue = {};
 	if (referral.value != "") {
 		referralValue = { referralId: referral.value };
@@ -245,6 +288,7 @@ function signUp() {
 	let payLoad = {
 		fullName: fullName.value,
 		email: email.value.toLowerCase(),
+		mobileNumber: mobileNumber.value.trim(),
 		password: password.value,
 		referral: referralValue,
 		date: moment(),
@@ -261,8 +305,12 @@ function signUp() {
 			let response = JSON.parse(this.response);
 			console.log(response);
 			if (response.email != null) {
-				changeCard(firstCard, secondCard);
 				userEmail = response.email;
+				if (response.active === true) {
+					location.replace(`address.html?email=${encodeURIComponent(response.email)}`);
+				} else {
+					changeCard(firstCard, secondCard);
+				}
 			} else if (response.email == null && response.referral != null) {
 				document.getElementById("wrong-referral").style.display = "block";
 				document

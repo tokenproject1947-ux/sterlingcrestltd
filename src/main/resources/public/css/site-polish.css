@@ -1,0 +1,121 @@
+/* Shared visual polish for the public Sterling Crest pages. */
+:root {
+  --sc-navy: #061631;
+  --sc-blue: #0b3ca8;
+  --sc-gold: #f2c94c;
+  --sc-ink: #17233b;
+  --sc-line: rgba(13, 42, 95, .12);
+  --sc-shadow: 0 18px 50px rgba(10, 32, 76, .12);
+}
+
+body.nk-body {
+  color: var(--sc-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.nk-body .header-main {
+  background: rgba(255, 255, 255, .97);
+  /* backdrop-filter deliberately omitted: it turns .header-main into a
+     containing block and traps the fixed off-canvas menu drawer. */
+}
+
+body.nk-body .header-logo img { max-height: 42px; }
+
+body.nk-body .header-menu .menu-link {
+  letter-spacing: .02em;
+  transition: color .2s ease, opacity .2s ease;
+}
+
+body.nk-body .header-menu .menu-link:hover,
+body.nk-body .header-menu .menu-link:focus { color: var(--sc-gold); }
+
+body.nk-body .tradingview-widget-container {
+  min-height: 46px;
+  overflow: hidden;
+  background: var(--sc-navy);
+  border-bottom: 1px solid rgba(242, 201, 76, .24);
+}
+
+body.nk-body .tradingview-widget-container iframe { min-height: 46px; }
+
+body.nk-body .banner-caption .title,
+body.nk-body .banner-caption .lead {
+  text-shadow: 0 3px 20px rgba(0, 0, 0, .28);
+}
+
+body.nk-body .banner-caption .title { letter-spacing: -.025em; }
+
+body.nk-body .btn-grad,
+body.nk-body .btn-primary {
+  box-shadow: 0 10px 24px rgba(11, 60, 168, .24);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+body.nk-body .btn-grad:hover,
+body.nk-body .btn-primary:hover,
+body.nk-body .btn-grad:focus,
+body.nk-body .btn-primary:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(11, 60, 168, .32);
+}
+
+body.nk-body .feature.card,
+body.nk-body .pricing-card,
+body.nk-body .testimonial.card {
+  border: 1px solid var(--sc-line);
+  box-shadow: var(--sc-shadow);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+body.nk-body .feature.card:hover,
+body.nk-body .pricing-card:hover,
+body.nk-body .testimonial.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 58px rgba(10, 32, 76, .17);
+}
+
+#investment-plans .feature.card {
+  height: calc(100% - 24px);
+}
+
+#investment-plans .feature-text {
+  min-height: 245px;
+}
+
+body.nk-body .section-head .title { letter-spacing: -.02em; }
+
+body.nk-body .field-item input,
+body.nk-body .field-item textarea,
+body.nk-body .input-solid {
+  border: 1px solid var(--sc-line);
+  border-radius: 8px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+body.nk-body .field-item input:focus,
+body.nk-body .field-item textarea:focus,
+body.nk-body .input-solid:focus {
+  border-color: var(--sc-blue);
+  box-shadow: 0 0 0 4px rgba(11, 60, 168, .11);
+  outline: 0;
+}
+
+body.nk-body .footer-links a,
+body.nk-body .contact-text a { transition: color .2s ease; }
+
+body.nk-body .footer-links a:hover,
+body.nk-body .contact-text a:hover { color: var(--sc-gold); }
+
+@media (max-width: 991px) {
+  body.nk-body .header-main { background: rgba(6, 22, 49, .97); }
+  body.nk-body .header-menu { box-shadow: 0 18px 30px rgba(0, 0, 0, .2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.nk-body *, body.nk-body *::before, body.nk-body *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

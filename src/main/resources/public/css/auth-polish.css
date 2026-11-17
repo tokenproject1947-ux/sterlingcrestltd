@@ -1,0 +1,52 @@
+/* Cleaner, consistent presentation for sign-in, sign-up and verification flows. */
+body.sc-auth {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(26, 91, 211, .32), transparent 34%),
+    radial-gradient(circle at 85% 90%, rgba(242, 201, 76, .12), transparent 30%),
+    #050d1e !important;
+}
+
+body.sc-auth .card-form,
+body.sc-auth .form-card {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+}
+
+body.sc-auth .input-container {
+  border: 1px solid rgba(13, 42, 95, .08);
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+body.sc-auth .input-container:focus-within {
+  border-color: #1a5bd3;
+  box-shadow: 0 0 0 4px rgba(26, 91, 211, .14);
+}
+
+body.sc-auth input:focus { outline: 0; }
+
+body.sc-auth .blue-background-inactive,
+body.sc-auth .blue-background,
+body.sc-auth button {
+  border-radius: 10px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+body.sc-auth .blue-background-inactive:hover,
+body.sc-auth .blue-background:hover,
+body.sc-auth button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(26, 91, 211, .28);
+}
+
+body.sc-auth a { transition: color .2s ease; }
+body.sc-auth a:hover { color: #f2c94c !important; }
+
+@media (max-width: 600px) {
+  body.sc-auth .card-form,
+  body.sc-auth .form-card {
+    border-radius: 14px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .28);
+  }
+}

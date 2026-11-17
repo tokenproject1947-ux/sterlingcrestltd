@@ -1,0 +1,185 @@
+/* Light theme for deposit.html.
+   Linked after dashboard-polish.css so these rules win both the legacy
+   dark theme and the inline dark styles still present in the markup. */
+
+:root {
+  --dp-bg: #f5f7fa;
+  --dp-surface: #ffffff;
+  --dp-border: #e5e9ef;
+  --dp-ink: #17202e;
+  --dp-muted: #626e85;
+  --dp-green: #4da92c;
+  --dp-green-deep: #39801f;
+  --dp-green-soft: #eef9e8;
+  --dp-shadow: 0 8px 24px rgba(20, 33, 54, .06);
+
+  /* Shared top navigation (dashboard.css). */
+  --sc-nav-accent: #39801f;
+  --sc-nav-menu-bg: #ffffff;
+}
+
+body.sc-dashboard {
+  background: var(--dp-bg) !important;
+  color: var(--dp-ink) !important;
+}
+
+/* polish.css paints a dark grid overlay on sc-dashboard pages. */
+body.sc-dashboard::before {
+  display: none;
+}
+
+/* ---- Top app bars ------------------------------------------------- */
+
+#deposit-container > .sc-topbar,
+#nav {
+  background: var(--dp-surface) !important;
+  color: var(--dp-ink) !important;
+}
+
+@media (max-width: 999px) {
+  #deposit-container > .sc-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--dp-border);
+    box-shadow: 0 4px 14px rgba(20, 33, 54, .06);
+  }
+}
+
+/* The brand lockup is white by default (dark pages); on this light
+   page the wordmark needs ink. */
+#deposit-container .sc-brand-name {
+  color: #1b2534 !important;
+}
+
+#deposit-container .sc-brand-suffix {
+  color: var(--dp-muted) !important;
+  opacity: 1;
+}
+
+/* ---- Cards (legacy inline rgb(27,27,27) fills) --------------------- */
+
+#deposit-container [style*="background-color: rgb(27, 27, 27)"],
+#deposit-processing-modal [style*="background-color: rgb(27, 27, 27)"] {
+  background: var(--dp-surface) !important;
+  border: 1px solid var(--dp-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--dp-shadow) !important;
+  color: var(--dp-ink) !important;
+}
+
+/* ---- Form controls (legacy inline black fills) --------------------- */
+
+#deposit-container input,
+#deposit-container select,
+#deposit-processing-modal input {
+  background: var(--dp-surface) !important;
+  color: var(--dp-ink) !important;
+  border: 1px solid var(--dp-border) !important;
+  border-radius: 8px !important;
+}
+
+#deposit-container input:focus,
+#deposit-container select:focus {
+  border-color: var(--dp-green) !important;
+  box-shadow: 0 0 0 4px #eef9e8;
+  outline: 0;
+}
+
+#deposit-container label {
+  color: var(--dp-muted) !important;
+}
+
+#deposit-container ::placeholder {
+  color: #9aa4b2 !important;
+}
+
+/* ---- Gold accents → brand green (readable on white) ---------------- */
+
+#deposit-container p[style*="color: gold"]:not([style*="background-color: gold"]) {
+  color: var(--dp-green-deep) !important;
+}
+
+/* ---- Primary navigation lives in dashboard.css (shared) ------------ */
+
+/* ---- Account menu ------------------------------------------------- */
+
+#settings {
+  border: 1px solid var(--dp-border) !important;
+  border-radius: 14px;
+  background: var(--dp-surface) !important;
+  box-shadow: 0 12px 30px rgba(20, 33, 54, .12) !important;
+}
+
+/* Anchor the dropdown directly under the account chip in the bar. */
+@media (min-width: 1000px) {
+  #deposit-container #settings {
+    top: 80px;
+    right: 64px;
+  }
+}
+
+#settings .w3-col[style*="rgb(0, 46, 157)"] {
+  border-left-color: var(--dp-border) !important;
+}
+
+/* ---- Processing modal --------------------------------------------- */
+
+body.sc-dashboard .w3-modal {
+  background: rgba(20, 33, 54, .45) !important;
+  z-index: 60;
+}
+
+body.sc-dashboard .w3-modal-content {
+  border: 1px solid var(--dp-border);
+  border-radius: 18px;
+  background: var(--dp-surface) !important;
+  color: var(--dp-ink) !important;
+  box-shadow: 0 24px 60px rgba(20, 33, 54, .18);
+  overflow: hidden;
+}
+
+/* ---- Deposit page specifics ---------------------------------------- */
+
+#deposit-container .deposit-hr {
+  border-color: var(--dp-border);
+}
+
+#deposit-container .payment-info {
+  margin-top: 4px;
+}
+
+#deposit-container .payment-info p {
+  color: var(--dp-ink);
+}
+
+#deposit-container .payment-info img {
+  border-radius: 14px;
+}
+
+#deposit-container .grey-text {
+  color: var(--dp-muted) !important;
+}
+
+#deposit-container .x-big {
+  color: var(--dp-ink);
+}
+
+#deposit-container .copy {
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid var(--dp-green);
+  border-radius: 999px;
+  background: var(--dp-green-soft);
+  color: var(--dp-green-deep) !important;
+  font-size: 12px;
+  letter-spacing: .06em;
+  transition: background .18s ease, color .18s ease;
+}
+
+#deposit-container .copy:hover {
+  /* Deepen and go white: contrast climbs from 2.99:1 to 4.90:1 on the deep
+     green, where white is the readable label. */
+  background: var(--dp-green-deep);
+  color: #fff !important;
+}

@@ -16,35 +16,22 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <link rel="stylesheet" href="./css/w3.css" />
+    <link rel="stylesheet" href="./css/w3.css?v=2" />
     <link rel="stylesheet" href="./css/colors.css" />
-    <link rel="stylesheet" href="./css/dashboard.css" />
-    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/dashboard.css?v=9" />
+    <link rel="stylesheet" href="./css/fonts.css?v=2" />
+    <link rel="stylesheet" href="./css/dashboard-polish.css?v=3" />
 
     <script src="./js/moment.js"></script>
-    <div class="gtranslate_wrapper"></div>
-    <script>
-      window.gtranslateSettings = {
-        default_language: "en",
-        native_language_names: true,
-        detect_browser_language: true,
-        wrapper_selector: ".gtranslate_wrapper",
-      };
-    </script>
-    <script
-      src="https://cdn.gtranslate.net/widgets/latest/float.js"
-      defer
-    ></script>
-    <style>
-      ::placeholder {
-        color: rgb(238, 238, 238) !important;
-      }
-      input {
-        color: white;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/withdrawal-light.css?v=7" />
   </head>
-  <body style="background-color: black; color: white">
+  <body
+    class="sc-dashboard"
+    style="
+      background-color: #f5f7fa;
+      color: #17202e;
+    "
+  >
     <div
       id="withdrawal-spinner"
       class=""
@@ -59,41 +46,180 @@
     >
       <span
         class="fa fa-spinner fa-spin w3-jumbo opacity-1"
-        style="color: gold"
+        style="color: #4aa92c"
       ></span>
     </div>
     <div
       id="withdrawal-container"
       class="w3-animate-opacity"
-      ,
       style="display: none"
     >
+      <div class="sc-topbar w3-hide-large">
+        <a class="sc-brand sc-brand-compact sc-nav-home" href="./dashboard.html">
+          <img
+            class="sc-brand-mark"
+            src="./images/logo-mark.svg?v=2"
+            alt=""
+            width="28"
+            height="28"
+          />
+          <span class="sc-brand-text">
+            <span class="sc-brand-name">Sterling Crest</span>
+            <span class="sc-brand-suffix">Ltd</span>
+          </span>
+        </a>
+          <div class="sc-topbar-actions">
+            <button
+              type="button"
+              id="toggle-nav"
+              class="sc-nav-toggle"
+              aria-label="Toggle navigation menu"
+              aria-controls="nav-items"
+              aria-expanded="false"
+            >
+              <span class="sc-nav-toggle-bars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+          </div>
+      </div>
+      <div
+        id="nav-items"
+        class="w3-bar-block opacity-0 w3-hide-large w3-animate-left"
+        style="display: none"
+      >
+        <div class="w3-bar-item">
+          <a class="sc-nav-item" data-sc-page="dashboard.html" href="./dashboard.html">
+            <span class="fa fa-th-large" aria-hidden="true"></span>Dashboard
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a
+            class="sc-nav-item"
+            data-sc-page="deposit.html"
+            href="./deposit.html"
+          >
+            <span class="fa fa-credit-card" aria-hidden="true"></span>Deposit
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a
+            class="sc-nav-item"
+            data-sc-page="withdrawal.html"
+            href="./withdrawal.html"
+            aria-current="page"
+          >
+            <span class="fa fa-money" aria-hidden="true"></span>Withdraw
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a
+            class="sc-nav-item"
+            data-sc-page="dashboard.html"
+            data-sc-query="status=history"
+            href="./dashboard.html"
+          >
+            <span class="fa fa-history" aria-hidden="true"></span>Transaction
+            History
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a
+            class="sc-nav-item"
+            data-sc-page="dashboard.html"
+            data-sc-query="status=refer"
+            href="./dashboard.html"
+          >
+            <span class="fa fa-user-plus" aria-hidden="true"></span>Refer a
+            Friend
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a
+            class="sc-nav-item"
+            data-sc-page="dashboard.html"
+            data-sc-query="status=profile"
+            href="./dashboard.html"
+          >
+            <span class="fa fa-user-circle" aria-hidden="true"></span>Profile
+          </a>
+        </div>
+        <div class="w3-bar-item">
+          <a class="sc-nav-item" href="logout">
+            <span class="fa fa-sign-out" aria-hidden="true"></span>Logout
+          </a>
+        </div>
+      </div>
       <section>
         <div
           id="nav"
-          class="w3-bar w3-hide-medium w3-hide-small"
+          class="sc-topbar sc-topbar-roomy w3-hide-medium w3-hide-small"
           style="
-            background-color: black !important;
-            color: white !important;
+            background-color: #ffffff !important;
+            color: #1b2534 !important;
             margin: 12px 0px;
           "
         >
-          <div class="w3-bar-item" style="margin-top: -4px; width: 18%">
-            <img alt="" src="./images/Untitled-1.png" style="width: 30px" />
-          </div>
+          <a class="sc-brand sc-nav-home" href="./dashboard.html">
+            <img
+              class="sc-brand-mark"
+              src="./images/logo-mark.svg?v=2"
+              alt=""
+              width="32"
+              height="32"
+            />
+            <span class="sc-brand-text">
+              <span class="sc-brand-name">Sterling Crest</span>
+              <span class="sc-brand-suffix">Ltd</span>
+            </span>
+          </a>
 
-          <div class="w3-bar-item w3-right" style="margin-top: -16px">
-            <div class="w3-padding w3-round pointer">
-              <span
-                class="fa fa-user-circle w3-padding-small"
-                style="font-size: 22px"
-              ></span>
-              <span id="firstname" class="big"></span>
-              <span
-                class="fa fa-angle-down w3-padding-small"
-                style="font-size: 16px"
-              ></span>
-            </div>
+          <nav class="sc-topbar-nav" aria-label="Primary">
+            <a class="sc-nav-link" data-sc-page="dashboard.html" href="./dashboard.html">Dashboard</a>
+            <a
+              class="sc-nav-link"
+              data-sc-page="deposit.html"
+              href="./deposit.html"
+              >Deposit</a
+            >
+            <a
+              class="sc-nav-link"
+              data-sc-page="withdrawal.html"
+              href="./withdrawal.html"
+              aria-current="page"
+              >Withdraw</a
+            >
+            <a
+              class="sc-nav-link"
+              data-sc-page="dashboard.html"
+              data-sc-query="status=history"
+              href="./dashboard.html"
+              >Transaction History</a
+            >
+            <a
+              class="sc-nav-link"
+              data-sc-page="dashboard.html"
+              data-sc-query="status=refer"
+              href="./dashboard.html"
+              >Refer a Friend</a
+            >
+          </nav>
+
+          <div class="sc-topbar-actions">
+            <button
+              type="button"
+              id="user-chip"
+              class="sc-user-chip"
+              aria-label="Open account menu"
+              aria-controls="settings"
+              aria-expanded="false"
+            >
+              <span class="fa fa-user-circle sc-user-chip-icon" aria-hidden="true"></span>
+              <span id="firstname" class="sc-user-chip-name"></span>
+              <span class="fa fa-angle-down" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
         <div
@@ -110,32 +236,6 @@
             >
               <div id="logout-setting" class="w3-padding pointer">Logout</div>
             </div>
-          </div>
-        </div>
-
-        <div
-          class="w3-row w3-hide-large"
-          style="
-            padding: 0px 10px 0px 16px;
-            background-color: black !important;
-            margin-top: 8px;
-            margin-bottom: -40px;
-          "
-        >
-          <div class="w3-col s11" style="margin-top: 5px">
-            <img alt="" src="./images/Untitled-1.png" style="width: 35px" />
-          </div>
-
-          <div class="w3-col s1">
-            <div class="">
-                <a href="">
-              <div
-                id="toggle-nav"
-                class="fa fa-bars large pointer"
-                style="margin-top: -6px; color: white"
-              ></div>
-            </div>
-        </a>
           </div>
         </div>
       </section>
@@ -165,7 +265,7 @@
                 BTC Equivalent:
             </div>
             <div class="w3-col s6">
-                <div class="w3-right" style="padding: 1px 8px; background-color: red; font-size: 12px; border-radius: 4px;">
+                <div class="w3-right" style="padding: 2px 10px; background-color: #eef9e8; color: #2f7a20; font-size: 12px; border-radius: 999px; font-weight: 600;">
                 <span id="btc-balance">0.00</span>
             </div>
             </div>
@@ -175,7 +275,7 @@
                 Account Level:
             </div>
             <div class="w3-col s6">
-                <div class="w3-right" style="padding: 1px 8px; background-color: gold; font-size: 12px; border-radius: 4px; color: black; font-weight: bold;">
+                <div class="w3-right" style="padding: 2px 10px; background-color: #eef9e8; color: #2f7a20; font-size: 12px; border-radius: 999px; font-weight: 700;">
                 <span id="account-level">NONE</span>
             </div>
             </div>
@@ -193,7 +293,7 @@
             <p style="font-size: 18px">
               <span
                 class="fa fa-money"
-                style="color: white; padding: 0px 4px"
+                style="color: #2f7a20; padding: 0px 4px"
               ></span>
               Withdrawal Request
             </p>
@@ -367,11 +467,11 @@
               id="proceed"
               class="w3-button"
               style="
-                background-color: gold;
-                color: black;
-                border-radius: 4px;
-                margin-top: 12px;
-                padding: 4px 8px;
+                background-color: #2f7a20;
+                color: #ffffff;
+                border-radius: 8px;
+                margin-top: 16px;
+                padding: 10px 16px;
                 font-size: 13px;
                 font-weight: 600;
               "
@@ -406,7 +506,7 @@
             <p style="font-size: 18px">
               <span
                 class="fa fa-question"
-                style="color: white; padding: 0px 4px"
+                style="color: #2f7a20; padding: 0px 4px"
               ></span>
               Withdrawal FAQ
             </p>
@@ -487,11 +587,6 @@
         </div>
       </div>
     </div></div>
-
-    <script
-      src="//code.tidio.co/ymtdltycoxitazjrvun43unkckel4rna.js"
-      async
-    ></script>
-    <script src="./js/withdrawal.js"></script>
+    <script src="./js/withdrawal.js?v=5"></script>
   </body>
 </html>

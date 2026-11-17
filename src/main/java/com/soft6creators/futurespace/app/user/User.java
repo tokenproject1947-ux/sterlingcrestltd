@@ -16,6 +16,9 @@ public class User {
 	@Column(length = 128)
 	private String email;
 	private String password;
+	/** Collected at sign-up, so it is on hand before the address step exists. */
+	@Column(length = 32)
+	private String mobileNumber;
 	@ManyToOne
 	private User referral;
 	private String referralId;
@@ -144,6 +147,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 
 	public User getReferral() {

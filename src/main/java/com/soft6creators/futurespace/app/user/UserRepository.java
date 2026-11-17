@@ -12,4 +12,5 @@ public interface UserRepository extends CrudRepository<User, String> {
 	public User findByVerificationCode(String verificationCode);
 	public User findByReferralId(String referralId);
 	public Optional<User> findByEmailAndPassword(String email, String password);
+	public Optional<User> findByEmail(String email);
 }

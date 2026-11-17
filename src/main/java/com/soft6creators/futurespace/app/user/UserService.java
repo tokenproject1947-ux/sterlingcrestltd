@@ -33,6 +33,8 @@ public class UserService {
 
 	@Value("${app.base-url:https://sterlingcrestltd.com}")
 	private String appBaseUrl;
+	@Value("${app.email-verification.enabled:false}")
+	private boolean emailVerificationEnabled;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -53,7 +55,8 @@ public class UserService {
 			return new User();
 		}
 		String randomCode = RandomString.make(6);
-		user.setVerificationCode(randomCode);
+		user.setVerificationCode(emailVerificationEnabled ? randomCode : null);
+		user.setActive(!emailVerificationEnabled);
 		user.setReferralId(user.getFullName().trim() + "-" + RandomString.make(6));
 		if (user.getReferral() != null) {
 			User userReferral = userRepository.findByReferralId(user.getReferral().getReferralId());
@@ -66,14 +69,15 @@ public class UserService {
 			}
 		}
 
+		if (emailVerificationEnabled) {
 		  try {
-		  sendVerificationEmail(user);
+		    sendVerificationEmail(user);
 		  } catch (MessagingException e) {
-		  e.printStackTrace();
+		    e.printStackTrace();
 		  } catch (UnsupportedEncodingException e) {
-		  //TODO Auto-generated catch block
-		  e.printStackTrace();
+		    e.printStackTrace();
 		  }
+		}
 		Account account = new Account();
 		if (user.getReferral() != null) {
 			account.setAccountBalance(20);
@@ -89,6 +93,7 @@ public class UserService {
 	}
 
 	public boolean resend(String email) {
+		if (!emailVerificationEnabled) return true;
 		Optional<User> user = userRepository.findById(email);
 		try {
 			sendVerificationEmail(user.get());
@@ -144,11 +149,11 @@ public class UserService {
 	
 	public boolean forgotPassword(String email) {
 		Optional<User> userOpt = userRepository.findById(email);
-		if (userOpt.isEmpty()) {
+		if (!userOpt.isPresent()) {
 			return false;
 		}
 		try {
-			String resetLink = appBaseUrl + "/reset-password.html?id=" + URLEncoder.encode(email, StandardCharsets.UTF_8);
+			String resetLink = appBaseUrl + "/reset-password.html?id=" + URLEncoder.encode(email, StandardCharsets.UTF_8.name());
 			String subject = "Sterling Crest Ltd - Reset your password";
 			String content = "<div id=\"container\" style=\"box-shadow: 1px 1px 10px rgb(236, 236, 236); padding:12px; font-family: Arial, Helvetica, sans-serif;\">"
 					+ "<div style=\"padding: 8px 16px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif;\"><p style=\"font-size: 20px; font-weight: bold;\">Sterling Crest Ltd</p></div>"
@@ -169,7 +174,7 @@ public class UserService {
 
 	public boolean resetPassword(String email, String newPassword) {
 		Optional<User> userOpt = userRepository.findById(email);
-		if (userOpt.isEmpty()) {
+		if (!userOpt.isPresent()) {
 			return false;
 		}
 		User user = userOpt.get();

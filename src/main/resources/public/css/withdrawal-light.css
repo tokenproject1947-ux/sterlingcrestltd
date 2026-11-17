@@ -1,0 +1,140 @@
+/* Light theme for withdrawal.html.
+   Linked after dashboard-polish.css so these rules win both the legacy
+   dark theme and the inline dark styles still present in the markup. */
+
+:root {
+  --wd-bg: #f5f7fa;
+  --wd-surface: #ffffff;
+  --wd-border: #e5e9ef;
+  --wd-ink: #17202e;
+  --wd-muted: #626e85;
+  --wd-green: #4da92c;
+  --wd-green-deep: #39801f;
+  --wd-green-soft: #eef9e8;
+  --wd-shadow: 0 8px 24px rgba(20, 33, 54, .06);
+
+  /* Shared top navigation (dashboard.css). */
+  --sc-nav-accent: #39801f;
+  --sc-nav-menu-bg: #ffffff;
+}
+
+body.sc-dashboard {
+  background: var(--wd-bg) !important;
+  color: var(--wd-ink) !important;
+}
+
+/* polish.css paints a dark grid overlay on sc-dashboard pages. */
+body.sc-dashboard::before {
+  display: none;
+}
+
+/* ---- Top app bars ------------------------------------------------- */
+
+#withdrawal-container > .sc-topbar,
+#nav {
+  background: var(--wd-surface) !important;
+  color: var(--wd-ink) !important;
+}
+
+@media (max-width: 999px) {
+  #withdrawal-container > .sc-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--wd-border);
+    box-shadow: 0 4px 14px rgba(20, 33, 54, .06);
+  }
+}
+
+/* The brand lockup is white by default (dark pages); on this light
+   page the wordmark needs ink. */
+#withdrawal-container .sc-brand-name {
+  color: #1b2534 !important;
+}
+
+#withdrawal-container .sc-brand-suffix {
+  color: var(--wd-muted) !important;
+  opacity: 1;
+}
+
+/* ---- Cards (legacy inline rgb(27,27,27) fills) --------------------- */
+
+#withdrawal-container [style*="background-color: rgb(27, 27, 27)"],
+#withdrawal-processing-modal [style*="background-color: rgb(27, 27, 27)"] {
+  background: var(--wd-surface) !important;
+  border: 1px solid var(--wd-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--wd-shadow) !important;
+  color: var(--wd-ink) !important;
+}
+
+/* ---- Form controls (legacy inline black fills) --------------------- */
+
+#withdrawal-container input,
+#withdrawal-container select,
+#withdrawal-processing-modal input {
+  background: var(--wd-surface) !important;
+  color: var(--wd-ink) !important;
+  border: 1px solid var(--wd-border) !important;
+  border-radius: 8px !important;
+}
+
+#withdrawal-container input:focus,
+#withdrawal-container select:focus {
+  border-color: var(--wd-green) !important;
+  box-shadow: 0 0 0 4px #eef9e8;
+  outline: 0;
+}
+
+#withdrawal-container label {
+  color: var(--wd-muted) !important;
+}
+
+#withdrawal-container ::placeholder {
+  color: #9aa4b2 !important;
+}
+
+/* ---- Gold accents → brand green (readable on white) ---------------- */
+
+#withdrawal-container p[style*="color: gold"]:not([style*="background-color: gold"]) {
+  color: var(--wd-green-deep) !important;
+}
+
+/* ---- Primary navigation lives in dashboard.css (shared) ------------ */
+
+/* ---- Account menu ------------------------------------------------- */
+
+#settings {
+  border: 1px solid var(--wd-border) !important;
+  border-radius: 14px;
+  background: var(--wd-surface) !important;
+  box-shadow: 0 12px 30px rgba(20, 33, 54, .12) !important;
+}
+
+/* Anchor the dropdown directly under the account chip in the bar. */
+@media (min-width: 1000px) {
+  #withdrawal-container #settings {
+    top: 80px;
+    right: 64px;
+  }
+}
+
+#settings .w3-col[style*="rgb(0, 46, 157)"] {
+  border-left-color: var(--wd-border) !important;
+}
+
+/* ---- Processing modal --------------------------------------------- */
+
+body.sc-dashboard .w3-modal {
+  background: rgba(20, 33, 54, .45) !important;
+  z-index: 60;
+}
+
+body.sc-dashboard .w3-modal-content {
+  border: 1px solid var(--wd-border);
+  border-radius: 18px;
+  background: var(--wd-surface) !important;
+  color: var(--wd-ink) !important;
+  box-shadow: 0 24px 60px rgba(20, 33, 54, .18);
+  overflow: hidden;
+}

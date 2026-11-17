@@ -18,11 +18,23 @@ let days;
 
 document.body.addEventListener("click", function (e) {
   let target = e.target;
+  /* Toolbar items are buttons wrapping an icon and its label. The branches
+     below key off the icon's id, and changeOption() expects the icon because
+     its nextElementSibling is the label -- so resolve any click inside the
+     button to that icon. */
+  if (!target.id && target.closest) {
+    let tool = target.closest("[data-tool]");
+    if (tool) {
+      let icon = tool.querySelector(".option");
+      if (icon) target = icon;
+    }
+  }
   if (target.classList.contains("user")) {
-    let fromUser =
-      target.parentElement.parentElement.previousElementSibling
-        .previousElementSibling.value;
-    toUser = fromUser;
+    /* Rows are rebuilt as .sc-row; the record id lives in a hidden input
+       inside the row rather than in a fixed sibling chain. */
+    let row = target.closest ? target.closest(".sc-row") : null;
+    let field = row ? row.querySelector("input[type=hidden]") : null;
+    toUser = field ? field.value : "";
     getUserDetails();
   } else if (target.id == "successful") {
     getSuccessfulWithdrawals();
@@ -55,10 +67,9 @@ document.body.addEventListener("click", function (e) {
   } else if (target.id == "update-trade") {
     startTrade();
   } else if (target.classList.contains("user-withdrawal")) {
-    let withdrawalId =
-      target.parentElement.parentElement.previousElementSibling
-        .previousElementSibling.value;
-    getWithdrawalDetails(withdrawalId);
+    let wRow = target.closest ? target.closest(".sc-row") : null;
+    let wField = wRow ? wRow.querySelector("input[type=hidden]") : null;
+    getWithdrawalDetails(wField ? wField.value : "");
   } else if (target.id == "approve") {
     modifyWithdrawal("Successful");
   } else if (target.id == "decline") {
@@ -69,7 +80,52 @@ document.body.addEventListener("click", function (e) {
   }
 });
 
+/* Keyboard activation for the controls that are not native buttons (the
+   modal close icons and the action tiles inside the rendered templates). */
+document.body.addEventListener("keydown", function (e) {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  if (e.target.tagName === "BUTTON") return;
+  let el = e.target.closest ? e.target.closest('[role="button"]') : null;
+  if (!el) return;
+  e.preventDefault();
+  el.click();
+});
+
 getAllUsers();
+loadCounts();
+
+/* Each filter card carries the size of its queue, so the counts are fetched
+   independently of whichever list is on screen. */
+function setCount(name, value) {
+  let el = document.querySelector('[data-count="' + name + '"]');
+  if (el) el.textContent = value;
+}
+
+function loadCounts() {
+  let queues = [
+    ["members", "/admin/address"],
+    ["pending", "/withdrawals/Pending"],
+    ["completed", "/withdrawals/Successful"],
+    ["declined", "/withdrawals/Declined"],
+  ];
+  queues.forEach(function (queue) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", queue[1], true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        let count = 0;
+        try {
+          let rows = JSON.parse(this.response);
+          if (Array.isArray(rows)) count = rows.length;
+        } catch (e) {
+          count = 0;
+        }
+        setCount(queue[0], count);
+      }
+    };
+  });
+}
 
 function deleteUser(userToDelete) {
   let deleteXhr = new XMLHttpRequest();
@@ -411,6 +467,7 @@ function getPendingWithdrawals() {
             item.user.fullName,
             item.amount,
             item.date,
+            item.withdrawalStatus,
           );
       });
     }
@@ -423,6 +480,9 @@ function modifyWithdrawal(status) {
     user: withdrawal.user,
     amount: withdrawal.amount,
     withdrawalStatus: status,
+    /* Rebuilt entity: every stored column has to be carried over or the
+       approve/decline PUT silently nulls it out. */
+    method: withdrawal.method,
     crypto: withdrawal.crypto,
     walletAddress: withdrawal.walletAddress,
     date: withdrawal.date,
@@ -456,7 +516,8 @@ function getSuccessfulWithdrawals() {
             item.user.email,
             item.user.fullName,
             item.amount,
-            "withdrawal was " + item.withdrawalStatus,
+            item.date,
+            item.withdrawalStatus,
           );
       });
     }
@@ -479,649 +540,289 @@ function getDeclinedWithdrawals() {
             item.user.email,
             item.user.fullName,
             item.amount,
-            "Withdrawal Was " + item.withdrawalStatus,
+            item.date,
+            item.withdrawalStatus,
           );
       });
     }
   };
 }
 
+/* Dates are stored ISO-8601; show something a person can read. */
+function formatDate(value) {
+  if (!value) return "-";
+  try {
+    let parsed = moment(value);
+    if (parsed.isValid()) return parsed.format("MMM D, YYYY");
+  } catch (e) {}
+  return value;
+}
+
 function bindUserInfo(info) {
+  let registered = formatDate(info.user.date);
+  let country = info.country ? info.country.countryName : "-";
+  let state = info.state ? info.state.stateName : "-";
   return `
-	  <div>
-            <div class="w3-border-right">
-                <div class="w3-padding-large">
-                  <p class="huge blue-text-dash" style="font-weight: 600">Info</p>
-                  <div class="w3-row-padding">
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Name:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.fullName}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Password:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.password}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Email:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.email}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Mobile number:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.mobileNumber}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        SSN:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.ssn}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Referral ID:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.referralId}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Referred by:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.user.referralEmail}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        Country:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.country.countryName}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        State:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.state.stateName}
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        City:
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p class="no-margin-2 big" style="font-weight: 500">
-                        ${info.city}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <p class="big blue-text-dash w3-margin-top">
-                      Date Registered: <span class="w3-text-black">${info.user.date}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="w3-padding-large">
-                  <p class="huge blue-text-dash" style="font-weight: 600">Account</p>
-                  <p
-                    class="w3-center large blue-text-dash"
-                    style="font-weight: 500"
-                  >
-                    Total Dollar Value of Crypto
-                  </p>
-                  <p class="w3-center large blue-text-dash">
-                    $<span>${info.user.account.accountBalance}</span>
-                  </p>
-                  <div class="w3-row-padding w3-center">
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Interest Balance
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        $<span id="interest-account"></span>
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Total Interest Paid
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        $<span id="paid-interest"></span>
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Accrued Interest
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        $<span id="accrued-interest"></span>
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Account Level:
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        <span id="trade-deposit"></span>
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Trade Balance:
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        $<span id="trade-balance"></span>
-                      </p>
-                    </div>
-                    <div class="w3-col s6">
-                      <p
-                        class="no-margin-2 big blue-text-dash"
-                        style="font-weight: 500"
-                      >
-                        Trade Profit:
-                      </p>
-                      <p class="no-margin-2 big blue-text-dash">
-                        $<span id="trade-profit"></span>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="grey-background-2">
-								<div id="payment-percent"
-									class="green-background-inactive w3-margin-top"
-									style="padding: 1px 0px; width: 0%"></div>
-							</div>
-                  <div class="w3-row-padding" style="margin: 32px 0px;">
-                  <div class="w3-col s6"><div
-                      id="fund"
-                      class="w3-padding w3-center w3-border blue-background-light small w3-round w3-hover-none" style="font-weight: 600">
-                      FUND INVEST
-                    </div></div>
-                  <div class="w3-col s6"><div
-                      id="fund-trade"
-                      class="w3-padding w3-center w3-border small w3-round w3-hover-none" style="font-weight: 600">
-                      FUND TRADE
-                    </div></div>
-                    
-                  </div> 
-                  <div class="w3-margin-top">
-                  <input type="hidden" value=${info.addressId} /> 
-                  <div id="delete-user" class="w3-padding w3-center w3-border small w3-round w3-hover-none" style="font-weight: 600">Delete User</div>  
-                  </div>         
-                </div>
-              </div>
-            </div>`;
+  <div class="sc-sheet">
+    <div class="sc-sheet-head">
+      <div class="sc-sheet-avatar"><img src="./images/user.png" alt="" /></div>
+      <div class="sc-sheet-id">
+        <p class="sc-sheet-name">${info.user.fullName}</p>
+        <p class="sc-sheet-meta">${info.user.email}</p>
+      </div>
+      <div class="sc-sheet-chip is-success">Member</div>
+    </div>
+
+    <div class="sc-sheet-body">
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Member</h3>
+        <div class="sc-fields">
+          <div class="sc-field"><span class="sc-field-label">Name</span><span class="sc-field-value">${info.user.fullName}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Email</span><span class="sc-field-value">${info.user.email}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Mobile number</span><span class="sc-field-value">${info.mobileNumber || info.user.mobileNumber || "-"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Country</span><span class="sc-field-value">${country}</span></div>
+          <div class="sc-field"><span class="sc-field-label">State</span><span class="sc-field-value">${state}</span></div>
+          <div class="sc-field"><span class="sc-field-label">City</span><span class="sc-field-value">${info.city || "-"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Referral ID</span><span class="sc-field-value">${info.user.referralId || "-"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Referred by</span><span class="sc-field-value">${(info.user.referral && info.user.referral.email) || info.user.referralEmail || "Nobody"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Registered</span><span class="sc-field-value">${registered}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Password</span><span class="sc-field-value sc-plain">${info.user.password}</span></div>
+          <div class="sc-field"><span class="sc-field-label">SSN</span><span class="sc-field-value sc-plain">${info.user.ssn || "-"}</span></div>
+        </div>
+      </section>
+
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Account</h3>
+        <div class="sc-tiles">
+          <div class="sc-tile sc-tile-lead">
+            <span class="sc-tile-label">Total value</span>
+            <span class="sc-tile-value">$${info.user.account.accountBalance}</span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Interest balance</span>
+            <span class="sc-tile-value">$<span id="interest-account"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Interest paid</span>
+            <span class="sc-tile-value">$<span id="paid-interest"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Accrued interest</span>
+            <span class="sc-tile-value">$<span id="accrued-interest"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Account level</span>
+            <span class="sc-tile-value"><span id="trade-deposit"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Trade balance</span>
+            <span class="sc-tile-value">$<span id="trade-balance"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Trade profit</span>
+            <span class="sc-tile-value">$<span id="trade-profit"></span></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="sc-progress" aria-hidden="true">
+        <div id="payment-percent" class="sc-progress-fill" style="width: 0%"></div>
+      </div>
+
+      <div class="sc-sheet-actions">
+        <button type="button" id="fund" class="sc-btn sc-btn-primary">Fund invest</button>
+        <button type="button" id="fund-trade" class="sc-btn sc-btn-ghost">Fund trade</button>
+      </div>
+
+      <div class="sc-sheet-danger">
+        <input type="hidden" value="${info.addressId}" />
+        <button type="button" id="delete-user" class="sc-btn sc-btn-danger">Delete user</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 function bindWithdrawalInfo(info) {
-  let action = "block";
+  /* Approve/decline only make sense while the request is still open. */
+  let action = "flex";
   if (
     info.withdrawalStatus == "Successful" ||
     info.withdrawalStatus == "Declined"
   ) {
     action = "none";
   }
+  let tone = "is-pending";
+  if (info.withdrawalStatus == "Successful") tone = "is-success";
+  else if (info.withdrawalStatus == "Declined") tone = "is-declined";
+
+  let method = info.method || "-";
   return `
-  <div>
-  <div class="w3-border-right">
-      <div class="w3-padding-large">
-        <p class="huge blue-text-dash" style="font-weight: 600">Info</p>
-        <div class="w3-row-padding">
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Name:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.fullName}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Password:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.password}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Email:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.email}
-            </p>
-          </div>
-          
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Referral ID:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.referralId}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Referred by:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.referralEmail}
-            </p>
-          </div>
-          
-        </div>
-        <div>
-          <p class="big blue-text-dash w3-margin-top">
-            Withdrawal Date: <span class="w3-text-black">${info.date}</span>
-          </p>
-        </div>
+  <div class="sc-sheet">
+    <div class="sc-sheet-head">
+      <div class="sc-sheet-avatar"><img src="./images/user.png" alt="" /></div>
+      <div class="sc-sheet-id">
+        <p class="sc-sheet-name">${info.user.fullName}</p>
+        <p class="sc-sheet-meta">${info.user.email}</p>
       </div>
+      <div class="sc-sheet-chip ${tone}">${info.withdrawalStatus}</div>
     </div>
-    <div>
-      <div class="w3-padding-large">
-        <p class="huge blue-text-dash" style="font-weight: 600">Withdrawal</p>
-        <p
-          class="w3-center large blue-text-dash"
-          style="font-weight: 500"
-        >
-          Total Dollar Value of Investment
-        </p>
-        <p class="w3-center large blue-text-dash">
-          $<span>${info.user.account.accountBalance}</span>
-        </p>
-        <div class="w3-row-padding w3-center">
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 600"
-            >
-              Withdrawal:
-            </p>
-            <p class="no-margin-2 big blue-text-dash" style="font-weight: 600;">
-              $<span id="withdrawal-amount" style="font-weight: 600;"></span>
-            </p>
+
+    <div class="sc-sheet-body">
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Withdrawal</h3>
+        <div class="sc-tiles">
+          <div class="sc-tile sc-tile-lead">
+            <span class="sc-tile-label">Amount</span>
+            <span class="sc-tile-value">$<span id="withdrawal-amount"></span></span>
           </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Interest Balance
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-interest-account"></span>
-            </p>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Method</span>
+            <span class="sc-tile-value">${method}</span>
           </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Total Interest Paid
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-paid-interest"></span>
-            </p>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Requested</span>
+            <span class="sc-tile-value">${formatDate(info.date)}</span>
           </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Accrued Interest
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-accrued-interest"></span>
-            </p>
-          </div>
-          
-         
-          
         </div>
-        <div class="grey-background-2">
-      <div id="payment-percent"
-        class="green-background-inactive w3-margin-top"
-        style="padding: 1px 0px; width: 0%"></div>
-    </div>
-        <div class="w3-row-padding" style="margin: 32px 0px; display:${action}">
-        <div class="w3-col s6"><div
-            id="approve"
-            class="w3-padding w3-center w3-border blue-background-light small w3-round w3-hover-none" style="font-weight: 600">
-            APPROVE
-          </div></div>
-        <div class="w3-col s6"><div
-            id="decline"
-            class="w3-padding w3-center w3-border small w3-round w3-hover-none" style="font-weight: 600">
-            DECLINE
-          </div></div>
-          
-        </div>             
+      </section>
+
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Payout</h3>
+        <div class="sc-fields">
+          <div class="sc-field sc-field-wide">
+            <span class="sc-field-label">Payout to</span>
+            <span class="sc-field-value sc-plain sc-break">${info.walletAddress || "-"}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Member</h3>
+        <div class="sc-fields">
+          <div class="sc-field"><span class="sc-field-label">Name</span><span class="sc-field-value">${info.user.fullName}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Email</span><span class="sc-field-value">${info.user.email}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Mobile number</span><span class="sc-field-value">${info.user.mobileNumber || "-"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Referral ID</span><span class="sc-field-value">${info.user.referralId || "-"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Referred by</span><span class="sc-field-value">${(info.user.referral && info.user.referral.email) || info.user.referralEmail || "Nobody"}</span></div>
+          <div class="sc-field"><span class="sc-field-label">Password</span><span class="sc-field-value sc-plain">${info.user.password}</span></div>
+        </div>
+      </section>
+
+      <section class="sc-sheet-section">
+        <h3 class="sc-sheet-section-title">Account</h3>
+        <div class="sc-tiles">
+          <div class="sc-tile">
+            <span class="sc-tile-label">Total value</span>
+            <span class="sc-tile-value">$${info.user.account.accountBalance}</span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Interest balance</span>
+            <span class="sc-tile-value">$<span id="withdrawal-interest-account"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Interest paid</span>
+            <span class="sc-tile-value">$<span id="withdrawal-paid-interest"></span></span>
+          </div>
+          <div class="sc-tile">
+            <span class="sc-tile-label">Accrued interest</span>
+            <span class="sc-tile-value">$<span id="withdrawal-accrued-interest"></span></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="sc-progress" aria-hidden="true">
+        <div id="payment-percent" class="sc-progress-fill" style="width: 0%"></div>
+      </div>
+
+      <div class="sc-sheet-actions" style="display:${action}">
+        <button type="button" id="approve" class="sc-btn sc-btn-primary">Approve</button>
+        <button type="button" id="decline" class="sc-btn sc-btn-ghost">Decline</button>
       </div>
     </div>
   </div>`;
 }
-
-function bindWithdrawalInfo2(info) {
-  return `
-  <div>
-  <div class="w3-border-right">
-      <div class="w3-padding-large">
-        <p class="huge blue-text-dash" style="font-weight: 600">Info</p>
-        <div class="w3-row-padding">
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Name:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.fullName}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Password:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.password}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Email:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.email}
-            </p>
-          </div>
-          
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Referral ID:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.referralId}
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              Referred by:
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p class="no-margin-2 big" style="font-weight: 500">
-              ${info.user.referralEmail}
-            </p>
-          </div>
-          
-        </div>
-        <div>
-          <p class="big blue-text-dash w3-margin-top">
-            Withdrawal Date: <span class="w3-text-black">${info.date}</span>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="w3-padding-large">
-        <p class="huge blue-text-dash" style="font-weight: 600">Withdrawal</p>
-        <p
-          class="w3-center large blue-text-dash"
-          style="font-weight: 500"
-        >
-          Total Dollar Value of Investment
-        </p>
-        <p class="w3-center large blue-text-dash">
-          $<span>${info.user.account.accountBalance}</span>
-        </p>
-        <div class="w3-row-padding w3-center">
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 600"
-            >
-              Withdrawal Amount:
-            </p>
-            <p class="no-margin-2 big blue-text-dash" style="font-weight: 600;">
-              $<span id="withdrawal-amount" style="font-weight: 600;"></span>
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Interest Balance
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-interest-account"></span>
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Total Interest Paid
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-paid-interest"></span>
-            </p>
-          </div>
-          <div class="w3-col s6">
-            <p
-              class="no-margin-2 big blue-text-dash"
-              style="font-weight: 500"
-            >
-              Accrued Interest
-            </p>
-            <p class="no-margin-2 big blue-text-dash">
-              $<span id="withdrawal-accrued-interest"></span>
-            </p>
-          </div>
-          
-         
-          
-        </div>
-        <div class="grey-background-2">
-      <div id="payment-percent"
-        class="green-background-inactive w3-margin-top"
-        style="padding: 1px 0px; width: 0%"></div>
-    </div>
-        <div class="w3-row-padding" style="margin: 32px 0px;">
-        <div class="w3-col s6"><div
-            id="approve"
-            class="w3-padding w3-center w3-border blue-background-light small w3-round w3-hover-none" style="font-weight: 600">
-            APPROVE
-          </div></div>
-        
-          
-        </div>             
-      </div>
-    </div>
-  </div>`;
-}
-
 function changeOption(currentOption) {
   let allOptions = document.querySelectorAll(".option");
   allOptions.forEach(function (option) {
     option.classList.replace("blue-text", "grey-text-2");
-    option.nextElementSibling.classList.replace("blue-text", "grey-text");
+    if (option.nextElementSibling) {
+      option.nextElementSibling.classList.replace("blue-text", "grey-text");
+    }
+    /* Each option sits inside a filter card; keep its selected state in step
+       with the colour swap so the card reads as active too. */
+    let card = option.closest ? option.closest("[data-tool]") : null;
+    if (card) {
+      card.classList.remove("is-active");
+      if (card.hasAttribute("role")) card.setAttribute("aria-selected", "false");
+    }
   });
   currentOption.classList.replace("grey-text-2", "blue-text");
-  currentOption.nextElementSibling.classList.replace("grey-text", "blue-text");
+  if (currentOption.nextElementSibling) {
+    currentOption.nextElementSibling.classList.replace("grey-text", "blue-text");
+  }
+  let active = currentOption.closest ? currentOption.closest("[data-tool]") : null;
+  if (active) {
+    active.classList.add("is-active");
+    if (active.hasAttribute("role")) active.setAttribute("aria-selected", "true");
+  }
+  /* Keep the panel heading in step with the selected filter. */
+  let title = document.getElementById("sc-panel-title");
+  if (title && currentOption.nextElementSibling) {
+    let label = currentOption.nextElementSibling.textContent.trim();
+    if (label) title.textContent = label;
+  }
 }
 
 function bindUserStatus(email, fullName, message, date) {
   return `
-	<div class="w3-white w3-animate-opacity">
-		<div
-    class="w3-row w3-padding-large pointer"
-    
-  >
-	<input type="hidden" value=${email} />
-    <div class="w3-col s2" style="position: relative">
-      <img
-        src="./images/user.png"
-        alt=""
-        style="width: 70%; border-radius: 70%; margin-top: 2px"
-      />
-	<div id="status-indicator" class="w3-white" style="position: absolute; left: 32px; bottom: 2px; border-radius: 50%; height: 6px; width: 6px; outline: 2px solid white;"></div>
+  <div class="sc-row">
+    <input type="hidden" value="${email}" />
+    <div class="sc-row-avatar">
+      <img src="./images/user.png" alt="" />
+      <span class="sc-row-dot" aria-hidden="true"></span>
     </div>
-    <div class="w3-col s6">
-		<div class="w3-left">
-			<p class="no-margin small user">${fullName}</p>
-      		<p class="no-margin small">
-        	${message}
-      		</p>
-		</div>
+    <div class="sc-row-main">
+      <p class="sc-row-title user">${fullName}</p>
+      <p class="sc-row-sub">${message || ""}</p>
     </div>
-    <div class="w3-col s4">
-      
-    </div>
-  </div>
-<hr style="margin: 0px 0px 0px 80px">
-	</div>`;
+    <div class="sc-row-meta">${date || ""}</div>
+    <div class="sc-row-go" aria-hidden="true"><span class="fa fa-chevron-right"></span></div>
+  </div>`;
 }
 
-function bindWithdrawalStatus(withdrawalId, email, fullName, amount, date) {
-  let color = "blue-text";
-  if (date.includes("declined")) {
-    color = "w3-text-red";
+function bindWithdrawalStatus(withdrawalId, email, fullName, amount, date, status) {
+  let tone = "is-pending";
+  let label = "Pending";
+  if (status == "Successful") {
+    tone = "is-success";
+    label = "Completed";
+  } else if (status == "Declined") {
+    tone = "is-declined";
+    label = "Declined";
+  }
+  /* The stored date is ISO-8601; show something a person can read. */
+  let shown = "";
+  if (date) {
+    try {
+      let parsed = moment(date);
+      if (parsed.isValid()) shown = parsed.format("MMM D, YYYY");
+    } catch (e) {
+      shown = "";
+    }
   }
   return `
-	<div class="w3-white w3-animate-opacity">
-		<div
-    class="w3-row w3-padding-large pointer"
-    
-  >
-	<input type="hidden" value=${withdrawalId} />
-    <div class="w3-col s2" style="position: relative">
-      <img
-        src="./images/user.png"
-        alt=""
-        style="width: 70%; border-radius: 70%; margin-top: 2px"
-      />
-	<div class="w3-white" style="position: absolute; left: 32px; bottom: 2px; border-radius: 50%; height: 6px; width: 6px; outline: 2px solid white;"></div>
+  <div class="sc-row">
+    <input type="hidden" value="${withdrawalId}" />
+    <div class="sc-row-avatar">
+      <img src="./images/user.png" alt="" />
+      <span class="sc-row-dot" aria-hidden="true"></span>
     </div>
-    <div class="w3-col s5">
-		<div class="w3-left">
-			<p class="no-margin small user-withdrawal">${fullName}</p>
-      		<p class="no-margin small ${color}" style="font-weight: 600">
-        	Amount: $${amount}
-      		</p>
-		</div>
+    <div class="sc-row-main">
+      <p class="sc-row-title user-withdrawal">${fullName}</p>
+      <p class="sc-row-sub">${shown}</p>
     </div>
-    <div class="w3-col s5">
-    <p class="no-margin small w3-padding-left ${color}">
-    ${date}
-    </p>
-    </div>
-  </div>
-<hr style="margin: 0px 0px 0px 80px">
-	</div>`;
-}
-
-function bindUserTrader(email, fullName, message, date) {
-  return `
-	<div class="w3-white w3-animate-opacity">
-		<div
-    class="w3-row w3-padding-large pointer"
-    
-  >
-	<input type="hidden" value=${email} />
-    <div class="w3-col s2" style="position: relative">
-      <img
-        src="/images/${email}.jpeg"
-        alt=""
-        style="width: 80%; border-radius: 80%; margin-top: 2px"
-      />
-	<div id="status-indicator" class="w3-white" style="position: absolute; left: 32px; bottom: 2px; border-radius: 50%; height: 6px; width: 6px; outline: 2px solid white;"></div>
-    </div>
-    <div class="w3-col s6">
-		<div class="w3-left" style="margin-top: 4px">
-			<p class="no-margin user">${fullName}</p>
-      		<p class="no-margin small">Win Rate: ${message}%
-      		</p>
-		</div>
-    </div>
-    <div class="w3-col s4">
-      <p class="no-margin small w3-right">
-        Profit Share: ${date}%
-      </p>
-    </div>
-  </div>
-<hr style="margin: 0px 0px 0px 100px">
-	</div>`;
+    <div class="sc-row-amount">$${amount}</div>
+    <div class="sc-row-status ${tone}">${label}</div>
+    <div class="sc-row-go" aria-hidden="true"><span class="fa fa-chevron-right"></span></div>
+  </div>`;
 }

@@ -1,0 +1,320 @@
+/* Sterling Crest Ltd - light theme for the sign-in / sign-up / password flow.
+   Same design system as the dashboard (dashboard-light.css) and the public
+   pages (site-light.css): light background, white cards, ink text, and the
+   brand green rgb(77, 169, 44) = #4DA92C for actions. The welcome side panel
+   keeps a deep green band so it matches the hero and footer on the site. */
+
+:root {
+  --auth-bg: #f5f7fa;
+  --auth-surface: #ffffff;
+  --auth-field: #f7f9fc;
+  --auth-border: #e5e9ef;
+  --auth-ink: #17202e;
+  --auth-muted: #626e85;
+  --auth-brand: #4da92c;
+  /* Text/link green: the brand fill is only 2.79:1 on white, so type uses this
+     deeper shade of the same hue (104deg) at 4.90:1. */
+  --auth-brand-dark: #39801f;
+  --auth-brand-lift: #56b932;
+  --auth-band: #14261b;
+  --auth-shadow: 0 18px 50px rgba(20, 33, 54, .1);
+}
+
+body.sc-auth {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(77, 169, 44, .1), transparent 38%),
+    radial-gradient(circle at 88% 92%, rgba(77, 169, 44, .08), transparent 34%),
+    var(--auth-bg) !important;
+  background-color: var(--auth-bg) !important;
+  color: var(--auth-ink) !important;
+}
+
+/* The form card. */
+body.sc-auth .card-form,
+body.sc-auth .form-card,
+body.sc-auth .w3-white,
+#sign-up-card,
+#forgot-card,
+#reset-card {
+  background: var(--auth-surface) !important;
+  color: var(--auth-ink) !important;
+  border: 1px solid var(--auth-border);
+  border-radius: 18px;
+  box-shadow: var(--auth-shadow);
+}
+
+body.sc-auth .large,
+body.sc-auth .big,
+body.sc-auth p {
+  color: var(--auth-ink);
+}
+
+body.sc-auth .grey-text,
+body.sc-auth .fa {
+  color: var(--auth-muted) !important;
+}
+
+/* Input rows. */
+body.sc-auth .input-container,
+body.sc-auth .grey-background {
+  background: var(--auth-field) !important;
+  color: var(--auth-ink) !important;
+  border: 1px solid var(--auth-border);
+  border-radius: 14px;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+body.sc-auth .input-container:focus-within {
+  background: var(--auth-surface) !important;
+  border-color: var(--auth-brand);
+  box-shadow: 0 0 0 4px #eef9e8;
+}
+
+body.sc-auth .input,
+body.sc-auth input {
+  color: var(--auth-ink) !important;
+}
+
+body.sc-auth input::placeholder {
+  color: var(--auth-muted) !important;
+  opacity: 1 !important;
+}
+
+body.sc-auth input:focus {
+  outline: 0;
+}
+
+/* A few labels carry an inline white colour from the old dark theme. Inline
+   styles outrank plain rules, so flip them explicitly -- then put white back
+   on the deep side panel below. */
+body.sc-auth [style*="color: white"],
+body.sc-auth [style*="color:white"],
+body.sc-auth [style*="color: rgba(255"],
+body.sc-auth [style*="color:rgba(255"] {
+  color: var(--auth-ink) !important;
+}
+
+/* Actions. White on the brand green reads at 2.99:1, so the hover below
+   deepens to --auth-brand-dark where white reaches 4.90:1. */
+body.sc-auth .blue-background-inactive,
+body.sc-auth .blue-background-light,
+body.sc-auth .blue-background,
+body.sc-auth button {
+  background: var(--auth-brand) !important;
+  background-color: var(--auth-brand) !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 10px;
+  /* <button> does not inherit typography; the actions used to be <div>s. */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(77, 169, 44, .26);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+body.sc-auth .blue-background-inactive:hover,
+body.sc-auth .blue-background-light:hover,
+body.sc-auth .blue-background:hover,
+body.sc-auth button:hover {
+  /* Deepen rather than lift now that the label is white: contrast climbs from
+     2.99:1 to 4.90:1 as the green darkens. */
+  background: var(--auth-brand-dark) !important;
+  background-color: var(--auth-brand-dark) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(77, 169, 44, .32);
+}
+
+body.sc-auth a {
+  color: var(--auth-brand-dark);
+  transition: color .2s ease;
+}
+
+/* Hover goes darker, not lighter: the brand fill is only 2.79:1 on the card. */
+body.sc-auth a:hover,
+body.sc-auth a:focus {
+  color: var(--auth-ink) !important;
+  text-decoration: underline;
+}
+
+/* The "Welcome" side panel keeps a deep green band so it reads as the same
+   accent family as the hero and footer on the marketing pages. background-color
+   is set alongside the gradients so the band is real even where a layer fails. */
+#sign-in-prompt-card,
+.blue-background-light.card-prompt {
+  background-color: var(--auth-band) !important;
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .12), transparent 55%),
+    linear-gradient(150deg, #1d3524 0%, var(--auth-band) 100%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 18px;
+  box-shadow: var(--auth-shadow);
+}
+
+#sign-in-prompt-card .large,
+#sign-in-prompt-card p,
+#sign-in-prompt-card span,
+#sign-in-prompt-card .sign-in-desc,
+#sign-in-prompt-card .sign-up-desc,
+#sign-in-prompt-card [style*="color: white"],
+#sign-in-prompt-card [style*="color: rgba(255"] {
+  color: rgba(255, 255, 255, .88) !important;
+}
+
+#sign-in-prompt-card .large,
+#sign-in-prompt-card h1,
+#sign-in-prompt-card h2,
+#sign-in-prompt-card h3,
+#sign-in-prompt-card h4 {
+  color: #fff !important;
+}
+
+#sign-in-prompt-card a {
+  color: #fff !important;
+}
+
+#sign-in-prompt-card .white-border {
+  border: 1px solid rgba(255, 255, 255, .75) !important;
+  color: #fff !important;
+  background: transparent !important;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+#sign-in-prompt-card .white-border:hover {
+  background: #fff !important;
+  color: var(--auth-brand-dark) !important;
+  transform: translateY(-2px);
+}
+
+/* Verification / reset panels. */
+body.sc-auth .padding-form-2 .w3-white {
+  background: var(--auth-surface) !important;
+  color: var(--auth-ink) !important;
+  border: 1px solid var(--auth-border);
+  border-radius: 18px;
+  box-shadow: var(--auth-shadow);
+}
+
+body.sc-auth .grey-background-2 {
+  background: var(--auth-field) !important;
+  color: var(--auth-ink) !important;
+}
+
+/* Inline status copy (errors) stays legible on the light card. */
+body.sc-auth .w3-text-red {
+  color: #c0392b !important;
+}
+
+@media (max-width: 600px) {
+  body.sc-auth .card-form,
+  body.sc-auth .form-card,
+  #sign-in-prompt-card {
+    border-radius: 14px;
+    box-shadow: 0 14px 40px rgba(20, 33, 54, .09);
+  }
+}
+
+/* ---- Structure helpers -----------------------------------------------
+   Added with the get-started.html restructure. Everything here keeps the
+   page rendering exactly as before while the markup becomes semantic. */
+
+/* Labels are real <label> elements but stay out of the layout: the fields
+   use placeholders as their visible cue and the cards are fixed-height. */
+.sc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The honeypot fields use the hidden attribute rather than an inline style. */
+body.sc-auth [hidden] {
+  display: none !important;
+}
+
+/* Forms are structural only -- they carry no chrome and must not add
+   margins the old bare <div> layout did not have. */
+body.sc-auth form {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Headings replaced the old <p> lines. w3.css gives h1-h6 "Segoe UI" and a
+   10px margin; the paragraphs were sans-serif at 14px, so restore exactly
+   those metrics. The .large variant keeps its own 30px margin from
+   fonts.css, hence the two rules. */
+body.sc-auth h1,
+body.sc-auth h2,
+body.sc-auth h3 {
+  font-family: sans-serif;
+}
+
+body.sc-auth h2.big,
+body.sc-auth h1.big {
+  margin: 14px 0;
+}
+
+/* The lead line's line-height was previously set inline. */
+body.sc-auth .sc-auth-lead {
+  line-height: 35px;
+}
+
+/* The small "or" switch between the two mobile prompts. */
+body.sc-auth .sc-auth-switch {
+  margin: -12px 0 0;
+}
+
+/* Inline validation messages: hidden until getStarted.js reveals them. */
+body.sc-auth .sc-form-error {
+  display: none;
+  font-weight: 700;
+}
+
+/* Prompt panel content is centred inside its fixed-height card. */
+#sign-in-prompt-card .sign-in-desc,
+#sign-in-prompt-card .sign-up-desc {
+  padding: 200px 50px;
+}
+
+/* Resend pill on the verification card. */
+body.sc-auth .sc-resend {
+  width: 30%;
+  margin-left: 67%;
+}
+
+body.sc-auth .sc-resend-timer {
+  font-weight: 600;
+  margin-top: -1px;
+}
+
+/* Keyboard affordance for the divs that act as buttons. */
+body.sc-auth [role="button"] {
+  cursor: pointer;
+}
+
+body.sc-auth [role="button"]:focus-visible {
+  outline: 2px solid var(--auth-brand);
+  outline-offset: 2px;
+}
+
+body.sc-auth button:focus-visible {
+  outline: 2px solid var(--auth-brand-dark);
+  outline-offset: 2px;
+}

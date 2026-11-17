@@ -23,17 +23,9 @@
   <link rel="stylesheet" href="/asset/front/css/theme.css?ver=192" />
   <link rel="stylesheet" href="/asset/global_assets/css/icons/fontawesome/styles.min.css" />
   <link rel="stylesheet" href="/asset/css/sweetalert.css" type="text/css" />
-  <div class="gtranslate_wrapper"></div>
-  <script>
-    window.gtranslateSettings = {
-      default_language: "en",
-      native_language_names: true,
-      detect_browser_language: true,
-      wrapper_selector: ".gtranslate_wrapper",
-    };
-  </script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 
+  <link rel="stylesheet" href="/css/site-polish.css?v=2" />
+  <link rel="stylesheet" href="/css/site-light.css?v=13" />
 </head>
 <!-- header begin-->
 
@@ -41,77 +33,25 @@
   <!-- TradingView Widget BEGIN -->
   <div class="tradingview-widget-container">
     <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
-      async>
-        {
-          "symbols": [
-            {
-              "description": "Amazon",
-              "proName": "NASDAQ:AMZN"
-            },
-            {
-              "description": "Facebook",
-              "proName": "NASDAQ:FB"
-            },
-            {
-              "description": "Alphabet",
-              "proName": "NASDAQ:GOOGL"
-            },
-            {
-              "description": "Apple",
-              "proName": "NASDAQ:AAPL"
-            },
-            {
-              "description": "Mircosoft",
-              "proName": "NASDAQ:MSFT"
-            },
-            {
-              "description": "BTC/USD",
-              "proName": "COINBASE:BTCUSD"
-            },
-            {
-              "description": " \tAlibaba Group Holding",
-              "proName": " \tNYSE:BABA"
-            },
-            {
-              "description": " \tBerkshire Hathaway",
-              "proName": " \tNYSE:BRK.B"
-            },
-            {
-              "description": " \tJPMorgan Chase",
-              "proName": " \tNYSE:JPM"
-            },
-            {
-              "description": "ETH/USD",
-              "proName": "KRAKEN:ETHUSD"
-            },
-            {
-              "description": " \tJohnson & Johnson",
-              "proName": " \tNYSE:JNJ"
-            },
-            {
-              "description": " \tExxon Mobil",
-              "proName": " \tNYSE:XOM"
-            },
-            {
-              "description": " \tRoyal Dutch Shell",
-              "proName": " \tNYSE:RDS.A"
-            },
-            {
-              "description": " \tBank of America",
-              "proName": " \tNYSE:BAC"
-            },
-            {
-              "description": "XRP/USD",
-              "proName": "BITFINEX:XRPUSD"
-            }
-          ],
-            "colorTheme": "dark",
-              "isTransparent": false,
-                "displayMode": "compact",
-                  "locale": "en"
-        }
-      </script>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {
+        "symbols": [
+          { "proName": "BINANCE:BTCUSDT", "title": "Bitcoin" },
+          { "proName": "BINANCE:ETHUSDT", "title": "Ethereum" },
+          { "proName": "BINANCE:LTCUSDT", "title": "Litecoin" },
+          { "proName": "BINANCE:XRPUSDT", "title": "Ripple" },
+          { "proName": "BINANCE:DASHUSDT", "title": "Dash" },
+          { "proName": "BINANCE:XMRUSDT", "title": "Monero" },
+          { "proName": "BINANCE:DOGEUSDT", "title": "Dogecoin" },
+          { "proName": "COINBASE:BTCUSD", "title": "Bitcoin USD" }
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": "dark",
+        "isTransparent": false,
+        "displayMode": "adaptive",
+        "locale": "en"
+      }
+    </script>
   </div>
   <!-- TradingView Widget END -->
 
@@ -176,23 +116,6 @@
                       </li>
                       <li class="menu-item">
                         <a class="menu-link nav-link" href="/#contact">Contact us</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="menu-item has-sub">
-                    <a class="menu-link nav-link menu-toggle" href="#">More</a>
-                    <ul class="menu-sub menu-drop">
-                      <li class="menu-item">
-                        <a class="menu-link nav-link" href="/page/4.html">AML Policy</a>
-                      </li>
-                      <li class="menu-item">
-                        <a class="menu-link nav-link" href="/page/6.html">Diversity</a>
-                      </li>
-                      <li class="menu-item">
-                        <a class="menu-link nav-link" href="/page/7.html">Sponsoring</a>
-                      </li>
-                      <li class="menu-item">
-                        <a class="menu-link nav-link" href="/page/8.html">Real Estate</a>
                       </li>
                     </ul>
                   </li>
@@ -361,8 +284,7 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                   <p class="animated" data-animate="fadeInUp" data-delay=".2">
                     Welcome to Sterling Crest Ltd! As you navigate our
                     website, I hope you learn more about the qualities that
-                    make our company an outstanding provider of essential
-                    government services and a wonderful place to mine.
+                    make our company a trusted provider of accessible digital-asset investment services and a supportive place to learn.
                   </p>
                   <br />
                   <br />
@@ -412,306 +334,58 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
           <!-- .block @e  -->
         </div>
       </section>
-      <section class="section bg-white">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-12">
-              <div class="row">
-                <div class="col-md-4 mb-4 mb-lg-0">
-                  <ul class="nav tab-nav tab-nav-vr tab-nav-bdr mr-lg-3">
-                    <li>
-                      <a class="active" data-toggle="tab" href="#ss1"><em class="fas fa-caret-right"></em>Bitcoin</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss2"><em class="fas fa-caret-right"></em>Ethereum</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss3"><em class="fas fa-caret-right"></em>Litecoin</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss4"><em class="fas fa-caret-right"></em>Ripple</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss5"><em class="fas fa-caret-right"></em>Dash</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss6"><em class="fas fa-caret-right"></em>Monero</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss7"><em class="fas fa-caret-right"></em>Tether</a>
-                    </li>
-                    <li>
-                      <a data-toggle="tab" href="#ss8"><em class="fas fa-caret-right"></em>Doge coin</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- .col -->
-                <div class="col-md-8">
-                  <div class="tab-content">
-                    <div class="tab-pane fade show active" id="ss1">
-                      <div class="row">
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 10-DAY PLAN</h5>
-<span>Price: 1,500USD</span><br />
-<span>Duration: 10day(s)</span><br />
-                              <span>Daily returns: 0.00873149BTC</span><br />
-                              <span>Referral: 3%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 10-DAY PLAN</h5>
-<span>Price: 500USD</span><br />
-<span>Duration: 10day(s)</span><br />
-                              <span>Daily returns: 0.01639336BTC</span><br />
-                              <span>Referral: 5%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 14-DAY PLAN</h5>
-<span>Price: 1,000USD</span><br />
-<span>Duration: 14day(s)</span><br />
-                              <span>Daily returns: 0.02182871BTC</span><br />
-                              <span>Referral: 5%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 16-DAY PLAN</h5>
-<span>Price: 300USD</span><br />
-<span>Duration: 16day(s)</span><br />
-                              <span>Daily returns: 0.02728589BTC</span><br />
-                              <span>Referral: 5%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 21-DAY PLAN</h5>
-<span>Price: 2,000USD</span><br />
-<span>Duration: 21day(s)</span><br />
-                              <span>Daily returns: 0.0181906BTC</span><br />
-                              <span>Referral: 10%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 30-DAY PLAN</h5>
-<span>Price: 2,500USD</span><br />
-<span>Duration: 30day(s)</span><br />
-                              <span>Daily returns: 0.00532803BTC</span><br />
-                              <span>Referral: 10%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 30-DAY PLAN</h5>
-<span>Price: 3,000USD</span><br />
-<span>Duration: 30day(s)</span><br />
-                              <span>Daily returns: 0.00564144BTC</span><br />
-                              <span>Referral: 10%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 30-DAY PLAN</h5>
-<span>Price: 5,000USD</span><br />
-<span>Duration: 30day(s)</span><br />
-                              <span>Daily returns: 0.00626827BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 40-DAY PLAN</h5>
-<span>Price: 7,000USD</span><br />
-<span>Duration: 40day(s)</span><br />
-                              <span>Daily returns: 0.0094024BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 45-DAY PLAN</h5>
-<span>Price: 10,000USD</span><br />
-<span>Duration: 45day(s)</span><br />
-                              <span>Daily returns: 0.01253654BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 45-DAY PLAN</h5>
-<span>Price: 15,000USD</span><br />
-<span>Duration: 45day(s)</span><br />
-                              <span>Daily returns: 0.01786457BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 50-DAY PLAN</h5>
-<span>Price: 20,000USD</span><br />
-<span>Duration: 50day(s)</span><br />
-                              <span>Daily returns: 0.02037188BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 50-DAY PLAN</h5>
-<span>Price: 25,000USD</span><br />
-<span>Duration: 50day(s)</span><br />
-                              <span>Daily returns: 0.02225236BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 55-DAY PLAN</h5>
-<span>Price: 30,000USD</span><br />
-<span>Duration: 55day(s)</span><br />
-                              <span>Daily returns: 0.02820722BTC</span><br />
-                              <span>Referral: 15%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 55-DAY PLAN</h5>
-<span>Price: 50,000USD</span><br />
-<span>Duration: 55day(s)</span><br />
-                              <span>Daily returns: 0.04701203BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 60-DAY PLAN</h5>
-<span>Price: 100,000USD</span><br />
-<span>Duration: 60day(s)</span><br />
-                              <span>Daily returns: 0.10029234BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 60-DAY PLAN</h5>
-<span>Price: 150,000USD</span><br />
-<span>Duration: 60day(s)</span><br />
-                              <span>Daily returns: 0.12849952BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 65-DAY PLAN</h5>
-<span>Price: 200,000USD</span><br />
-<span>Duration: 65day(s)</span><br />
-                              <span>Daily returns: 0.20685297BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 65-DAY PLAN</h5>
-<span>Price: 300,000USD</span><br />
-<span>Duration: 65day(s)</span><br />
-                              <span>Daily returns: 0.31968186BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 67-DAY PLAN</h5>
-<span>Price: 500,000USD</span><br />
-<span>Duration: 67day(s)</span><br />
-                              <span>Daily returns: 0.47012038BTC</span><br />
-                              <span>Referral: 20%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="feature card">
-                            <div class="feature-text">
-                              <h5 class="title title-sm text-gold">STERLING CREST 70-DAY PLAN</h5>
-<span>Price: 1,000,000USD</span><br />
-<span>Duration: 70day(s)</span><br />
-                              <span>Daily returns: 1.56706796BTC</span><br />
-                              <span>Referral: 30%</span><br />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss2">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss3">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss4">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss5">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss6">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss7">
-                      <div class="row"></div>
-                    </div>
-                    <div class="tab-pane fade show" id="ss8">
-                      <div class="row"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- .col -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section class="section bg-white" id="investment-plans">
+  <div class="container">
+    <div class="section-head text-center wide-sm animated" data-animate="fadeInUp" data-delay=".1">
+      <h2 class="title title-dark title-regular">Choose an investment approach</h2>
+      <p class="lead" style="color: #65718a; margin-top: 16px;">
+        Simple portfolios for different goals and time horizons. Digital assets are volatile and every plan can lose value.
+      </p>
+    </div>
+    <div class="row justify-content-center" style="margin-top: 28px;">
+      <div class="col-lg-3 col-md-6 mb-4 animated" data-animate="fadeInUp" data-delay=".1">
+        <div class="feature card h-100"><div class="feature-text">
+          <span class="small text-uppercase" style="color: #65718a; letter-spacing: .08em;">For first-time investors</span>
+          <h5 class="title title-sm text-gold" style="margin-top: 12px;">Starter Portfolio</h5>
+          <p style="color: #65718a;">A diversified introduction to Bitcoin and established digital assets.</p><hr />
+          <span><strong>Minimum:</strong> $250</span><br /><span><strong>Horizon:</strong> 3-6 months</span><br />
+          <span><strong>Risk:</strong> Moderate-high</span><br /><span><strong>Fee:</strong> 1.00% annual management fee</span>
+        </div></div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4 animated" data-animate="fadeInUp" data-delay=".2">
+        <div class="feature card h-100"><div class="feature-text">
+          <span class="small text-uppercase" style="color: #65718a; letter-spacing: .08em;">For regular investors</span>
+          <h5 class="title title-sm text-gold" style="margin-top: 12px;">Core Bitcoin Portfolio</h5>
+          <p style="color: #65718a;">A Bitcoin-led portfolio designed for long-term participation.</p><hr />
+          <span><strong>Minimum:</strong> $1,000</span><br /><span><strong>Horizon:</strong> 6-12 months</span><br />
+          <span><strong>Risk:</strong> High</span><br /><span><strong>Fee:</strong> 0.85% annual management fee</span>
+        </div></div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4 animated" data-animate="fadeInUp" data-delay=".3">
+        <div class="feature card h-100"><div class="feature-text">
+          <span class="small text-uppercase" style="color: #65718a; letter-spacing: .08em;">For long-term growth</span>
+          <h5 class="title title-sm text-gold" style="margin-top: 12px;">Growth Portfolio</h5>
+          <p style="color: #65718a;">Broader digital-asset exposure for investors who accept higher volatility.</p><hr />
+          <span><strong>Minimum:</strong> $5,000</span><br /><span><strong>Horizon:</strong> 12-24 months</span><br />
+          <span><strong>Risk:</strong> High</span><br /><span><strong>Fee:</strong> 0.75% annual management fee</span>
+        </div></div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4 animated" data-animate="fadeInUp" data-delay=".4">
+        <div class="feature card h-100"><div class="feature-text">
+          <span class="small text-uppercase" style="color: #65718a; letter-spacing: .08em;">For qualified clients</span>
+          <h5 class="title title-sm text-gold" style="margin-top: 12px;">Private Portfolio</h5>
+          <p style="color: #65718a;">Personalised allocation support, subject to suitability and account review.</p><hr />
+          <span><strong>Minimum:</strong> $25,000</span><br /><span><strong>Horizon:</strong> 24+ months</span><br />
+          <span><strong>Risk:</strong> High</span><br /><span><strong>Fee:</strong> Agreed in writing before investing</span>
+        </div></div>
+      </div>
+    </div>
+    <div class="text-center" style="margin-top: 8px; color: #65718a;">
+      <p><strong>Important:</strong> These are illustrative portfolio approaches, not promises of performance. Past performance does not predict future results. Review the risks, fees and withdrawal terms before investing.</p>
+      <a href="/get-started.html" class="btn btn-md btn-grad btn-round" style="margin-top: 12px;">Start with a suitability review</a>
+    </div>
+  </div>
+</section>
 
       <section class="section bg-light">
         <div class="container">
@@ -965,7 +639,7 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                     </h2>
                   </div>
                   <p class="animated" data-animate="fadeInUp" data-delay=".2">
-                    Sterling Crest Ltd tops the list for having the best professional technical team in the digital asset industry. Customers can exchange &amp; transfer crypto securely among one another transparently through our online support or also make purchases outside the company. At Sterling Crest Ltd, our technical team ensures that strict security measures are applied to safeguard all the funds of customers which makes investing with us 100% profitable and acquiring Zero Losses.
+                    Sterling Crest Ltd tops the list for having the best professional technical team in the digital asset industry. Customers can exchange &amp; transfer crypto securely among one another transparently through our online support or also make purchases outside the company. At Sterling Crest Ltd, our technical team ensures that strict security measures are applied to safeguard all the funds of customers We do not promise profits or protection from market losses; clients should review the risks before investing.
                   </p>
                 </div>
               </div>
@@ -1087,11 +761,11 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                   <div class="tab-pane fade show active" id="xss2">
                     <div class="accordion accordion-faq" id="bb2">
                       <div class="accordion-item">
-                        <h5 class="accordion-title accordion-title-sm" data-toggle="collapse" data-target="#dd43">
+                        <h5 class="accordion-title accordion-title-sm" data-toggle="collapse" data-target="#aa43">
                           WHAT IS Sterling Crest Ltd?
                           <span class="accordion-icon"></span>
                         </h5>
-                        <div id="dd43" class="collapse show" data-parent="#bb2">
+                        <div id="aa43" class="collapse show" data-parent="#bb2">
                           <div class="accordion-content">
                             <p>
                               <strong>Sterling Crest Ltd&nbsp;is a registered digital asset investment firm based in the UK. The platform, which
@@ -1115,11 +789,11 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
 
                       <div class="accordion-item">
                         <h5 class="accordion-title accordion-title-sm collapsed" data-toggle="collapse"
-                          data-target="#dd45">
+                          data-target="#aa45">
                           WHAT ARE THE COMPANY PRINCIPLES?
                           <span class="accordion-icon"></span>
                         </h5>
-                        <div id="dd45" class="collapse" data-parent="#bb2">
+                        <div id="aa45" class="collapse" data-parent="#bb2">
                           <div class="accordion-content">
                             <p>
                               <strong>Successful investment management companies
@@ -1172,11 +846,11 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
 
                       <div class="accordion-item">
                         <h5 class="accordion-title accordion-title-sm collapsed" data-toggle="collapse"
-                          data-target="#dd46">
+                          data-target="#aa46">
                           WHAT ARE DIGITAL ASSETS AND HOW ARE THEY VALUED?
                           <span class="accordion-icon"></span>
                         </h5>
-                        <div id="dd46" class="collapse" data-parent="#bb2">
+                        <div id="aa46" class="collapse" data-parent="#bb2">
                           <div class="accordion-content">
                             <p>
                               Digital assets distributed ledger based
@@ -1292,7 +966,7 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                     </div>
                     <div class="tesm-content">
                       <p>
-                        Sterling Crest Ltd is one of the leading cloudmining companies and a trustworthy partner of ours. It’s good to see that they are an honest cloudmining service which shows their farms openly to the public.
+                        Sterling Crest Ltd is a trusted digital-asset investment platform. Its clear reporting and focus on responsible education make it easier for clients to understand the opportunities and risks of crypto markets.
                       </p>
                       <h4 class="title title-sm">
                         Jason Well <span>Forex trader</span>
@@ -1306,10 +980,10 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                     </div>
                     <div class="tesm-content">
                       <p>
-                        Sterling Crest Ltd is one of our biggest clients and proven to be a reliable and trustworthy business partner. Their transparent mining sites and high quality software infrastructure together with our high end mining hardware result in a great and unique product and experience for everybody interested in mining!.
+                        Sterling Crest Ltd is a reliable technology partner. Its transparent reporting and quality platform infrastructure create a clear and useful experience for people interested in digital assets.
                       </p>
                       <h4 class="title title-sm">
-                        JacK Mill <span>Market analyst &amp; Miner</span>
+                        JacK Mill <span>Market analyst &amp; Investor</span>
                       </h4>
                     </div>
                   </div>
@@ -1320,11 +994,11 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                     </div>
                     <div class="tesm-content">
                       <p>
-                        MinerEU is very happy to have Sterling Crest Ltd as our trustworthy partner. We have already recommended Sterling Crest Ltd to thousands of our existing customers who are happy and satisfied with their excellent services and products.,keep up the good work!.
+                        We value Sterling Crest Ltd as a thoughtful partner. Its clear communication and practical educational resources help clients make better-informed digital-asset decisions.
                       </p>
                       <h4 class="title title-sm">
                         Michelle Perry
-                        <span>Software Developer &amp; Miner</span>
+                        <span>Software Developer &amp; Investor</span>
                       </h4>
                     </div>
                   </div>
@@ -1335,7 +1009,7 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                     </div>
                     <div class="tesm-content">
                       <p>
-                        As the world first 28nm BTC and LTC chip maker, Innosilicon selects Sterling Crest Ltd as partner in cloud mining industry business for its integrity, transparency, excellent customer oriented service and great user interface design. Sterling Crest Ltd is the best in class mining service that is supported by a technologically superior mining hardware. This unique synergy produces the best experience for those interested in mining and we look forward to having a long and prosperous relationship.
+                        Sterling Crest Ltd combines transparent communication, customer-focused service and a straightforward user interface. This approach creates a better experience for people who want to understand Bitcoin and digital-asset investing.
                       </p>
                       <h4 class="title title-sm">
                         Shina Rose <span>investor</span>
@@ -1427,7 +1101,7 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                           class="input-bordered input-textarea required"></textarea>
                       </div>
                     </div>
-                    <input type="text" class="d-none" name="form-anti-honeypot" value="" />
+                    <input type="text" class="a-none" name="form-anti-honeypot" value="" />
                     <div class="row">
                       <div class="col-sm-5 text-right">
                         <button type="submit" class="btn btn-primary btn-round btn-lg">
@@ -1489,8 +1163,8 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
                   <form action="/subscribe" method="post">
                     <input type="hidden" name="_token" value="esmsIuUlWw1L9FOx0VNGmWIth9SVPyPg0J3t7Lue" />
                     <div class="field-inline field-split bg-white shadow-soft">
-                      <div class="field-wrap d-flex align-items-center">
-                        <label class="label-inline mb-0 d-none d-sm-block"><i
+                      <div class="field-wrap a-flex align-items-center">
+                        <label class="label-inline mb-0 a-none a-sm-block"><i
                             class="mt-1 icon fas fa-envelope"></i></label>
                         <input class="input-solid input-solid-lg required email" type="email" name="email"
                           placeholder="Enter your email" />
@@ -1560,134 +1234,16 @@ At Sterling Crest Ltd, we are committed to transparency, responsible investing, 
       </footer>
 
       <div class="preloader preloader-alt no-split">
-        <span class="spinner spinner-alt"><img class="spinner-brand" src="/asset/images/logo.svg" alt=""
-            style="width: 80%" /></span>
+        <span class="spinner spinner-alt"><img class="spinner-brand" src="/images/logo-mark.svg" alt="Sterling Crest Ltd" /></span>
       </div>
 
-      <!-- Smartsupp Live Chat script -->
-
       <!-- Dependency Scripts -->
-      <script src="//code.jivosite.com/widget/ODHOmOnfmA" async></script>
 
 
       <script src="/asset/front/js/jquery.bundle.js?ver=192"></script>
-      <script src="/asset/front/js/scripts.js?ver=192"></script>
+      <script src="/asset/front/js/scripts.js?ver=193"></script>
       <script src="/asset/front/js/charts.js"></script>
       <script src="/asset/js/sweetalert.js"></script>
-      <style type="text/css">
-        .mgm {
-          border-radius: 7px;
-          position: fixed;
-          z-index: 90;
-          bottom: 45%;
-          right: 50px;
-          background: #fff;
-          padding: 10px 27px;
-          box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.3);
-        }
-
-        .mgm a {
-          font-weight: 700;
-          display: block;
-          color: #ff5722;
-        }
-
-        .mgm a,
-        .mgm a:active {
-          transition: all 0.2s ease;
-          color: #ff5722;
-        }
-      </style>
-
-      <div class="mgm" style="display: none">
-        <div class="txt" style="color: black"></div>
-      </div>
-      <script type="text/javascript">
-        var listCountries = [
-          "South Africa",
-          "USA",
-          "Germany",
-          "France",
-          "Italy",
-          "South Africa",
-          "Australia",
-          "South Africa",
-          "Canada",
-          "Argentina",
-          "Saudi Arabia",
-          "Mexico",
-          "South Africa",
-          "South Africa",
-          "Venezuela",
-          "South Africa",
-          "Sweden",
-          "South Africa",
-          "South Africa",
-          "Italy",
-          "South Africa",
-          "United Kingdom",
-          "South Africa",
-          "Greece",
-          "Cuba",
-          "South Africa",
-          "Portugal",
-          "Austria",
-          "South Africa",
-          "Panama",
-          "South Africa",
-          "South Africa",
-          "Netherlands",
-          "Switzerland",
-          "Belgium",
-          "Israel",
-          "Cyprus",
-        ];
-        var listPlans = [
-          "$500",
-          "$1,500",
-          "$1,000",
-          "$10,000",
-          "$2,000",
-          "$3,000",
-          "$4,000",
-          "$600",
-          "$700",
-          "$2,500",
-        ];
-        var transarray = [
-          "just <b>invested</b>",
-          "has <b>withdrawn</b>",
-          "is <b>trading with</b>",
-        ];
-        let interval = Math.floor(Math.random() * (40000 - 8000 + 1) + 8000);
-        var run = setInterval(request, interval);
-
-        function request() {
-          clearInterval(run);
-          let interval = Math.floor(
-            Math.random() * (40000 - 8000 + 1) + 8000
-          );
-          var country =
-            listCountries[Math.floor(Math.random() * listCountries.length)];
-          var transtype =
-            transarray[Math.floor(Math.random() * transarray.length)];
-          var plan = listPlans[Math.floor(Math.random() * listPlans.length)];
-          var msg =
-            "Someone from <b>" +
-            country +
-            "</b> " +
-            transtype +
-            ' <a href="javascript:void(0);" onclick="javascript:void(0);">' +
-            plan +
-            "</a>";
-          $(".mgm .txt").html(msg);
-          $(".mgm").stop(true).fadeIn(300);
-          window.setTimeout(function () {
-            $(".mgm").stop(true).fadeOut(300);
-          }, 10000);
-          run = setInterval(request, interval);
-        }
-      </script>
     </main>
   </div>
 </body>

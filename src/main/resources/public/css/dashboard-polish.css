@@ -1,0 +1,419 @@
+/* Sterling Crest application shell: visual-only improvements. */
+:root {
+  --dash-bg: #070d1c;
+  --dash-panel: #101a2d;
+  --dash-panel-2: #14223a;
+  --dash-line: rgba(153, 180, 225, .14);
+  --dash-text: #f5f7fb;
+  --dash-muted: #8ea0bd;
+  --dash-gold: #f2c94c;
+  --dash-blue: #4c8dff;
+  --dash-green: #49d597;
+  --dash-shadow: 0 18px 45px rgba(0, 0, 0, .22);
+}
+
+body.sc-dashboard {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 88% 0, rgba(44, 103, 220, .24), transparent 28%),
+    radial-gradient(circle at 8% 34%, rgba(64, 210, 255, .08), transparent 24%),
+    linear-gradient(135deg, #050a17 0%, #091328 52%, #060b18 100%) !important;
+  color: var(--dash-text) !important;
+}
+
+body.sc-dashboard::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: .22;
+  background-image: linear-gradient(rgba(113, 154, 226, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(113, 154, 226, .07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+#dashboard-spinner {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000;
+  width: 100%;
+  background: var(--dash-bg);
+}
+
+#dashboard-container {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 22px 54px;
+}
+
+#dashboard-container #nav {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+  margin: 12px 0 20px !important;
+  padding: 8px 22px !important;
+  border: 1px solid rgba(114, 164, 255, .2);
+  border-radius: 18px;
+  background: rgba(16, 26, 45, .88) !important;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255, 255, 255, .06);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+#dashboard-container #nav p,
+#dashboard-container #nav .pointer { transition: color .2s ease, transform .2s ease; }
+
+#dashboard-container #nav p:hover,
+#dashboard-container #nav .pointer:hover { color: var(--dash-gold); transform: translateY(-1px); }
+
+#dashboard-container #nav img,
+#dashboard-container .w3-hide-large img { filter: drop-shadow(0 5px 12px rgba(242, 201, 76, .2)); }
+
+#dashboard-container .green-background {
+  background: linear-gradient(135deg, #267d64, #36b98b) !important;
+  box-shadow: 0 8px 20px rgba(54, 185, 139, .2);
+}
+
+#dashboard-container .w3-col.l12 > div[style*="background-color"] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(133, 169, 232, .12);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .035) !important;
+}
+
+#dashboard-container .w3-col.l12 > div[style*="background-color"]::after {
+  position: absolute;
+  top: -70px;
+  right: -42px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(116, 171, 255, .13);
+  border-radius: 50%;
+  content: "";
+  box-shadow: 0 0 0 14px rgba(116, 171, 255, .025), 0 0 0 28px rgba(116, 171, 255, .018);
+}
+
+#dashboard-container .w3-col.l12 > div[style*="background-color"] > div:first-child {
+  position: relative;
+  z-index: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: 11px !important;
+}
+
+#dashboard-container .w3-col.l12 > div[style*="background-color"] span[id] {
+  letter-spacing: -.035em;
+}
+
+#dashboard-container .w3-col.l12:nth-child(1) > div[style*="background-color"] {
+  background: linear-gradient(135deg, rgba(23, 64, 139, .9), rgba(16, 25, 54, .98)) !important;
+  border-color: rgba(76, 141, 255, .45);
+}
+
+#dashboard-container .w3-col.l12:nth-child(2) > div[style*="background-color"] {
+  background: linear-gradient(135deg, rgba(22, 83, 77, .8), rgba(15, 28, 48, .98)) !important;
+  border-color: rgba(73, 213, 151, .28);
+}
+
+#dashboard-container .w3-col.l12:nth-child(3) > div[style*="background-color"] {
+  background: linear-gradient(135deg, rgba(49, 35, 100, .84), rgba(16, 22, 52, .98)) !important;
+  border-color: rgba(143, 119, 255, .32);
+}
+
+#dashboard-container .w3-col.l12:nth-child(4) > div[style*="background-color"] {
+  background: linear-gradient(135deg, rgba(79, 45, 45, .78), rgba(25, 21, 48, .98)) !important;
+  border-color: rgba(255, 133, 133, .24);
+}
+
+#dashboard-container .w3-hide-large {
+  border-bottom: 1px solid var(--dash-line);
+  background: rgba(16, 26, 45, .96) !important;
+}
+
+.sc-dashboard-workspace { padding-top: 10px; }
+
+.sc-overview-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 26px 8px 18px;
+}
+
+.sc-overview-heading h1 {
+  margin: 8px 0 6px;
+  color: #f7faff;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 750;
+  letter-spacing: -.045em;
+}
+
+.sc-overview-heading p {
+  margin: 0;
+  color: var(--dash-muted);
+  font-size: 14px;
+}
+
+.sc-eyebrow {
+  color: var(--dash-gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.sc-account-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid rgba(73, 213, 151, .22);
+  border-radius: 999px;
+  background: rgba(73, 213, 151, .08);
+  color: #b9f5db;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.sc-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dash-green);
+  box-shadow: 0 0 12px var(--dash-green);
+}
+
+.sc-account-overview {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.15fr) minmax(0, 1.85fr);
+  gap: 14px;
+  margin: 0 8px 18px;
+}
+
+.sc-portfolio-value,
+.sc-account-stat {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(111, 165, 255, .2);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(25, 69, 153, .9), rgba(10, 25, 56, .98));
+  box-shadow: 0 22px 48px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.sc-portfolio-value {
+  min-height: 198px;
+  padding: 28px;
+}
+
+.sc-portfolio-value::before,
+.sc-portfolio-value::after {
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgba(148, 194, 255, .16);
+  border-radius: 50%;
+  content: "";
+}
+
+.sc-portfolio-value::before { top: -132px; right: -42px; }
+.sc-portfolio-value::after { top: -116px; right: -26px; box-shadow: 0 0 0 20px rgba(148, 194, 255, .03); }
+
+.sc-card-label {
+  color: #a6b9d8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.sc-portfolio-number {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+  color: #fff;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 760;
+  letter-spacing: -.06em;
+}
+
+.sc-portfolio-caption {
+  position: relative;
+  z-index: 1;
+  margin-top: 10px;
+  color: #c2d4f2;
+  font-size: 12px;
+}
+
+.sc-portfolio-caption .fa { margin-right: 6px; color: var(--dash-green); }
+
+.sc-portfolio-lines {
+  position: absolute;
+  right: 28px;
+  bottom: 22px;
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  height: 42px;
+  opacity: .75;
+}
+
+.sc-portfolio-lines span { display: block; width: 5px; border-radius: 5px 5px 0 0; background: #69a7ff; }
+.sc-portfolio-lines span:nth-child(1) { height: 16px; }
+.sc-portfolio-lines span:nth-child(2) { height: 28px; }
+.sc-portfolio-lines span:nth-child(3) { height: 21px; }
+.sc-portfolio-lines span:nth-child(4) { height: 37px; }
+.sc-portfolio-lines span:nth-child(5) { height: 30px; }
+.sc-portfolio-lines span:nth-child(6) { height: 42px; background: var(--dash-green); }
+
+.sc-account-stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+
+.sc-account-stat {
+  min-height: 150px;
+  padding: 22px;
+  background: linear-gradient(145deg, rgba(17, 30, 55, .98), rgba(11, 18, 35, .98));
+}
+
+.sc-account-stat:nth-child(2) { border-color: rgba(137, 108, 255, .28); }
+.sc-account-stat:nth-child(3) { border-color: rgba(73, 213, 151, .24); }
+.sc-account-stat strong { display: block; margin-top: 22px; color: #fff; font-size: 23px; letter-spacing: -.04em; }
+.sc-account-stat small { display: block; margin-top: 8px; color: var(--dash-muted); font-size: 11px; line-height: 1.45; }
+.sc-account-stat .sc-unit { display: inline; margin: 0; color: var(--dash-muted); font-size: 11px; }
+
+#dashboard-container .sc-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+#dashboard-container .sc-metrics-grid > .w3-col.l12 {
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#dashboard-container .sc-metrics-grid > .w3-col.l12:nth-child(5) {
+  grid-column: 1 / -1;
+}
+
+#dashboard-container .sc-metrics-grid > .w3-col.l12:nth-child(5) > div {
+  min-height: 168px;
+}
+
+.sc-market-workspace {
+  margin-top: 18px;
+}
+
+.sc-market-workspace > div {
+  padding: 0 0 16px !important;
+}
+
+.sc-market-workspace .tradingview-widget-container {
+  min-height: 500px;
+}
+
+#dashboard-container #nav-items {
+  z-index: 40;
+  border: 1px solid var(--dash-line);
+  border-radius: 0 0 14px 14px;
+  box-shadow: var(--dash-shadow);
+}
+
+#dashboard-container .card,
+#dashboard-container .tradingview-widget-container,
+#dashboard-container .tx-history-container,
+#dashboard-container .setting-option-detail {
+  border: 1px solid var(--dash-line);
+  border-radius: 18px;
+  box-shadow: var(--dash-shadow);
+}
+
+#dashboard-container .card { background: var(--dash-panel) !important; }
+
+#dashboard-container .tx-history-container {
+  border-radius: 14px;
+  border-color: rgba(153, 180, 225, .1);
+  background: var(--dash-panel-2);
+}
+
+#dashboard-container .tx-title { color: var(--dash-text); font-weight: 700; }
+#dashboard-container .tx-date { color: var(--dash-muted); }
+
+#dashboard-container .tradingview-widget-container {
+  overflow: hidden;
+  background: var(--dash-panel);
+  border-color: rgba(76, 141, 255, .2);
+}
+
+#dashboard-container .tradingview-widget-container iframe { border-radius: 14px; }
+
+#dashboard-container .w3-modal { background: rgba(2, 7, 18, .78) !important; }
+
+#dashboard-container .w3-modal-content {
+  border: 1px solid var(--dash-line);
+  border-radius: 18px;
+  background: var(--dash-panel) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .48);
+}
+
+#dashboard-container input,
+#dashboard-container select,
+#dashboard-container textarea {
+  border: 1px solid var(--dash-line);
+  border-radius: 8px;
+  background: #0b1426;
+  color: var(--dash-text);
+}
+
+#dashboard-container input:focus,
+#dashboard-container select:focus,
+#dashboard-container textarea:focus {
+  border-color: var(--dash-blue);
+  box-shadow: 0 0 0 4px rgba(76, 141, 255, .14);
+  outline: 0;
+}
+
+#dashboard-container button,
+#dashboard-container .blue-background,
+#dashboard-container .blue-background-light,
+#dashboard-container .blue-background-inactive {
+  border-radius: 8px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#dashboard-container button:hover,
+#dashboard-container .blue-background:hover,
+#dashboard-container .blue-background-light:hover { transform: translateY(-1px); }
+
+@media (max-width: 900px) {
+  #dashboard-container { padding: 0 10px 32px; }
+  #dashboard-container #nav { position: relative; top: 0; }
+  .sc-overview-heading { align-items: flex-start; flex-direction: column; margin: 22px 8px 16px; }
+  .sc-overview-heading h1 { font-size: 28px; }
+  .sc-account-overview { display: block; margin: 0 8px 16px; }
+  .sc-portfolio-value { min-height: 190px; }
+  .sc-account-stat-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+  .sc-account-stat { min-height: 118px; }
+  #dashboard-container .sc-metrics-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px;
+  }
+  #dashboard-container .sc-metrics-grid > .w3-col.l12 {
+    display: block !important;
+    float: none !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+  #dashboard-container .w3-col.l12 { padding-left: 8px !important; padding-right: 8px !important; }
+  #dashboard-container .w3-col.l12 > div[style*="background-color"] { padding: 22px !important; border-radius: 18px !important; }
+  #dashboard-container .tradingview-widget-container iframe { min-height: 420px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.sc-dashboard *, body.sc-dashboard *::before, body.sc-dashboard *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

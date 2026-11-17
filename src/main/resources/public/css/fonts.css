@@ -1,8 +1,47 @@
+/* Poppins is the Sterling Crest brand face (it ships locally with the
+   marketing theme). Declaring it here makes it available to the sign-in and
+   app screens too, so every page sets type in the same family. */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../asset/front/fonts/Poppins-Bold.woff2") format("woff2");
+}
+
 body,
 p,
 input,
 select {
-  font-family: sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 p,
 input,

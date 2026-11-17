@@ -1009,3 +1009,23 @@ NioApp = function (NioApp, $, window, document) {
 	return NioApp;
 }(NioApp, jQuery, window, document);
 /* END @iO */
+
+
+/* Safety net: reveal [data-animate] elements when they enter the viewport,
+   so content is never stuck invisible if the waypoints reveal misses. */
+(function ($) {
+    "use strict";
+    var reveal = function () {
+        $('.animated').each(function () {
+            var $el = $(this), off = $el.offset(), top = off ? off.top : 0;
+            if ($el.css("visibility") === "hidden" && top < $(window).scrollTop() + $(window).height() * 0.95) {
+                var typ = $el.data("animate") || "fadeInUp", dur = $el.data("duration"), dly = $el.data("delay");
+                $el.addClass("animated " + typ).css("visibility", "visible");
+                if (dur) { $el.css('animation-duration', dur + 's'); }
+                if (dly) { $el.css('animation-delay', dly + 's'); }
+            }
+        });
+    };
+    $(document).ready(reveal);
+    $(window).on("load scroll resize", reveal);
+})(jQuery);
