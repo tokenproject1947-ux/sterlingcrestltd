@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.soft6creators.futurespace.app.security.AuthSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +31,14 @@ public class UserController {
 
 	@CrossOrigin(maxAge = 3600)
 	@RequestMapping(method = RequestMethod.POST, value = "/user")
-	public User addUser(@RequestBody User user) {
-		return userService.addUser(user);
+	public User addUser(@RequestBody User user, HttpServletRequest request) {
+		User created = userService.addUser(user);
+		/* The onboarding steps run before any sign-in, so the account has to be
+		   signed in as it is created or the guard would turn them away. */
+		if (created != null && created.getEmail() != null) {
+			AuthSession.establish(request.getSession(true), created.getEmail(), created.getRole());
+		}
+		return created;
 	}
 	
 	@CrossOrigin(maxAge = 3600)
@@ -37,18 +47,26 @@ public class UserController {
 		Address address = addressService.getAddressByEmail(email);
 		if (address != null) {
 			return address.getUser();
-		} else {
-			Optional<User> user = userService.getUser(email);
-			user.get().setAccountNonLocked(false);
-			return user.get();
 		}
-
+		/* No profile row yet, which is normal: the address step is only filled
+		   in after sign-up. Nothing to lock, and no reason to blow up with
+		   NoSuchElementException for a member who simply has not got there. */
+		Optional<User> user = userService.getUser(email);
+		if (!user.isPresent()) {
+			return null;
+		}
+		user.get().setAccountNonLocked(false);
+		return user.get();
 	}
 
 	@CrossOrigin(maxAge = 3600)
 	@RequestMapping("/signin")
-	public User signIn(@RequestBody User request) {
-		return userService.signIn(request.getEmail(), request.getPassword());
+	public User signIn(@RequestBody User request, HttpServletRequest httpRequest) {
+		User signedIn = userService.signIn(request.getEmail(), request.getPassword());
+		if (signedIn != null && signedIn.getEmail() != null) {
+			AuthSession.establish(httpRequest.getSession(true), signedIn.getEmail(), signedIn.getRole());
+		}
+		return signedIn;
 	}
 	
 	

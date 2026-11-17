@@ -81,6 +81,10 @@ getUserXhr.open("GET", `/user/email/${userEmail}`, true);
 getUserXhr.send();
 
 getUserXhr.onreadystatechange = function () {
+  if (this.readyState == 4 && (this.status == 401 || this.status == 403)) {
+    location.replace("./get-started.html?status=signin");
+    return;
+  }
   if (this.status == 200 && this.readyState == 4) {
     let response = JSON.parse(this.response);
     userEmail = response.email;
@@ -567,9 +571,6 @@ function arrangeInterest() {
 
 function getAccount() {
   let account = userDetail.account;
-  document.getElementById("account-balance").innerText = numberWithCommas(
-    account.accountBalance,
-  );
   totalAmountNew = account.accountBalance.toFixed(1);
   let spinner = document.getElementById("dashboard-spinner");
   spinner.className = spinner.className.replace("opacity-1", "opacity-2");
@@ -578,6 +579,33 @@ function getAccount() {
     spinner.style.display = "block";
   }, 100);
   getCryptos();
+
+  /* Capital invested, the interest it has accrued, and the two added together.
+     The server owns that arithmetic so the three figures cannot drift apart. */
+  let portfolioXhr = new XMLHttpRequest();
+  portfolioXhr.open("GET", `/account/${account.accountId}/portfolio`, true);
+  portfolioXhr.send();
+
+  portfolioXhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      try {
+        let summary = JSON.parse(this.response);
+        document.getElementById("interest-account").innerText = formatMoney(
+          summary.investedTotal,
+        );
+        document.getElementById("accrued-interest").innerText = formatMoney(
+          summary.accruedInterest,
+        );
+        document.getElementById("account-balance").innerText = formatMoney(
+          summary.totalValue,
+        );
+        updateBitcoinEquivalent(
+          summary.totalValue,
+          document.getElementById("btc-price")
+        );
+      } catch (error) {}
+    }
+  };
 
   let investmentXhr = new XMLHttpRequest();
   investmentXhr.open("GET", `/account/${account.accountId}/investment`, true);
@@ -588,15 +616,8 @@ function getAccount() {
       let response = JSON.parse(this.response);
       if (response == null) {
       } else {
-        document.getElementById("interest-account").innerText =
-          numberWithCommas(response.investedAmount);
         document.getElementById("account-level").innerText =
           response.investmentPlan;
-
-        updateBitcoinEquivalent(
-          response.account.accountBalance,
-          document.getElementById("btc-price")
-        );
       }
     }
   };
@@ -806,6 +827,14 @@ function bindSelect(id, value, selected) {
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/* Money on the dashboard always carries two decimals, so a fractional figure
+   like accrued interest lines up with the whole-dollar ones beside it. */
+function formatMoney(x) {
+  let value = Number(x);
+  if (!Number.isFinite(value)) return "0.00";
+  return numberWithCommas(value.toFixed(2));
 }
 
 function displayCryptoUpdateMobile(crypto, color, plus, direction) {

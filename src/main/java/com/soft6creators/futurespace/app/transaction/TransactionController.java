@@ -54,10 +54,11 @@ public class TransactionController {
 
 		Optional<User> user = userService.getUser(userEmail);
 		if (user.isPresent() && user.get().getAccount() != null) {
-			Optional<Investment> investment = investmentRepository
-					.findByAccountAccountId(user.get().getAccount().getAccountId());
-			if (investment.isPresent()) {
-				Investment booked = investment.get();
+			/* Every booked deposit, not just the first: the dashboard's
+			   "capital invested" is the sum of these, so the ledger has to
+			   show the same set of rows. */
+			for (Investment booked : investmentRepository
+					.findAllByAccountAccountId(user.get().getAccount().getAccountId())) {
 				Map<String, Object> row = new LinkedHashMap<>();
 				row.put("type", "Deposit");
 				row.put("label", booked.getInvestmentPlan());

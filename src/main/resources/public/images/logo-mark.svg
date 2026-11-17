@@ -1,11 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="Sterling Crest Ltd">
-  <!-- Brand tile: Sterling Crest green, rgb(77, 169, 44) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="Gestron Assets">
+  <!-- Brand tile: Gestron green, rgb(77, 169, 44) -->
   <rect x="1" y="1" width="62" height="62" rx="15" fill="#4DA92C"/>
   <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" stroke="#ffffff" stroke-opacity=".18"/>
 
-  <!-- Crest: diamond outline (the established identity) with a solid core -->
-  <g transform="rotate(45 32 32)">
-    <rect x="17.5" y="17.5" width="29" height="29" rx="9" stroke="#ffffff" stroke-width="5"/>
-    <rect x="26.5" y="26.5" width="11" height="11" rx="3.5" fill="#ffffff"/>
+  <!-- Logomark: capital G. Drawn as a filled annulus segment so both terminals
+       can be cut deliberately: the bowl on the radial (angled), the bar square,
+       rather than left round. That is what makes the letterform read as
+       designed rather than typed. -->
+  <g transform="translate(1,1) scale(0.62)" fill="#ffffff">
+    <path d="M 65.25 23.59 A 30.5 30.5 0 1 0 80.5 50 L 69.5 50 A 19.5 19.5 0 1 1 59.75 33.11 Z"/>
+    <path d="M 46 44.5 L 74.5 44.5 A 5.5 5.5 0 0 1 74.5 55.5 L 46 55.5 Z"/>
   </g>
 </svg>

@@ -15,7 +15,7 @@ import com.soft6creators.futurespace.app.mailsender.MailSenderService;
 @RestController
 public class SiteController {
 
-	private static final String SUPPORT_EMAIL = "support@sterlingcrestltd.com";
+	private static final String SUPPORT_EMAIL = "support@gestronassets.com";
 
 	@Autowired
 	private MailSenderService mailSenderService;
@@ -38,7 +38,7 @@ public class SiteController {
 		// honeypot filled in means a bot submitted the form - silently ignore
 		if (honeypot == null || honeypot.isEmpty()) {
 			try {
-				mailSenderService.sendEmail(SUPPORT_EMAIL, "Sterling Crest Ltd (Contact Form)",
+				mailSenderService.sendEmail(SUPPORT_EMAIL, "Gestron Assets (Contact Form)",
 						"<p><b>Name:</b> " + safe(name) + "</p><p><b>Email:</b> " + safe(email) + "</p><p><b>Message:</b><br/>"
 								+ safe(message) + "</p>");
 			} catch (Exception e) {
@@ -52,7 +52,7 @@ public class SiteController {
 	public void subscribe(@RequestParam(name = "email", required = false) String email,
 			HttpServletResponse response) throws Exception {
 		try {
-			mailSenderService.sendEmail(SUPPORT_EMAIL, "Sterling Crest Ltd (Newsletter Subscription)",
+			mailSenderService.sendEmail(SUPPORT_EMAIL, "Gestron Assets (Newsletter Subscription)",
 					"<p><b>New subscriber:</b> " + safe(email) + "</p>");
 		} catch (Exception e) {
 			e.printStackTrace();

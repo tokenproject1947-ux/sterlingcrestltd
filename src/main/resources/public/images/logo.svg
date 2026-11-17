@@ -1,15 +1,15 @@
-<svg width="900" height="250" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sterling Crest Ltd">
-  <!-- Brand tile: Sterling Crest green, rgb(77, 169, 44) -->
+<svg width="900" height="250" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gestron Assets">
+  <!-- Brand tile: Gestron green, rgb(77, 169, 44) -->
   <rect x="16" y="56" width="138" height="138" rx="36" fill="#4DA92C"/>
-  <rect x="19" y="59" width="132" height="132" rx="33" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="5"/>
+  <rect x="19" y="59" width="132" height="132" rx="33" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="6"/>
 
-  <!-- Crest: diamond outline (the established identity) with a solid core -->
-  <g transform="rotate(45 85 125)">
-    <rect x="53" y="93" width="64" height="64" rx="19" fill="none" stroke="#ffffff" stroke-width="11"/>
-    <rect x="73" y="113" width="24" height="24" rx="8" fill="#ffffff"/>
+  <!-- Logomark: capital G, drawn as a geometric letterform -->
+  <g transform="translate(16,56) scale(1.38)" fill="#ffffff">
+    <path d="M 65.25 23.59 A 30.5 30.5 0 1 0 80.5 50 L 69.5 50 A 19.5 19.5 0 1 1 59.75 33.11 Z"/>
+    <path d="M 46 44.5 L 74.5 44.5 A 5.5 5.5 0 0 1 74.5 55.5 L 46 55.5 Z"/>
   </g>
 
   <!-- Wordmark -->
-  <text x="185" y="124" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="700" fill="#17202e" letter-spacing="1">Sterling Crest</text>
-  <text x="188" y="184" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="500" fill="#748093" letter-spacing="6">Ltd</text>
+  <text x="185" y="124" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="700" fill="#17202e" letter-spacing="1">Gestron</text>
+  <text x="188" y="184" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="500" fill="#748093" letter-spacing="12">Assets</text>
 </svg>

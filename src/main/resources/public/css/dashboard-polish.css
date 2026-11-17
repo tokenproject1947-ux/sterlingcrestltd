@@ -1,4 +1,4 @@
-/* Sterling Crest application shell: visual-only improvements. */
+/* Gestron application shell: visual-only improvements. */
 :root {
   --dash-bg: #070d1c;
   --dash-panel: #101a2d;
@@ -266,7 +266,7 @@ body.sc-dashboard::before {
 .sc-portfolio-lines span:nth-child(5) { height: 30px; }
 .sc-portfolio-lines span:nth-child(6) { height: 42px; background: var(--dash-green); }
 
-.sc-account-stat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sc-account-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 
 .sc-account-stat {
   min-height: 150px;
@@ -276,6 +276,7 @@ body.sc-dashboard::before {
 
 .sc-account-stat:nth-child(2) { border-color: rgba(137, 108, 255, .28); }
 .sc-account-stat:nth-child(3) { border-color: rgba(73, 213, 151, .24); }
+.sc-account-stat:nth-child(4) { border-color: rgba(111, 165, 255, .2); }
 .sc-account-stat strong { display: block; margin-top: 22px; color: #fff; font-size: 23px; letter-spacing: -.04em; }
 .sc-account-stat small { display: block; margin-top: 8px; color: var(--dash-muted); font-size: 11px; line-height: 1.45; }
 .sc-account-stat .sc-unit { display: inline; margin: 0; color: var(--dash-muted); font-size: 11px; }

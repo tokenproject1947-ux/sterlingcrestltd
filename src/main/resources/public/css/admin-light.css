@@ -1,4 +1,4 @@
-/* Sterling Crest Ltd - Admin Console.
+/* Gestron Assets - Admin Console.
    Full design system for the operations screen. Same light language as the
    marketing, sign-in and app screens: light ground, white cards, ink type,
    brand green for actions. Covers both the page shell and the markup
@@ -136,22 +136,34 @@ body {
   font-weight: 500;
 }
 
+/* Operator badge: an initials tile matching the row avatars rather than a
+   photograph, which would imply a real portrait exists for the account. */
 .sc-admin-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--ad-border);
-  display: block;
+  border-radius: 10px;
+  background: var(--ad-brand);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  font-style: normal;
 }
 
 /* ---- Page head -------------------------------------------------------- */
 
 .sc-admin-main {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   width: 100%;
   max-width: 1180px;
+  min-height: calc(100vh - 64px);
   margin: 0 auto;
-  padding: 32px 24px 64px;
+  padding: 32px 24px 40px;
   box-sizing: border-box;
 }
 
@@ -177,7 +189,7 @@ body {
 
 .sc-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 26px;
 }
@@ -232,9 +244,23 @@ body {
 }
 
 .sc-stat-icon {
-  font-size: 19px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  background: var(--ad-field);
+  color: var(--ad-muted);
+  font-size: 15px;
   line-height: 1;
-  margin-bottom: 2px;
+  transition: background .18s ease, color .18s ease;
+}
+
+.sc-stat.is-active .sc-stat-icon {
+  background: var(--ad-brand);
+  color: #fff;
 }
 
 .sc-stat-label {
@@ -242,6 +268,11 @@ body {
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
+  color: var(--ad-muted);
+}
+
+.sc-stat.is-active .sc-stat-label {
+  color: var(--ad-brand-dark);
 }
 
 .sc-stat-value {
@@ -256,20 +287,13 @@ body {
   color: var(--ad-muted);
 }
 
-/* Toolbar state colours: admin.js swaps blue-text / grey-text-2 on the icon
-   and blue-text / grey-text on its label. */
-body .blue-text {
-  color: var(--ad-brand-dark) !important;
-}
-
-body .grey-text,
-body .grey-text-2 {
-  color: var(--ad-muted) !important;
-}
-
 /* ---- Records panel ---------------------------------------------------- */
 
 .sc-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 340px;
   background: var(--ad-surface);
   border: 1px solid var(--ad-border);
   border-radius: 18px;
@@ -299,16 +323,49 @@ body .grey-text-2 {
 }
 
 .sc-list {
-  max-height: calc(100vh - 340px);
+  flex: 1 1 auto;
   overflow-y: auto;
   scrollbar-width: thin;
   position: relative;
 }
 
+/* Column header shared with the rows below it. */
+.sc-list-head {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 150px 130px 116px 108px 18px;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 22px;
+  border-bottom: 1px solid var(--ad-border);
+  background: var(--ad-field);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ad-muted);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sc-list-head .sc-num {
+  text-align: right;
+}
+
+.sc-list-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  color: var(--ad-muted);
+  font-size: 22px;
+}
+
 /* ---- Rows (admin.js templates) ---------------------------------------- */
 
 .sc-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 150px 130px 116px 108px 18px;
   align-items: center;
   gap: 14px;
   padding: 14px 22px;
@@ -326,31 +383,20 @@ body .grey-text-2 {
 }
 
 .sc-row-avatar {
-  position: relative;
-  flex: none;
-}
-
-.sc-row-avatar img {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 42px;
   height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--ad-border);
-}
-
-.sc-row-dot {
-  position: absolute;
-  right: 1px;
-  bottom: 1px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--ad-brand);
-  border: 2px solid var(--ad-surface);
+  border-radius: 12px;
+  background: var(--ad-brand-soft);
+  color: var(--ad-brand-dark);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
 }
 
 .sc-row-main {
-  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -377,25 +423,27 @@ body .grey-text-2 {
   text-overflow: ellipsis;
 }
 
-.sc-row-meta {
-  flex: none;
-  font-size: 12px;
+.sc-row-cell {
+  min-width: 0;
+  font-size: 13px;
   color: var(--ad-muted);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sc-row-amount {
-  flex: none;
-  min-width: 96px;
+  min-width: 0;
   text-align: right;
   font-size: 15px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--ad-ink);
+  white-space: nowrap;
 }
 
 .sc-row-status {
-  flex: none;
+  justify-self: start;
   padding: 4px 11px;
   border-radius: 999px;
   font-size: 11px;
@@ -426,16 +474,136 @@ body .grey-text-2 {
   font-size: 12px;
 }
 
-/* Empty state inside the list. */
-.sc-list-empty {
-  padding: 48px 22px;
-  text-align: center;
+/* Tally pinned to the foot of the scrolling list, so the panel reads as a
+   complete table even when only a few rows have loaded. */
+.sc-panel-foot {
+  padding: 12px 22px;
+  border-top: 1px solid var(--ad-border);
+  background: var(--ad-field);
+  font-size: 12px;
   color: var(--ad-muted);
-  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
-#distinct-message-spinner {
-  color: var(--ad-brand) !important;
+/* The add row sits at the top of a management list and opens an empty form. */
+.sc-row-add {
+  background: var(--ad-field);
+}
+.sc-row-add:hover {
+  background: var(--ad-brand-soft);
+}
+.sc-row-add .sc-row-title {
+  color: var(--ad-brand-dark);
+}
+
+.sc-row-avatar-quiet {
+  background: var(--ad-surface);
+  color: var(--ad-muted);
+  border: 1px dashed var(--ad-border);
+}
+
+/* Secondary action next to a primary one. */
+.sc-btn-quiet {
+  background: var(--ad-surface) !important;
+  color: var(--ad-muted) !important;
+  border: 1px solid var(--ad-border) !important;
+}
+.sc-btn-quiet:hover {
+  color: var(--ad-danger) !important;
+  border-color: var(--ad-danger) !important;
+}
+
+.sc-admin-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ad-muted);
+}
+
+/* ---- Editing a member ------------------------------------------------- */
+
+.sc-edit {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 11px;
+  border: 1px solid var(--ad-border);
+  border-radius: 10px;
+  background: var(--ad-field);
+  color: var(--ad-ink);
+  font: inherit;
+  font-size: 13px;
+  transition: border-color .16s ease, background .16s ease;
+}
+
+.sc-edit:focus {
+  outline: 0;
+  border-color: var(--ad-brand);
+  background: var(--ad-surface);
+}
+
+.sc-sheet-note {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ad-muted);
+}
+
+.sc-override {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border: 1px solid var(--ad-border);
+  border-radius: 12px;
+  background: var(--ad-field);
+}
+
+.sc-override-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.sc-override-head span {
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ad-muted);
+}
+
+.sc-override input[type="file"] {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--ad-muted);
+}
+
+/* Empty state inside the list. */
+.sc-list-empty {
+  padding: 56px 22px 64px;
+  text-align: center;
+  color: var(--ad-muted);
+}
+
+.sc-list-empty .fa {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 28px;
+  color: #c2cad6;
+}
+
+.sc-list-empty p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ad-ink);
+}
+
+.sc-list-empty small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12.5px;
+  color: var(--ad-muted);
 }
 
 /* ---- Typography used by the injected templates ------------------------ */
@@ -946,6 +1114,21 @@ body .pointer {
 
   .sc-stat-value {
     font-size: 21px;
+  }
+
+  /* Below this the seven columns cannot sit side by side, so the table
+     scrolls rather than crushing the name column to nothing. */
+  .sc-list {
+    overflow-x: auto;
+  }
+
+  .sc-list-head,
+  .sc-row {
+    min-width: 620px;
+    grid-template-columns: 46px minmax(160px, 1fr) 120px 116px 104px 100px 18px;
+    gap: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .sc-panel-head {

@@ -31,7 +31,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class UserService {
 
-	@Value("${app.base-url:https://sterlingcrestltd.com}")
+	@Value("${app.base-url:https://gestronassets.com}")
 	private String appBaseUrl;
 	@Value("${app.email-verification.enabled:false}")
 	private boolean emailVerificationEnabled;
@@ -117,10 +117,10 @@ public class UserService {
 
 	private void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
 		String toAddress = user.getEmail();
-		String subject = "Sterling Crest Ltd (One Time Password)";
-		String content = "<div id=\"container\" style=\"box-shadow: 1px 1px 10px rgb(236, 236, 236); padding:12px; font-family: Arial, Helvetica, sans-serif;\"><div style=\"padding: 8px 16px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif;\"><p style=\"font-size: 20px; font-weight: bold;\">Sterling Crest Ltd</p></div><div style=\"padding: 12px; font-family: Arial, Helvetica, sans-serif; margin-top: 0px;\"><p style=\"font-weight: 600; font-size: 18px\">Confirm your Registration</p><p style=\"font-size: 14px; color: rgb(34, 34, 34)\">Welcome to Sterling Crest Ltd</p><p style=\"font-size: 14px; color: rgb(34, 34, 34)\">Here is your account activation code:</p><p style=\"color: rgb(0, 50, 235); font-weight: 600;\">"
+		String subject = "Gestron Assets (One Time Password)";
+		String content = "<div id=\"container\" style=\"box-shadow: 1px 1px 10px rgb(236, 236, 236); padding:12px; font-family: Arial, Helvetica, sans-serif;\"><div style=\"padding: 8px 16px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif;\"><p style=\"font-size: 20px; font-weight: bold;\">Gestron Assets</p></div><div style=\"padding: 12px; font-family: Arial, Helvetica, sans-serif; margin-top: 0px;\"><p style=\"font-weight: 600; font-size: 18px\">Confirm your Registration</p><p style=\"font-size: 14px; color: rgb(34, 34, 34)\">Welcome to Gestron Assets</p><p style=\"font-size: 14px; color: rgb(34, 34, 34)\">Here is your account activation code:</p><p style=\"color: rgb(0, 50, 235); font-weight: 600;\">"
 				+ user.getVerificationCode()
-				+ "</p><p style=\"font-size: 14px; font-weight: bold; color: rgb(34, 34, 34)\">Security tips:</p><ol style=\"font-size: 14px; font-weight: bold; padding-left: 20px; color: rgb(54, 54, 54); line-height: 18px;\"><li>Never give your password to anyone</li><li>Never call any phone number for someone claiming to be Sterling Crest Ltd Support</li><li>Never send money to anyone claiming to be a member of Sterling Crest Ltd team</li><li>Enable Google Two Factor Authentication.</li></ol><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">If you don't recognize this activity, please contact our customer support immediately.</p><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">Sterling Crest Ltd Team</p><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">This is an automated message, Please do not reply</p></div></div>";
+				+ "</p><p style=\"font-size: 14px; font-weight: bold; color: rgb(34, 34, 34)\">Security tips:</p><ol style=\"font-size: 14px; font-weight: bold; padding-left: 20px; color: rgb(54, 54, 54); line-height: 18px;\"><li>Never give your password to anyone</li><li>Never call any phone number for someone claiming to be Gestron Assets Support</li><li>Never send money to anyone claiming to be a member of Gestron Assets team</li><li>Enable Google Two Factor Authentication.</li></ol><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">If you don't recognize this activity, please contact our customer support immediately.</p><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">Gestron Assets Team</p><p style=\"font-size: 12px; color: rgb(34, 34, 34)\">This is an automated message, Please do not reply</p></div></div>";
 
 		 mailSenderService.sendEmail(toAddress, subject, content);
 	}
@@ -138,8 +138,14 @@ public class UserService {
 	}
 
 	public User signIn(String email, String password) {
+		if (email == null || password == null) {
+			return new User();
+		}
 		Optional<User> user = userRepository.findByEmailAndPassword(email, password);
-		return user.get();
+		/* A blank user rather than an exception: the sign-in form reads an
+		   absent email as "wrong credentials", and a missing account and a
+		   wrong password answer the same way. */
+		return user.orElseGet(User::new);
 	}
 
 	public User updateUser(User user) {
@@ -154,15 +160,15 @@ public class UserService {
 		}
 		try {
 			String resetLink = appBaseUrl + "/reset-password.html?id=" + URLEncoder.encode(email, StandardCharsets.UTF_8.name());
-			String subject = "Sterling Crest Ltd - Reset your password";
+			String subject = "Gestron Assets - Reset your password";
 			String content = "<div id=\"container\" style=\"box-shadow: 1px 1px 10px rgb(236, 236, 236); padding:12px; font-family: Arial, Helvetica, sans-serif;\">"
-					+ "<div style=\"padding: 8px 16px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif;\"><p style=\"font-size: 20px; font-weight: bold;\">Sterling Crest Ltd</p></div>"
+					+ "<div style=\"padding: 8px 16px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif;\"><p style=\"font-size: 20px; font-weight: bold;\">Gestron Assets</p></div>"
 					+ "<div style=\"padding: 12px; font-family: Arial, Helvetica, sans-serif; margin-top: 0px;\">"
 					+ "<p style=\"font-weight: 600; font-size: 18px\">Reset your password</p>"
 					+ "<p style=\"font-size: 14px; color: rgb(34, 34, 34)\">Click the link below to set a new password:</p>"
 					+ "<p style=\"font-size: 14px;\"><a href=\"" + resetLink + "\" style=\"color: rgb(0, 50, 235); font-weight: 600;\">Reset password</a></p>"
 					+ "<p style=\"font-size: 12px; color: rgb(34, 34, 34)\">If you did not request this, please ignore this email.</p>"
-					+ "<p style=\"font-size: 12px; color: rgb(34, 34, 34)\">Sterling Crest Ltd Team</p>"
+					+ "<p style=\"font-size: 12px; color: rgb(34, 34, 34)\">Gestron Assets Team</p>"
 					+ "</div></div>";
 			mailSenderService.sendEmail(email, subject, content);
 			return true;

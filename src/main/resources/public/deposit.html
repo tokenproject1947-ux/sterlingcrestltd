@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sterling Crest Ltd - Deposit</title>
+    <title>Gestron Assets - Deposit</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -57,14 +57,14 @@
         <a class="sc-brand sc-brand-compact sc-nav-home" href="./dashboard.html">
           <img
             class="sc-brand-mark"
-            src="./images/logo-mark.svg?v=2"
+            src="./images/logo-mark.svg?v=3"
             alt=""
             width="28"
             height="28"
           />
           <span class="sc-brand-text">
-            <span class="sc-brand-name">Sterling Crest</span>
-            <span class="sc-brand-suffix">Ltd</span>
+            <span class="sc-brand-name">Gestron</span>
+            <span class="sc-brand-suffix">Assets</span>
           </span>
         </a>
         <div class="sc-topbar-actions">
@@ -164,14 +164,14 @@
           <a class="sc-brand sc-nav-home" href="./dashboard.html">
             <img
               class="sc-brand-mark"
-              src="./images/logo-mark.svg?v=2"
+              src="./images/logo-mark.svg?v=3"
               alt=""
               width="32"
               height="32"
             />
             <span class="sc-brand-text">
-              <span class="sc-brand-name">Sterling Crest</span>
-              <span class="sc-brand-suffix">Ltd</span>
+              <span class="sc-brand-name">Gestron</span>
+              <span class="sc-brand-suffix">Assets</span>
             </span>
           </a>
 
@@ -329,10 +329,7 @@
               "
             >
               <option value="select" selected>--Select Currency--</option>
-              <option value="btc" style="font-size: 13px">Bitcoin (BTC)</option>
-              <option value="usdt" style="font-size: 13px">
-                USD Token (TRC 20)
-              </option>
+              <!-- Currencies are added by deposit.js from the wallet list. -->
               <option value="usd" style="font-size: 13px">
                 Bank Wire (USD)
               </option>
@@ -345,93 +342,16 @@
               <hr class="deposit-hr" style="margin-top: 30px" />
               <p class="small" style="margin-top: 12px">
                 Choose a currency above to view the deposit address and
-                instructions for sending funds to Sterling Crest Ltd.
+                instructions for sending funds to Gestron Assets.
               </p>
               <hr class="deposit-hr" style="margin-top: 30px" />
             </div>
 
-            <div
-              id="btc-info"
-              class="payment-info"
-              style="display: none"
-            >
-              <p class="small">
-                <b>Warning</b> Depositing any other Sterling Crest Ltd
-                besides Bitcoin to this address may result in the total loss of
-                your funds.
-              </p>
-              <p class="small grey-text w3-center">
-                Sterling Crest Ltd BITCOIN WALLET ADDRESS
-              </p>
-              <div class="w3-center">
-                <img
-                  id="btc-image"
-                  src="./images/btc.jpg"
-                  alt="Bitcoin deposit QR code"
-                  style="width: 50%; max-width: 240px"
-                />
-              </div>
-              <div class="w3-margin">
-                <input
-                  id="btc-addr"
-                  class="w3-input w3-center"
-                  type="text"
-                  value="bc1q028dugl3wc7hpgzn7rt69fdrqhws9xjhwet0a5"
-                  readonly="readonly"
-                  style="background-color: rgb(17, 17, 17)"
-                />
-              </div>
-              <div class="w3-margin">
-                <div
-                  class="w3-center small pointer copy"
-                  style="margin-top: 10px; font-weight: 600"
-                >
-                  COPY
-                </div>
-              </div>
-              <hr class="deposit-hr" style="margin-top: 30px" />
-            </div>
-
-            <div
-              id="usdt-info"
-              class="payment-info"
-              style="display: none"
-            >
-              <p class="small">
-                <b>Warning</b> Depositing any other Sterling Crest Ltd
-                besides Tether to this address may result in the total loss of
-                your funds.
-              </p>
-              <p class="small grey-text w3-center">
-                Sterling Crest Ltd USDT WALLET ADDRESS (TRC 20)
-              </p>
-              <div class="w3-center">
-                <img
-                  src="./images/tether.jpg"
-                  alt="Tether deposit QR code"
-                  style="width: 50%; max-width: 240px"
-                />
-              </div>
-              <div class="w3-margin">
-                <input
-                  id="usdt-addr"
-                  class="w3-input w3-center"
-                  type="text"
-                  value="TK39xZHxmjmAPtK1fcTKZpkVxzfPsb3NWm"
-                  readonly="readonly"
-                  style="background-color: rgb(17, 17, 17)"
-                />
-              </div>
-              <div class="w3-margin">
-                <div
-                  class="w3-center small pointer copy"
-                  style="margin-top: 10px; font-weight: 600"
-                >
-                  COPY
-                </div>
-              </div>
-              <hr class="deposit-hr" style="margin-top: 30px" />
-            </div>
+            <!-- One panel per currency, rendered by deposit.js from the
+                 member's resolved wallet list. Nothing is hard-coded here on
+                 purpose: an address in the markup would survive an edit made
+                 in the admin console. -->
+            <div id="deposit-wallet-root"></div>
 
             <div id="usd-info" class="payment-info" style="display: none">
               <p class="w3-center no-margin x-big">Select Payment Method</p>
@@ -448,7 +368,7 @@
                 </div>
               </div>
               <p class="small" style="margin-top: 12px">
-                Sent from your financial institution to Sterling Crest Ltd bank account. No maximum deposit limits. Funds take 1-2
+                Sent from your financial institution to Gestron Assets bank account. No maximum deposit limits. Funds take 1-2
                 business days to show on the platform.
               </p>
               <hr class="deposit-hr" style="margin-top: 30px" />
@@ -471,12 +391,12 @@
               Deposit Information
             </p>
             <p class="no-margin" style="font-size: 16px; font-weight: bold">
-              Deposits are made directly to your Sterling Crest Ltd wallet
+              Deposits are made directly to your Gestron Assets wallet
               address.
             </p>
             <p class="small no-margin-2">
               Always confirm the currency and the network before sending.
-              Depositing any other Sterling Crest Ltd besides the selected
+              Depositing any other Gestron Assets besides the selected
               currency to this address may result in the total loss of your
               funds.
             </p>
@@ -485,6 +405,6 @@
       </section>
     </div>
 
-    <script src="./js/deposit.js?v=2"></script>
+    <script src="./js/deposit.js?v=4"></script>
   </body>
 </html>

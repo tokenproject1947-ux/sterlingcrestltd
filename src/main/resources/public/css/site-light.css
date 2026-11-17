@@ -1,4 +1,4 @@
-/* Sterling Crest Ltd - light design system for the public site.
+/* Gestron Assets - light design system for the public site.
    Mirrors the dashboard's palette (see dashboard-light.css) so the marketing
    pages, the sign-in flow and the app read as one product:
      bg #f5f7fa / surface #fff / border #e5e9ef / ink #17202e / muted #626e85
@@ -323,6 +323,19 @@ body.nk-body .header-menu .menu-sub .menu-item:last-child {
 
 .header-logo img {
   max-height: 46px;
+}
+
+/* Same trap as the hamburger below: the theme swaps to .logo-light whenever it
+   considers the header transparent, but our header bar is white, so the
+   knocked-out wordmark vanishes against it. The bar is light in every state on
+   this site, so pin the dark-ink lockup. The white variant stays wired up for
+   genuinely dark surfaces. */
+body.nk-body .header-logo .logo-dark {
+  display: block !important;
+}
+
+body.nk-body .header-logo .logo-light {
+  display: none !important;
 }
 
 /* The hamburger bars are drawn with background: currentColor, and the theme

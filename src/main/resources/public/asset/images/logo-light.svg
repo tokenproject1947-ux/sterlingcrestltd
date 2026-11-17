@@ -1,0 +1,16 @@
+<svg width="1100" height="300" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gestron Assets">
+  <!-- Light lockup: for dark headers and hero bands. The tile stays the exact
+       brand green, rgb(77, 169, 44); only the wordmark is knocked out white. -->
+  <rect x="20" y="70" width="160" height="160" rx="42" fill="#4DA92C"/>
+  <rect x="23" y="73" width="154" height="154" rx="39" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="6"/>
+
+  <!-- Logomark: capital G, drawn as a geometric letterform -->
+  <g transform="translate(20,70) scale(1.6)" fill="#ffffff">
+    <path d="M 65.25 23.59 A 30.5 30.5 0 1 0 80.5 50 L 69.5 50 A 19.5 19.5 0 1 1 59.75 33.11 Z"/>
+    <path d="M 46 44.5 L 74.5 44.5 A 5.5 5.5 0 0 1 74.5 55.5 L 46 55.5 Z"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="230" y="150" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="700" fill="#ffffff" letter-spacing="1">Gestron</text>
+  <text x="234" y="222" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="500" fill="#ffffff" fill-opacity=".72" letter-spacing="14">Assets</text>
+</svg>

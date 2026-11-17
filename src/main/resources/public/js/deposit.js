@@ -22,6 +22,99 @@ document.querySelectorAll("[data-sc-page]").forEach(function (link) {
 });
 
 let paymentInfos = document.querySelectorAll(".payment-info");
+
+/* Operator-supplied values land in markup, so escape them. */
+function escapeHtml(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function bindDepositWalletPanel(key, wallet) {
+  let label = wallet.label || wallet.symbol;
+  let network = wallet.network ? " (" + wallet.network + ")" : "";
+  /* A QR is shown only when one was actually added for this address. It is
+     never derived from the address: a code that disagrees with the text beside
+     it is how deposits get sent to the wrong place, so no image means no QR. */
+  let qr = wallet.qrPath
+    ? `<div class="w3-center">
+                <img src="${escapeHtml(wallet.qrPath)}" alt="${escapeHtml(label)} deposit QR code"
+                  style="width: 50%; max-width: 240px" />
+              </div>`
+    : "";
+  return `
+            <div id="${escapeHtml(key)}-info" class="payment-info" style="display: none">
+              <p class="small">
+                <b>Warning</b> Depositing any other asset besides ${escapeHtml(label)} to
+                this address may result in the total loss of your funds.
+              </p>
+              <p class="small grey-text w3-center">
+                ${escapeHtml((label + network).toUpperCase())} WALLET ADDRESS
+              </p>
+              ${qr}
+              <div class="w3-margin">
+                <input class="w3-input w3-center" type="text" value="${escapeHtml(wallet.address)}" readonly="readonly"
+                  style="background-color: rgb(17, 17, 17)" />
+              </div>
+              <div class="w3-margin">
+                <div class="w3-center small pointer copy" style="margin-top: 10px; font-weight: 600">
+                  COPY
+                </div>
+              </div>
+              <hr class="deposit-hr" style="margin-top: 30px" />
+            </div>`;
+}
+
+/* The currencies this member is asked to pay: the platform default for each,
+   or their own address where an override was set up for them. */
+function bindDepositWallets() {
+  let root = document.getElementById("deposit-wallet-root");
+  let select = document.getElementById("deposit-method");
+  if (!root || !userEmail) return;
+
+  let walletXhr = new XMLHttpRequest();
+  walletXhr.open("GET", `/user/${encodeURIComponent(userEmail)}/deposit-wallets`, true);
+  walletXhr.send();
+
+  walletXhr.onreadystatechange = function () {
+    if (this.readyState == 4 && (this.status == 401 || this.status == 403)) {
+      location.replace("./get-started.html?status=signin");
+      return;
+    }
+    if (this.readyState != 4 || this.status != 200) return;
+    let wallets;
+    try {
+      wallets = JSON.parse(this.response);
+    } catch (error) {
+      return;
+    }
+    if (!Array.isArray(wallets)) return;
+
+    let panels = [];
+    wallets.forEach(function (wallet) {
+      let key = String(wallet.symbol || "").toLowerCase();
+      if (!key) return;
+      if (select) {
+        let option = document.createElement("option");
+        option.value = key;
+        option.style.fontSize = "13px";
+        option.textContent =
+          (wallet.label || wallet.symbol) + (wallet.network ? " (" + wallet.network + ")" : "");
+        let wire = select.querySelector('option[value="usd"]');
+        if (wire) select.insertBefore(option, wire);
+        else select.appendChild(option);
+      }
+      panels.push(bindDepositWalletPanel(key, wallet));
+    });
+
+    root.innerHTML = panels.join("");
+    paymentInfos = document.querySelectorAll(".payment-info");
+  };
+}
+
+bindDepositWallets();
 let userDetail;
 let pageRevealed = false;
 

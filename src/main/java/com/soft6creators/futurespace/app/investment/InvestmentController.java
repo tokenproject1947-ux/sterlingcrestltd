@@ -2,6 +2,7 @@ package com.soft6creators.futurespace.app.investment;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,6 +37,17 @@ public class InvestmentController {
 	@RequestMapping("/account/{accountId}/investment")
 	public Optional<Investment> getInvestmentByAccount(@PathVariable int accountId) {
 		return investmentService.getInvestmentByAccount(accountId);
+	}
+
+	/**
+	 * Capital invested, interest accrued so far, and the two added together.
+	 * A trimmed map rather than the entities: an Investment carries a
+	 * ManyToOne back to Account and from there to User.
+	 */
+	@CrossOrigin(maxAge = 3600)
+	@RequestMapping("/account/{accountId}/portfolio")
+	public Map<String, Object> getAccountPortfolio(@PathVariable int accountId) {
+		return investmentService.getAccountSummary(accountId);
 	}
 	
 	@CrossOrigin(maxAge = 3600)

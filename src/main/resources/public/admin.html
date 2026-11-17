@@ -5,33 +5,33 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Console | Sterling Crest Ltd</title>
+  <title>Admin Console | Gestron Assets</title>
   <meta name="description"
-    content="Sterling Crest Ltd administration console: review members, book investments and settle withdrawals." />
+    content="Gestron Assets administration console: review members, book investments and settle withdrawals." />
   <meta name="theme-color" content="#4DA92C" />
-  <link rel="shortcut icon" href="/asset/images/favicon_1627498316.jpg" />
+  <link rel="shortcut icon" href="/asset/images/favicon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="./css/w3.css?v=2" />
   <link rel="stylesheet" href="./css/colors.css" />
   <link rel="stylesheet" href="./css/dashboard.css?v=9" />
   <link rel="stylesheet" href="./css/fonts.css?v=2" />
   <link rel="stylesheet" href="./css/dashboard-polish.css?v=3" />
-  <link rel="stylesheet" href="./css/admin-light.css?v=5" />
+  <link rel="stylesheet" href="./css/admin-light.css?v=8" />
 </head>
 
 <body>
   <!-- Top bar ------------------------------------------------------------ -->
   <header class="sc-admin-topbar">
     <a class="sc-admin-brand" href="./dashboard.html">
-      <img src="./images/logo-mark.svg" alt="" width="34" height="34" />
+      <img src="./images/logo-mark.svg?v=3" alt="" width="34" height="34" />
       <span class="sc-admin-brand-text">
-        <strong>Sterling Crest Ltd</strong>
+        <strong>Gestron Assets</strong>
         <span>Admin Console</span>
       </span>
     </a>
     <div class="sc-admin-user">
-      <span class="sc-admin-user-label">Administrator</span>
-      <img src="./images/paulius.png" alt="" class="sc-admin-avatar" />
+      <span class="sc-admin-user-label" id="sc-admin-name">Administrator</span>
+      <span class="sc-admin-avatar" id="sc-admin-initials" aria-hidden="true">GA</span>
     </div>
   </header>
 
@@ -44,27 +44,33 @@
     <!-- Filters ---------------------------------------------------------- -->
     <div class="sc-stats" role="tablist" aria-label="Record type">
       <button type="button" class="sc-stat is-active" data-tool role="tab" aria-selected="true">
-        <span id="fund-account" class="fa fa-users option blue-text sc-stat-icon" aria-hidden="true"></span>
-        <span class="sc-stat-label blue-text">Members</span>
+        <span id="fund-account" class="fa fa-users option sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label">Members</span>
         <span class="sc-stat-value" data-count="members">&mdash;</span>
       </button>
 
       <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
-        <span id="pending" class="fa fa-inbox option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
-        <span class="sc-stat-label grey-text">Pending</span>
+        <span id="pending" class="fa fa-inbox option sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label">Pending</span>
         <span class="sc-stat-value" data-count="pending">&mdash;</span>
       </button>
 
       <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
-        <span id="successful" class="fa fa-check-circle option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
-        <span class="sc-stat-label grey-text">Completed</span>
+        <span id="successful" class="fa fa-check-circle option sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label">Completed</span>
         <span class="sc-stat-value" data-count="completed">&mdash;</span>
       </button>
 
       <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
-        <span id="declined" class="fa fa-times-circle option grey-text-2 sc-stat-icon" aria-hidden="true"></span>
-        <span class="sc-stat-label grey-text">Declined</span>
+        <span id="declined" class="fa fa-times-circle option sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label">Declined</span>
         <span class="sc-stat-value" data-count="declined">&mdash;</span>
+      </button>
+
+      <button type="button" class="sc-stat" data-tool role="tab" aria-selected="false">
+        <span id="wallets" class="fa fa-qrcode option sc-stat-icon" aria-hidden="true"></span>
+        <span class="sc-stat-label">Deposit wallets</span>
+        <span class="sc-stat-value" data-count="wallets">&mdash;</span>
       </button>
     </div>
 
@@ -75,6 +81,7 @@
         <span class="sc-panel-hint">Select a row to open the record</span>
       </div>
       <div id="distinct-message-root" class="sc-list"></div>
+      <div class="sc-panel-foot" id="sc-panel-foot"></div>
     </section>
   </main>
 
@@ -157,8 +164,52 @@
     </div>
   </div>
 
+  <!-- Deposit wallet editor -------------------------------------------- -->
+  <div id="wallet-modal" class="w3-modal" style="display: none" role="dialog" aria-modal="true" aria-label="Deposit wallet">
+    <div class="w3-modal-content w3-round w3-animate-opacity sc-admin-modal sc-admin-modal-narrow">
+      <div class="w3-padding w3-padding-16 sc-admin-modal-bar">
+        <span id="close-wallet-modal" class="fa fa-times w3-right w3-text-red pointer" role="button" tabindex="0"
+          aria-label="Close"></span>
+      </div>
+      <form class="w3-padding sc-admin-form" id="wallet-form" novalidate>
+        <h2 class="sc-admin-modal-title" id="wallet-form-title">Deposit Wallet</h2>
+
+        <div class="w3-margin sc-admin-field">
+          <label for="wallet-symbol">Symbol</label>
+          <input id="wallet-symbol" class="w3-input" type="text" placeholder="BTC" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="wallet-label">Currency name</label>
+          <input id="wallet-label" class="w3-input" type="text" placeholder="Bitcoin" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="wallet-network">Network</label>
+          <input id="wallet-network" class="w3-input" type="text" placeholder="Bitcoin network" />
+        </div>
+        <div class="w3-margin sc-admin-field">
+          <label for="wallet-address">Deposit address</label>
+          <input id="wallet-address" class="w3-input" type="text" />
+        </div>
+
+        <div class="w3-margin sc-admin-field">
+          <label for="wallet-qr">QR code image (optional)</label>
+          <input id="wallet-qr" type="file" accept="image/png,image/jpeg,image/gif,image/webp" />
+          <p class="sc-admin-hint" id="wallet-qr-hint">
+            No QR is shown to members until one is uploaded. The image should be
+            a code for the address above.
+          </p>
+        </div>
+
+        <div class="sc-admin-actions">
+          <div id="remove-wallet" class="sc-btn sc-btn-quiet" role="button" tabindex="0">Remove</div>
+          <div id="save-wallet-admin" class="sc-btn sc-btn-primary" role="button" tabindex="0">Save wallet</div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="./js/moment.js"></script>
-  <script src="./js/admin.js?v=7"></script>
+  <script src="./js/admin.js?v=11"></script>
 </body>
 
 </html>

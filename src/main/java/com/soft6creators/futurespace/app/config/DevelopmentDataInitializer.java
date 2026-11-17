@@ -22,6 +22,8 @@ import com.soft6creators.futurespace.app.country.Country;
 import com.soft6creators.futurespace.app.country.CountryRepository;
 import com.soft6creators.futurespace.app.crypto.Crypto;
 import com.soft6creators.futurespace.app.crypto.CryptoRepository;
+import com.soft6creators.futurespace.app.depositwallet.DepositWallet;
+import com.soft6creators.futurespace.app.depositwallet.DepositWalletRepository;
 import com.soft6creators.futurespace.app.investment.Investment;
 import com.soft6creators.futurespace.app.investment.InvestmentRepository;
 import com.soft6creators.futurespace.app.state.State;
@@ -45,6 +47,11 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
     private static final String DEFAULT_CITY = "Los Angeles";
     private static final String DEFAULT_MOBILE = "+15550101000";
 
+    /** The operator sign-in for the admin console. */
+    private static final String ADMIN_NAME = "Gestron Admin";
+    private static final String ADMIN_EMAIL = "admin@gestronassets.com";
+    private static final String ADMIN_PASSWORD = "GestronAdmin!2026";
+
     private final CountryRepository countryRepository;
     private final StateRepository stateRepository;
     private final CityRepository cityRepository;
@@ -55,6 +62,7 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
     private final InvestmentRepository investmentRepository;
     private final AccountRepository accountRepository;
     private final AddressRepository addressRepository;
+    private final DepositWalletRepository depositWalletRepository;
 
     public DevelopmentDataInitializer(CountryRepository countryRepository,
             StateRepository stateRepository,
@@ -65,7 +73,8 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
             WithdrawalRepository withdrawalRepository,
             InvestmentRepository investmentRepository,
             AccountRepository accountRepository,
-            AddressRepository addressRepository) {
+            AddressRepository addressRepository,
+            DepositWalletRepository depositWalletRepository) {
         this.countryRepository = countryRepository;
         this.stateRepository = stateRepository;
         this.cityRepository = cityRepository;
@@ -76,6 +85,7 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         this.investmentRepository = investmentRepository;
         this.accountRepository = accountRepository;
         this.addressRepository = addressRepository;
+        this.depositWalletRepository = depositWalletRepository;
     }
 
     @Override
@@ -85,6 +95,8 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         seedLocations();
         /* Before the demo history: those seeds look for a member to attach to. */
         seedDefaultUser();
+        seedDefaultAdmin();
+        seedDepositWallets();
         seedDemoWithdrawals();
         seedDemoDeposit();
     }
@@ -130,6 +142,69 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         address.setMobileNumber(DEFAULT_MOBILE);
         address.setAccountType(accountTypeRepository.findById(1).orElse(null));
         addressRepository.save(address);
+    }
+
+    /**
+     * The operator sign-in for the admin console. Create-if-absent like the
+     * member seed, and deliberately given no address row: the console lists
+     * members off the address table, so an operator with one would show up in
+     * that list as though they were an investor.
+     */
+    private void seedDefaultAdmin() {
+        if (userRepository.findByEmail(ADMIN_EMAIL).isPresent()) return;
+
+        Account account = new Account();
+        account.setAccountBalance(0);
+        account.setInterestPreference(cryptoRepository.findById(1).orElse(null));
+        account = accountRepository.save(account);
+
+        User user = new User();
+        user.setFullName(ADMIN_NAME);
+        user.setEmail(ADMIN_EMAIL);
+        user.setPassword(ADMIN_PASSWORD);
+        /* Same convention UserService.addUser() uses for real sign-ups. */
+        user.setReferralId(ADMIN_NAME.trim() + "-" + RandomString.make(6));
+        user.setDate(Instant.now().truncatedTo(ChronoUnit.MILLIS).toString());
+        user.setActive(true);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        user.setCredentialNonExpired(true);
+        /* Anything other than USER routes the sign-in to the console. */
+        user.setRole("ADMIN");
+        user.setAccount(account);
+        userRepository.save(user);
+    }
+
+    /**
+     * The deposit addresses members are asked to pay. Only ever fills an empty
+     * table, so an operator's edits survive every restart.
+     *
+     * The QR images are carried over from the artwork the site already shipped
+     * for these two addresses. A wallet without one shows its address and a
+     * copy button only -- the QR is never invented from the address.
+     */
+    private void seedDepositWallets() {
+        if (depositWalletRepository.count() > 0) return;
+
+        DepositWallet bitcoin = new DepositWallet();
+        bitcoin.setSymbol("BTC");
+        bitcoin.setLabel("Bitcoin");
+        bitcoin.setNetwork("Bitcoin network");
+        bitcoin.setAddress("bc1q028dugl3wc7hpgzn7rt69fdrqhws9xjhwet0a5");
+        bitcoin.setQrPath("/images/btc.jpg");
+        bitcoin.setActive(true);
+        bitcoin.setSortOrder(1);
+        depositWalletRepository.save(bitcoin);
+
+        DepositWallet tether = new DepositWallet();
+        tether.setSymbol("USDT");
+        tether.setLabel("Tether");
+        tether.setNetwork("TRC20");
+        tether.setAddress("TK39xZHxmjmAPtK1fcTKZpkVxzfPsb3NWm");
+        tether.setQrPath("/images/tether.jpg");
+        tether.setActive(true);
+        tether.setSortOrder(2);
+        depositWalletRepository.save(tether);
     }
 
     /**

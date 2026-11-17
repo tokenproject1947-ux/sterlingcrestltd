@@ -169,7 +169,11 @@ body.sc-dashboard::before { display: none; }
 .sc-portfolio-lines span:nth-child(6) { background: #54bd2e; }
 
 .sc-account-stat { background: #fff; }
-.sc-account-stat:nth-child(2), .sc-account-stat:nth-child(3) { border-color: var(--light-border); }
+.sc-account-stat:nth-child(2), .sc-account-stat:nth-child(3), .sc-account-stat:nth-child(4) { border-color: var(--light-border); }
+/* Accrued interest is the one figure that is pure growth, so it carries the
+   same green edge and green number as the portfolio value card. */
+.sc-account-stat-accent { border-left: 3px solid var(--light-green); }
+.sc-account-stat-accent strong { color: #39801f; }
 .sc-account-stat strong { color: #182130; }
 .sc-account-stat small { color: #626e85; }
 .sc-account-stat .sc-unit { color: #626e85; }
