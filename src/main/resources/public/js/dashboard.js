@@ -347,11 +347,20 @@ document.body.addEventListener("click", function (e) {
     e.target.classList.contains("invest-now") ||
     e.target.id == "invest-now"
   ) {
-    let investModal = document.getElementById("investment-amount");
-    if (investModal) investModal.style.display = "none";
+    /* Plan first, deposit second: the tier a member has reached decides which
+       plans they can move into. */
+    renderInvestmentPlans();
+    let planModal = document.getElementById("investment-package");
+    if (planModal) planModal.style.display = "block";
+  } else if (e.target.id == "close-investment-package") {
+    document.getElementById("investment-package").style.display = "none";
+  } else if (e.target.classList.contains("sc-plan-choose")) {
+    let key = e.target.getAttribute("data-plan");
+    document.getElementById("investment-package").style.display = "none";
     location.href =
       "deposit.html" +
-      (userEmail ? "?email=" + encodeURIComponent(userEmail) : "");
+      (userEmail ? "?email=" + encodeURIComponent(userEmail) : "") +
+      (key ? "&plan=" + encodeURIComponent(key) : "");
   } else if (e.target.id == "close-investment-plan-modal") {
     document.getElementById("investment-plan-modal").style.display = "none";
   } else if (e.target.id == "add-wallet") {
@@ -569,6 +578,77 @@ function arrangeInterest() {
   });
 }
 
+/* Plan terms live here so a rate or a minimum is one edit, not a hunt through
+   markup. Silver is the entry tier; the others are reached by working through
+   it first. */
+const INVESTMENT_PLANS = [
+  {
+    key: "silver",
+    name: "Silver Plan",
+    minimum: 200,
+    rate: 70,
+    tag: "Entry tier",
+    summary:
+      "The way in. Start from $200 and take a share of the output of the mining fleet.",
+    points: ["From $200", "Standard mining allocation", "Open to new accounts"],
+  },
+  {
+    key: "gold",
+    name: "Gold Plan",
+    minimum: 2000,
+    rate: 75,
+    requires: "silver",
+    tag: "Second tier",
+    summary:
+      "For accounts that have worked through Silver. More capital, a better rate.",
+    points: ["From $2,000", "Priority mining allocation", "Unlocks after Silver"],
+  },
+  {
+    key: "diamond",
+    name: "Diamond Plan",
+    minimum: 10000,
+    rate: 80,
+    requires: "silver",
+    tag: "Top tier",
+    summary:
+      "Our highest tier. The largest allocation and the best rate we publish.",
+    points: ["From $10,000", "Highest mining allocation", "Unlocks after Silver"],
+  },
+];
+
+/* The plan the member's current investment sits under, set by getAccount().
+   Gold and Diamond stay closed until Silver has been held. */
+let memberPlanName = "";
+
+function planUnlocked(plan) {
+  if (!plan.requires) return true;
+  return String(memberPlanName).toLowerCase().indexOf(plan.requires) !== -1;
+}
+
+function renderInvestmentPlans() {
+  let grid = document.getElementById("plan-grid");
+  if (!grid) return;
+  grid.innerHTML = INVESTMENT_PLANS.map(function (plan) {
+    let unlocked = planUnlocked(plan);
+    let action = unlocked
+      ? `<button type="button" class="sc-plan-choose" data-plan="${plan.key}">Deposit into ${plan.name}</button>`
+      : `<button type="button" class="sc-plan-choose is-locked" data-plan="${plan.key}" disabled>Complete a Silver Plan first</button>`;
+    return `
+      <article class="sc-plan${unlocked ? "" : " is-locked"}">
+        <header class="sc-plan-head">
+          <span class="sc-plan-tag">${plan.tag}</span>
+          <h3 class="sc-plan-name">${plan.name}</h3>
+          <p class="sc-plan-rate"><strong>${plan.rate}%</strong> plan return</p>
+        </header>
+        <p class="sc-plan-summary">${plan.summary}</p>
+        <ul class="sc-plan-points">
+          ${plan.points.map(function (p) { return `<li>${p}</li>`; }).join("")}
+        </ul>
+        ${action}
+      </article>`;
+  }).join("");
+}
+
 function getAccount() {
   let account = userDetail.account;
   totalAmountNew = account.accountBalance.toFixed(1);
@@ -616,6 +696,7 @@ function getAccount() {
       let response = JSON.parse(this.response);
       if (response == null) {
       } else {
+        memberPlanName = response.investmentPlan || "";
         document.getElementById("account-level").innerText =
           response.investmentPlan;
       }

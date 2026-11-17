@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="./css/dashboard.css?v=9" />
     <link rel="stylesheet" href="./css/fonts.css?v=2" />
     <link rel="stylesheet" href="./css/dashboard-polish.css?v=4" />
-    <link rel="stylesheet" href="./css/dashboard-light.css?v=25" />
+    <link rel="stylesheet" href="./css/dashboard-light.css?v=26" />
     <!-- Latest compiled and minified CSS -->
     <link
       rel="stylesheet"
@@ -391,120 +391,50 @@
     <div
       id="investment-package"
       class="w3-modal"
-      style="background-color: black"
+      style="background-color: rgba(23, 32, 46, 0.55)"
     >
-      <div class="w3-modal-content">
-        <div style="background-color: rgb(27, 27, 27); padding: 16px 16px 64px">
-          <div style="margin: 0px 0px 12px">
+      <div class="w3-modal-content sc-plans-surface">
+        <div class="sc-plans-body">
+          <div class="sc-plans-bar">
             <span
-              class="fa fa-times w3-text-red"
-              style="margin-left: 95%; font-size: 18px"
+              id="close-investment-package"
+              class="fa fa-times sc-plans-close"
+              role="button"
+              tabindex="0"
+              aria-label="Close"
             ></span>
           </div>
-          <p class="w3-center huge-spc" style="font-weight: 600">
-            Select your investment plan from the list of suitable Packages
-          </p>
+          <div class="sc-plans-intro">
+            <p class="sc-plans-eyebrow">Bitcoin mining programmes</p>
+            <h2 class="sc-plans-title">Choose the plan that fits your capital</h2>
+            <p class="sc-plans-lead">
+              Every plan is backed by our own Bitcoin mining operation. We run
+              current-generation SHA-256 ASIC hardware in monitored,
+              power-efficient facilities, sell the mined bitcoin at market, and
+              allocate the net proceeds across participating accounts at the
+              rate published for each plan. Hardware, energy and uptime are
+              handled by our operations team; you choose the level of capital.
+            </p>
+            <ul class="sc-plans-points">
+              <li>Owned SHA-256 ASIC fleet, replaced on a rolling hardware cycle</li>
+              <li>Sites chosen for low-cost power and redundant cooling</li>
+              <li>Round-the-clock monitoring, with mined proceeds accounted daily</li>
+              <li>Capital tracked per account, with statements available on request</li>
+            </ul>
+          </div>
 
-          <div
-            style="background-color: black; padding: 16px; border-radius: 4px"
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 200USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
+          <div class="sc-plans-grid" id="plan-grid">
+            <!-- Rendered by dashboard.js from INVESTMENT_PLANS so that a rate or
+                 a minimum is one edit rather than a hunt through markup. -->
           </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 500USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 1000USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 1500USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 3000USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 5000USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
-          <div
-            style="
-              background-color: black;
-              padding: 16px;
-              border-radius: 4px;
-              margin-top: 8px;
-            "
-          >
-            <p class="no-margin-2" style="font-weight: 600; font-size: 16px">
-              Starter
-            </p>
-            <p class="no-margin-2">Price: 10000USD</p>
-            <p class="no-margin-2">Duration: 6 Days</p>
-            <p class="no-margin-2">Return of Investment: 100%</p>
-          </div>
+
+          <p class="sc-plans-note">
+            The rate shown for each plan is the rate applied to capital placed
+            under that plan. It is not a guarantee of future performance: mining
+            output moves with network difficulty, hardware availability and the
+            market price of bitcoin. Please read the plan terms before you
+            deposit.
+          </p>
         </div>
       </div>
     </div>
@@ -1227,7 +1157,7 @@
     </div>
 
 
-    <script src="./js/dashboard.js?v=16"></script>
+    <script src="./js/dashboard.js?v=18"></script>
     <script src="./js/navBar.js?v=3"></script>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
