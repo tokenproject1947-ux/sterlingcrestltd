@@ -130,8 +130,12 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     }
 
     /* Pages and assets, not part of the API. Matched against a whitelist of
-       extensions rather than "the last segment has a dot". */
+       extensions rather than "the last segment has a dot".
+       The site root is the welcome page and has no extension of its own, so it
+       has to be named here -- without this, GET / falls through to the guarded
+       tiers and answers the whole site with "Sign in to continue". */
     private static boolean isStatic(String path) {
+        if (path.equals("/") || path.equals("/index")) return true;
         int slash = path.lastIndexOf('/');
         int dot = path.lastIndexOf('.');
         if (dot <= slash || dot == path.length() - 1) return false;
