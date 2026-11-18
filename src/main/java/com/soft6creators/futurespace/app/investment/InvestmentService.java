@@ -1,10 +1,5 @@
 package com.soft6creators.futurespace.app.investment;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -71,14 +66,13 @@ public class InvestmentService {
 	}
 
 	/**
-	 * Portfolio roll-up behind the dashboard: how much has been put in, how much
-	 * interest that capital has earned so far, and the two added together.
+	 * Portfolio roll-up behind the dashboard: how much has been put in, the
+	 * return stated against it, and the two added together.
 	 *
-	 * A plan's "percentage" is its total return over its own "days" term, so
-	 * interest accrues pro-rata across the term and stops dead at the end of it --
-	 * a finished plan settles at exactly the return it advertised, never more.
-	 * A record with no readable start date or no term accrues nothing rather than
-	 * guessing at how long it has been running.
+	 * Nothing here is worked out over time. An investment is booked by hand with
+	 * the return the operator chooses to state, so that figure is the interest:
+	 * principal times the stated percentage, and nothing else. The pro-rating
+ * over a term was deliberately left out until it is asked for.
 	 */
 	public Map<String, Object> getAccountSummary(int accountId) {
 		List<Investment> investments = investmentRepository.findAllByAccountAccountId(accountId);
@@ -86,7 +80,7 @@ public class InvestmentService {
 		double accruedInterest = 0D;
 		for (Investment investment : investments) {
 			investedTotal += investment.getInvestedAmount();
-			accruedInterest += accruedFor(investment);
+			accruedInterest += investment.getInvestedAmount() * (investment.getPercentage() / 100D);
 		}
 
 		Map<String, Object> summary = new LinkedHashMap<>();
@@ -95,43 +89,6 @@ public class InvestmentService {
 		summary.put("totalValue", investedTotal + accruedInterest);
 		summary.put("positions", investments.size());
 		return summary;
-	}
-
-	private static double accruedFor(Investment investment) {
-		Instant start = toInstant(investment.getStartDate());
-		if (start == null || investment.getDays() <= 0) {
-			return 0D;
-		}
-		long elapsedDays = ChronoUnit.DAYS.between(start, Instant.now());
-		if (elapsedDays <= 0) {
-			return 0D;
-		}
-		/* Past the end of the term the accrual is capped, not compounded. */
-		double progress = Math.min(1D, (double) elapsedDays / (double) investment.getDays());
-		return investment.getInvestedAmount() * (investment.getPercentage() / 100D) * progress;
-	}
-
-	/**
-	 * Same lenient reading as TransactionController: an {@link Instant} string
-	 * from the JPA side, or a moment.js string carrying its own offset, or a
-	 * bare local date-time taken as UTC.
-	 */
-	private static Instant toInstant(String value) {
-		if (value == null || value.trim().isEmpty()) return null;
-		String text = value.trim();
-		try {
-			return Instant.parse(text);
-		} catch (RuntimeException ignored) {
-		}
-		try {
-			return OffsetDateTime.parse(text).toInstant();
-		} catch (RuntimeException ignored) {
-		}
-		try {
-			return LocalDateTime.parse(text).toInstant(ZoneOffset.UTC);
-		} catch (RuntimeException ignored) {
-		}
-		return null;
 	}
 
 	public Optional<Investment> getInvestMent(int investmentId) {
