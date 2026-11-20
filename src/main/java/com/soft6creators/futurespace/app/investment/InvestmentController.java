@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +24,14 @@ public class InvestmentController {
 	
 	@CrossOrigin(maxAge = 3600)
 	@RequestMapping(method = RequestMethod.POST, value = "/investment")
-	public Investment addInvestment(@RequestBody Investment investment) {
-		return investmentService.addInvestment(investment);
+	public ResponseEntity<?> addInvestment(@RequestBody Investment investment) {
+		try {
+			return ResponseEntity.ok(investmentService.addInvestment(investment));
+		} catch (IllegalArgumentException e) {
+			/* A booking that breaks the plan rules comes back saying why, so the
+			   admin console can show the reason under the form. */
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	@CrossOrigin(maxAge = 3600)

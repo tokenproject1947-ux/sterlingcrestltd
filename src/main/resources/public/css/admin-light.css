@@ -802,6 +802,41 @@ body .w3-modal-content.sc-admin-modal-narrow {
   text-transform: uppercase;
 }
 
+/* The plan picker replaces the old free-text plan box on the booking form. */
+.sc-plan-select {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--ad-border);
+  border-radius: 10px;
+  background: var(--ad-field);
+  color: var(--ad-ink);
+  padding: 9px 10px;
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.sc-plan-select:focus-visible {
+  outline: 2px solid #4DA92C;
+  outline-offset: 1px;
+}
+
+.sc-plan-select:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* Validation complaint shown under the picker when the booking is refused. */
+.sc-error {
+  display: none;
+  margin-top: 6px;
+  color: #c0392b;
+  font-size: 12.5px;
+}
+
+.sc-error.is-shown {
+  display: block;
+}
+
 .sc-admin-actions {
   display: flex;
   justify-content: center;

@@ -16,6 +16,66 @@ let accountLevel = document.getElementById("account-level");
 
 let days;
 
+/* Booking offers exactly three plans -- Silver, Gold, Diamond -- and nothing
+   else, from the same list the dashboard cards are built from. The rate and
+   minimum ride along on each option so the form can check itself before a
+   deposit is posted. */
+function populatePlanOptions() {
+  if (!accountLevel) return;
+  let plans = window.GESTRON_PLANS || [];
+  let html = '<option value="">Select a plan</option>';
+  for (let i = 0; i < plans.length; i++) {
+    let plan = plans[i];
+    html +=
+      '<option value="' +
+      plan.name +
+      '">' +
+      plan.name +
+      " \u00b7 " +
+      plan.rate +
+      "% from " +
+      window.formatPlanMinimum(plan.minimum) +
+      "</option>";
+  }
+  accountLevel.innerHTML = html;
+}
+
+function showPlanError(message) {
+  let el = document.getElementById("plan-error");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.add("is-shown");
+}
+
+function clearPlanError() {
+  let el = document.getElementById("plan-error");
+  if (!el) return;
+  el.textContent = "";
+  el.classList.remove("is-shown");
+}
+
+/* Opening the form starts from a clean slate: no stale complaint and no plan
+   carried over from the last member the operator booked. */
+function resetPlanPicker() {
+  if (accountLevel) accountLevel.value = "";
+  let percentField = document.getElementById("percentEtx");
+  if (percentField) percentField.value = "";
+  clearPlanError();
+}
+
+populatePlanOptions();
+
+/* Picking a plan states its published rate; the operator can still type a
+   different figure, because interest here is always principal times whatever
+   percentage is stated on the booking. */
+document.body.addEventListener("change", function (e) {
+  if (!e.target || e.target.id != "account-level") return;
+  let plan = window.findGestronPlan(e.target.value);
+  let percentField = document.getElementById("percentEtx");
+  if (plan && percentField) percentField.value = plan.rate;
+  clearPlanError();
+});
+
 document.body.addEventListener("click", function (e) {
   let target = e.target;
   /* Toolbar items are buttons wrapping an icon and its label. The branches
@@ -82,6 +142,7 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("fund-modal").style.display = "none";
   } else if (target.id == "fund") {
     let fundModal = document.getElementById("fund-modal");
+    resetPlanPicker();
     fundModal.style.display = "block";
     // let fundEtx = document.getElementById("fund-etx");
     // updateAccount(fundEtx.value);
@@ -185,27 +246,72 @@ function deleteUser(userToDelete) {
 }
 
 function startInvestment() {
+  clearPlanError();
+
+  let planField = document.getElementById("account-level");
+  let amountField = document.getElementById("investedAmountEtx");
+  let percentField = document.getElementById("percentEtx");
+
+  /* Only Silver, Gold and Diamond can be booked, and only at their published
+     minimum. Anything else is refused here rather than stored and shown on the
+     member's dashboard as a plan the platform does not run. */
+  let plan = window.findGestronPlan
+    ? window.findGestronPlan(planField ? planField.value : "")
+    : null;
+  if (!plan) {
+    showPlanError("Choose a plan: Silver, Gold or Diamond.");
+    return;
+  }
+
+  let amount = Number(amountField ? amountField.value : 0);
+  if (!isFinite(amount) || amount <= 0) {
+    showPlanError("Enter the amount to deposit.");
+    return;
+  }
+  if (amount < plan.minimum) {
+    showPlanError(
+      plan.name +
+        " starts at " +
+        window.formatPlanMinimum(plan.minimum) +
+        ". Enter at least that much.",
+    );
+    return;
+  }
+
+  /* Interest is principal times the stated percentage: default it to the
+     plan's published rate, and never let an empty or negative figure through. */
+  let rate = Number(percentField ? percentField.value : 0);
+  if (!isFinite(rate) || rate <= 0) rate = plan.rate;
+  if (percentField) percentField.value = rate;
+
   let investment = {
     account: { accountId: account.accountId },
-    investedAmount: investedAmountEtx.value,
+    investedAmount: amount,
     days: daysEtx.value,
     isActive: true,
-    investmentPlan: accountLevel.value,
+    investmentPlan: plan.name,
     currency: { crypto: "Bitcoin" },
-    percentage: percentEtx.value,
+    percentage: rate,
     startDate: moment(),
     endDate: moment(moment()).add(daysEtx.value, "days"),
   };
-  console.log(investment);
   let startInvestmentXhr = new XMLHttpRequest();
   startInvestmentXhr.open("POST", "/investment", true);
   startInvestmentXhr.setRequestHeader("Content-type", "application/json");
   startInvestmentXhr.send(JSON.stringify(investment));
 
   startInvestmentXhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
+    if (this.readyState != 4) return;
+    if (this.status == 200) {
       location.reload();
+      return;
     }
+    /* A refused booking says why instead of leaving the form where it is. */
+    let message = "";
+    try {
+      message = JSON.parse(this.response).message || "";
+    } catch (error) {}
+    showPlanError(message || "The deposit could not be booked.");
   };
 }
 

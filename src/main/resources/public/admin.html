@@ -108,8 +108,15 @@
           aria-label="Close"></span>
       </div>
       <form class="w3-padding sc-admin-form" novalidate>
-        <h2 class="sc-admin-modal-title">Investment Plan</h2>
+        <h2 class="sc-admin-modal-title">Book a deposit</h2>
 
+        <div class="w3-margin sc-admin-field">
+          <label for="account-level">Investment Plan</label>
+          <select id="account-level" class="sc-plan-select">
+            <option value="">Select a plan</option>
+          </select>
+          <p id="plan-error" class="sc-error" role="alert"></p>
+        </div>
         <div class="w3-margin sc-admin-field">
           <label for="investedAmountEtx">Amount to Invest</label>
           <input id="investedAmountEtx" class="w3-input" type="number" min="0" step="1" />
@@ -117,10 +124,6 @@
         <div class="w3-margin sc-admin-field">
           <label for="percentEtx">Return of Investment Percent</label>
           <input id="percentEtx" class="w3-input" type="number" min="0" step="0.01" />
-        </div>
-        <div class="w3-margin sc-admin-field">
-          <label for="account-level">Investment Plan</label>
-          <input id="account-level" class="w3-input" type="text" />
         </div>
         <div class="w3-margin sc-admin-field">
           <label for="daysEtx">Number of days</label>
@@ -209,7 +212,8 @@
   </div>
 
   <script src="./js/moment.js"></script>
-  <script src="./js/admin.js?v=11"></script>
+  <script src="./js/plans.js?v=1"></script>
+  <script src="./js/admin.js?v=12"></script>
 </body>
 
 </html>

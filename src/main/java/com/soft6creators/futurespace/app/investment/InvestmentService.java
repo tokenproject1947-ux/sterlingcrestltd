@@ -1,6 +1,7 @@
 package com.soft6creators.futurespace.app.investment;
 
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
@@ -17,6 +18,23 @@ import com.soft6creators.futurespace.app.crypto.CryptoService;
 @Service
 public class InvestmentService {
 
+	/**
+	 * The three plans this platform runs, with the rate and the minimum each
+	 * one is published at on the dashboard. A booking for anything else is
+	 * refused rather than stored and shown to the member as a plan that does
+	 * not exist.
+	 */
+	private static final Map<String, Integer> PLAN_RATES = new LinkedHashMap<>();
+	private static final Map<String, Integer> PLAN_MINIMUMS = new LinkedHashMap<>();
+	static {
+		PLAN_RATES.put("Silver Plan", 70);
+		PLAN_RATES.put("Gold Plan", 75);
+		PLAN_RATES.put("Diamond Plan", 80);
+		PLAN_MINIMUMS.put("Silver Plan", 200);
+		PLAN_MINIMUMS.put("Gold Plan", 2000);
+		PLAN_MINIMUMS.put("Diamond Plan", 10000);
+	}
+
 	@Autowired
 	private InvestmentRepository investmentRepository;
 	@Autowired
@@ -24,18 +42,71 @@ public class InvestmentService {
 	@Autowired
 	private CryptoService cryptoService;
 
+	/**
+	 * Accepts "Silver", "silver plan" or "SILVER PLAN" and returns the name the
+	 * dashboard renders; null means the booking is for a plan we do not run.
+	 */
+	private static String canonicalPlan(String name) {
+		if (name == null) return null;
+		String wanted = name.trim().toLowerCase().replaceAll("\\s+plan$", "");
+		if (wanted.isEmpty()) return null;
+		for (String plan : PLAN_RATES.keySet()) {
+			String canonical = plan.toLowerCase().replaceAll("\\s+plan$", "");
+			if (canonical.equals(wanted)) return plan;
+		}
+		return null;
+	}
+
 	public Investment addInvestment(Investment investment) {
+		String plan = canonicalPlan(investment.getInvestmentPlan());
+		if (plan == null) {
+			throw new IllegalArgumentException(
+					"Only the Silver, Gold and Diamond plans can be booked.");
+		}
+		investment.setInvestmentPlan(plan);
+
+		int amount = investment.getInvestedAmount();
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Enter an amount greater than zero.");
+		}
+		int minimum = PLAN_MINIMUMS.get(plan).intValue();
+		if (amount < minimum) {
+			throw new IllegalArgumentException(plan + " starts at $"
+					+ String.format(Locale.US, "%,d", minimum)
+					+ ". Enter at least that much.");
+		}
+		/* The operator states the percentage; when none is carried over it
+		   defaults to the rate published for the chosen plan. */
+		if (investment.getPercentage() <= 0) {
+			investment.setPercentage(PLAN_RATES.get(plan).intValue());
+		}
+
+		/* An account keeps one position. A further deposit joins the capital
+		   already booked rather than replacing it, so "capital invested" on the
+		   dashboard, the balance and the interest all move together. The plan
+		   and the rate shown are those of the latest booking. */
+		Optional<Investment> currentInvestment = investmentRepository
+				.findByAccountAccountId(investment.getAccount().getAccountId());
+		int bookedSoFar = currentInvestment.isPresent()
+				? currentInvestment.get().getInvestedAmount()
+				: 0;
+		investment.setInvestedAmount(amount + bookedSoFar);
+
 		Crypto crypto = cryptoService.getCryptoByName(investment.getCurrency().getCrypto());
 		Optional<Account> account = accountRepository.findById(investment.getAccount().getAccountId());
 		if (account.get().getAccountBalance() > 30) {
-			Optional<Investment> currentInvestment = investmentRepository
-					.findByAccountAccountId(account.get().getAccountId());
-			account.get().setAccountBalance(investment.getPercentage());
+			/* An account that already holds capital is being deposited into, so
+			   the balance grows by what was just booked. It used to be
+			   overwritten with the plan's rate here -- booking a Diamond
+			   deposit left the account at $80. */
+			account.get().setAccountBalance(
+					account.get().getAccountBalance() + amount);
 			accountRepository.save(account.get());
 			investment.setCurrency(crypto);
 			investment.setActive(true);
-			investment.setInvestmentPlan(investment.getInvestmentPlan());
-			investment.setInvestmentId(currentInvestment.get().getInvestmentId());
+			if (currentInvestment.isPresent()) {
+				investment.setInvestmentId(currentInvestment.get().getInvestmentId());
+			}
 			return investmentRepository.save(investment);
 		} else {
 			investment.setCurrency(crypto);

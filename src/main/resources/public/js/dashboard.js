@@ -578,51 +578,72 @@ function arrangeInterest() {
   });
 }
 
-/* Plan terms live here so a rate or a minimum is one edit, not a hunt through
-   markup. Silver is the entry tier; the others are reached by working through
-   it first. */
-const INVESTMENT_PLANS = [
-  {
-    key: "silver",
-    name: "Silver Plan",
-    minimum: 200,
-    rate: 70,
+/* Plan terms come from js/plans.js -- the same list the admin booking form
+   reads -- so a rate or a minimum is one edit, not a hunt through markup.
+   Only the wording below is kept here, because it belongs to these cards. */
+const PLAN_COPY = {
+  silver: {
     tag: "Entry tier",
     summary:
       "The way in. Start from $200 and take a share of the output of the mining fleet.",
     points: ["From $200", "Standard mining allocation", "Open to new accounts"],
   },
-  {
-    key: "gold",
-    name: "Gold Plan",
-    minimum: 2000,
-    rate: 75,
-    requires: "silver",
+  gold: {
     tag: "Second tier",
     summary:
       "For accounts that have worked through Silver. More capital, a better rate.",
     points: ["From $2,000", "Priority mining allocation", "Unlocks after Silver"],
   },
-  {
-    key: "diamond",
-    name: "Diamond Plan",
-    minimum: 10000,
-    rate: 80,
-    requires: "silver",
+  diamond: {
     tag: "Top tier",
     summary:
       "Our highest tier. The largest allocation and the best rate we publish.",
     points: ["From $10,000", "Highest mining allocation", "Unlocks after Silver"],
   },
-];
+};
+
+const INVESTMENT_PLANS = (window.GESTRON_PLANS || []).map(function (plan) {
+  let copy = PLAN_COPY[plan.key] || {};
+  return {
+    key: plan.key,
+    name: plan.name,
+    minimum: plan.minimum,
+    rate: plan.rate,
+    requires: plan.requires || undefined,
+    tag: copy.tag || "",
+    summary: copy.summary || "",
+    points: copy.points || [],
+  };
+});
 
 /* The plan the member's current investment sits under, set by getAccount().
-   Gold and Diamond stay closed until Silver has been held. */
+   Tiers are ordered as they are published: Silver opens Gold and Diamond, and
+   reaching a later tier does not re-lock the ones behind it -- a member who
+   has moved up to Gold has already cleared Silver, so Gold and Diamond stay
+   open rather than claiming Silver is still outstanding. */
 let memberPlanName = "";
+
+function planIndex(key) {
+  for (let i = 0; i < INVESTMENT_PLANS.length; i++) {
+    if (INVESTMENT_PLANS[i].key === key) return i;
+  }
+  return -1;
+}
+
+function currentPlanIndex() {
+  let name = String(memberPlanName || "").toLowerCase();
+  let found = -1;
+  for (let i = 0; i < INVESTMENT_PLANS.length; i++) {
+    if (name.indexOf(INVESTMENT_PLANS[i].key) !== -1) found = i;
+  }
+  return found;
+}
 
 function planUnlocked(plan) {
   if (!plan.requires) return true;
-  return String(memberPlanName).toLowerCase().indexOf(plan.requires) !== -1;
+  let required = planIndex(plan.requires);
+  if (required < 0) return false;
+  return currentPlanIndex() >= required;
 }
 
 function renderInvestmentPlans() {
